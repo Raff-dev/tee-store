@@ -2,21 +2,34 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import './Styles/index.css';
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
-import registerServiceWorker from './registerServiceWorker';
-import Layout from './components/Layout';
+import { Route } from 'react-router-dom';
 import { Home } from './components/Home';
 import { FetchData } from './components/FetchData';
+import { Items } from './components/Items';
+import { NavMenu } from './components/NavMenu'
+import { Grid } from 'react-bootstrap'
 
-const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
-const rootElement = document.getElementById('root');
+
+
+
 
 const App = (props) => {
-  <Layout>
-    <BrowserRouter basename={baseUrl}>
-      <Route exact path='/' component={Home} />
-      <Route path='/fetchdata' component={FetchData} />
-    </BrowserRouter>
-  </Layout>
+    return (
+        <Layout>
+            <Route exact path='/' component={Home} />
+            <Route path='/fetchdata' component={FetchData} />
+            <Route path='/items' component={Items} />
+        </Layout>
+    );
 }
+
+const Layout = (props) => {
+    return (
+        <Grid >
+            <NavMenu />
+            {props.children}
+        </Grid>
+    );
+}
+
 export default App;

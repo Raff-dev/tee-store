@@ -1,10 +1,10 @@
 ﻿import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Glyphicon, Nav, Navbar, NavItem } from 'react-bootstrap';
+import { Grid, Glyphicon, Nav, Navbar, NavItem, Col } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import './NavMenu.css';
 
-const NavMenu = (props) => {
+export const NavMenu = (props) => {
 
     return (
         <Navbar inverse fixedTop fluid collapseOnSelect>
@@ -32,4 +32,3 @@ const NavMenu = (props) => {
         </Navbar>
     );
 }
-export default NavMenu;

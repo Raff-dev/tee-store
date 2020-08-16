@@ -1,13 +1,21 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
-import './Styles/index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import { BrowserRouter } from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
 
+import App from './App';
+import './Styles/index.css';
+import './Styles/items.scss';
+
+const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
 
-ReactDOM.render(<App />, rootElement);
-
+ReactDOM.render(
+  <BrowserRouter basename={baseUrl}>
+    <App />
+  </BrowserRouter>,
+  rootElement);
 registerServiceWorker();
