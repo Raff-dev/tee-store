@@ -1,14 +1,12 @@
 using System;
-using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Reflection.Emit;
-using System.Threading;
 
-namespace WebApp.Models
+namespace VapeShop.Models
 {
-    public class Movie
+    public class Item
     {
         public int ID { get; set; }
 
@@ -20,6 +18,11 @@ namespace WebApp.Models
         [Required]
         public string Brand { get; set; }
 
+        [RegularExpression(@"^[A-Z]+[a-zA-Z]*$")]
+        [StringLength(30)]
+        [Required]
+        public string Type { get; set; }
+
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
@@ -27,19 +30,9 @@ namespace WebApp.Models
         [Range(0, 100)]
         public int Discount { get; set; }
 
-        [Display(Name = "Release Konia")]
+        [Display(Name = "Discount Expiration Date")]
         [DataType(DataType.Date)]
         public DateTime DiscountExpirationDate { get; set; }
-
-        [RegularExpression(@"^[A-Z]+[a-zA-Z]*$")]
-        [StringLength(30)]
-        [Required]
-        public string Type { get; set; }
-
-        [RegularExpression(@"^[A-Z]+[a-zA-Z0-9""'\s-]*$")]
-        [StringLength(5)]
-        [Required]
-        public string Rating { get; set; }
 
     }
 }
