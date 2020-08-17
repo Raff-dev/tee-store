@@ -6,9 +6,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace VapeShop.Models
 {
-    public class Product
+    public partial class Product : MediaAssignment
     {
-        public int ID { get; set; }
 
         [StringLength(60, MinimumLength = 3)]
         [Required]
@@ -18,10 +17,10 @@ namespace VapeShop.Models
         [Required]
         public string Brand { get; set; }
 
-        [RegularExpression(@"^[A-Z]+[a-zA-Z]*$")]
-        [StringLength(30)]
         [Required]
-        public Category Category { get; set; }
+        [ForeignKey("Category")]
+        public int CategoryID { get; set; }
+        public virtual Category Category { get; set; }
 
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18,2)")]
@@ -35,8 +34,6 @@ namespace VapeShop.Models
         [DataType(DataType.Date)]
         public DateTime DiscountExpirationDate { get; set; }
 
-        [Required(ErrorMessage = "Product media is required")]
-        public MediaAssignment MediaAssignment { get; set; }
-
+        public virtual ICollection<Review> Reviews { get; set; }
     }
 }

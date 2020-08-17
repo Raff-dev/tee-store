@@ -1,13 +1,12 @@
+using System.Collections.Generic;
 using System.Data;
 using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace VapeShop.Models
 {
-    public class User
+    public partial class User : MediaAssignment
     {
-        public int ID { get; set; }
-
         [StringLength(60, MinimumLength = 3)]
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
@@ -37,5 +36,6 @@ namespace VapeShop.Models
 
         public string ProfilePucturePath { get; set; }
 
+        public virtual ICollection<Review> Reviews { get; set; }
     }
 }

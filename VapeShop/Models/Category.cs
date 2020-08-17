@@ -3,13 +3,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace VapeShop.Models
 {
-    public class Category
+    public partial class Category : MediaAssignment
     {
-        public int ID { get; set; }
-
+        [StringLength(30, MinimumLength = 3)]
+        [RegularExpression(@"^[z-aA-Z0-9]+$",
+            ErrorMessage = "Special characters are not allowed.")]
         [Required]
         public string Name { get; set; }
-
-        public MediaAssignment MediaAssignment { get; set; }
     }
 }

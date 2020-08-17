@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace VapeShop.Models
 {
@@ -8,10 +9,14 @@ namespace VapeShop.Models
         public int ID { get; set; }
 
         [Required]
-        public Product Product { get; set; }
+        [ForeignKey("Product")]
+        public int ProductID { get; set; }
+        public virtual Product Product { get; set; }
 
         [Required]
-        public User User { get; set; }
+        [ForeignKey("User")]
+        public int UserID { get; set; }
+        public virtual User User { get; set; }
 
         [Display(Name = "Review Date")]
         [DataType(DataType.Date)]

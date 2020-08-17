@@ -10,5 +10,6 @@ namespace VapeShop.Models
     {
         public int ID { get; set; }
 
+        public virtual ICollection<Media> Medias { get; set; }
     }
 }

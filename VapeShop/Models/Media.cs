@@ -11,7 +11,9 @@ namespace VapeShop.Models
         public int ID { get; set; }
 
         [Required]
-        public MediaAssignment MediaAssignment { get; set; }
+        [ForeignKey("MediaAssignment")]
+        public int MediaAssignmentID { get; set; }
+        public virtual MediaAssignment MediaAssignment { get; set; }
 
         [Required]
         public string MediaFilePath { get; set; }

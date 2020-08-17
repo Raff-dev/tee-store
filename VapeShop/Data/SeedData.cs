@@ -26,11 +26,9 @@ namespace VapeShop.Models
                     return;
                 }
 
-                MediaAssignment mediaAssignment1 = new MediaAssignment();
                 Category category1 = new Category
                 {
                     Name = "gżauka",
-                    MediaAssignment = mediaAssignment1,
                 };
 
                 User user1 = new User
@@ -67,7 +65,6 @@ namespace VapeShop.Models
                     Category = category1,
                 };
 
-                context.MediaAssignments.Add(mediaAssignment1);
                 context.Categories.Add(category1);
                 context.Users.Add(user1);
                 context.Products.AddRange(product1, product2);
