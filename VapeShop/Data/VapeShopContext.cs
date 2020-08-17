@@ -14,9 +14,11 @@ namespace VapeShop.Models
         {
         }
 
-        public DbSet<User> User { get; set; }
-        public DbSet<Item> Item { get; set; }
-        public DbSet<Review> Review { get; set; }
-        public DbSet<VapeShop.Models.ItemImage> ItemImage { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<Media> Medias { get; set; }
+        public DbSet<MediaAssignment> MediaAssignments { get; set; }
     }
 }

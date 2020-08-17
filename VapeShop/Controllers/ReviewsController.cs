@@ -24,7 +24,7 @@ namespace VapeShop.Controllers
         [HttpGet]
         public IEnumerable<Review> GetReview()
         {
-            return _context.Review;
+            return _context.Reviews;
         }
 
         // GET: api/Reviews/5
@@ -36,7 +36,7 @@ namespace VapeShop.Controllers
                 return BadRequest(ModelState);
             }
 
-            var review = await _context.Review.FindAsync(id);
+            var review = await _context.Reviews.FindAsync(id);
 
             if (review == null)
             {
@@ -90,7 +90,7 @@ namespace VapeShop.Controllers
                 return BadRequest(ModelState);
             }
 
-            _context.Review.Add(review);
+            _context.Reviews.Add(review);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetReview", new { id = review.ID }, review);
@@ -105,13 +105,13 @@ namespace VapeShop.Controllers
                 return BadRequest(ModelState);
             }
 
-            var review = await _context.Review.FindAsync(id);
+            var review = await _context.Reviews.FindAsync(id);
             if (review == null)
             {
                 return NotFound();
             }
 
-            _context.Review.Remove(review);
+            _context.Reviews.Remove(review);
             await _context.SaveChangesAsync();
 
             return Ok(review);
@@ -119,7 +119,7 @@ namespace VapeShop.Controllers
 
         private bool ReviewExists(int id)
         {
-            return _context.Review.Any(e => e.ID == id);
+            return _context.Reviews.Any(e => e.ID == id);
         }
     }
 }

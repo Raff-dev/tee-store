@@ -24,7 +24,7 @@ namespace VapeShop.Controllers
         [HttpGet]
         public IEnumerable<User> GetUser()
         {
-            return _context.User;
+            return _context.Users;
         }
 
         // GET: api/Users/5
@@ -36,7 +36,7 @@ namespace VapeShop.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = await _context.User.FindAsync(id);
+            var user = await _context.Users.FindAsync(id);
 
             if (user == null)
             {
@@ -90,7 +90,7 @@ namespace VapeShop.Controllers
                 return BadRequest(ModelState);
             }
 
-            _context.User.Add(user);
+            _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetUser", new { id = user.ID }, user);
@@ -105,13 +105,13 @@ namespace VapeShop.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = await _context.User.FindAsync(id);
+            var user = await _context.Users.FindAsync(id);
             if (user == null)
             {
                 return NotFound();
             }
 
-            _context.User.Remove(user);
+            _context.Users.Remove(user);
             await _context.SaveChangesAsync();
 
             return Ok(user);
@@ -119,7 +119,7 @@ namespace VapeShop.Controllers
 
         private bool UserExists(int id)
         {
-            return _context.User.Any(e => e.ID == id);
+            return _context.Users.Any(e => e.ID == id);
         }
     }
 }

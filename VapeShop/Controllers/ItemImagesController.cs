@@ -11,56 +11,56 @@ namespace VapeShop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ItemImagesController : ControllerBase
+    public class MediasController : ControllerBase
     {
         private readonly VapeShopContext _context;
 
-        public ItemImagesController(VapeShopContext context)
+        public MediasController(VapeShopContext context)
         {
             _context = context;
         }
 
-        // GET: api/ItemImages
+        // GET: api/Medias
         [HttpGet]
-        public IEnumerable<ItemImage> GetItemImage()
+        public IEnumerable<Media> GetMedia()
         {
-            return _context.ItemImage;
+            return _context.Medias;
         }
 
-        // GET: api/ItemImages/5
+        // GET: api/Medias/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetItemImage([FromRoute] int id)
+        public async Task<IActionResult> GetMedia([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var itemImage = await _context.ItemImage.FindAsync(id);
+            var Media = await _context.Medias.FindAsync(id);
 
-            if (itemImage == null)
+            if (Media == null)
             {
                 return NotFound();
             }
 
-            return Ok(itemImage);
+            return Ok(Media);
         }
 
-        // PUT: api/ItemImages/5
+        // PUT: api/Medias/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutItemImage([FromRoute] int id, [FromBody] ItemImage itemImage)
+        public async Task<IActionResult> PutMedia([FromRoute] int id, [FromBody] Media Media)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != itemImage.ID)
+            if (id != Media.ID)
             {
                 return BadRequest();
             }
 
-            _context.Entry(itemImage).State = EntityState.Modified;
+            _context.Entry(Media).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace VapeShop.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ItemImageExists(id))
+                if (!MediaExists(id))
                 {
                     return NotFound();
                 }
@@ -81,45 +81,45 @@ namespace VapeShop.Controllers
             return NoContent();
         }
 
-        // POST: api/ItemImages
+        // POST: api/Medias
         [HttpPost]
-        public async Task<IActionResult> PostItemImage([FromBody] ItemImage itemImage)
+        public async Task<IActionResult> PostMedia([FromBody] Media Media)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.ItemImage.Add(itemImage);
+            _context.Medias.Add(Media);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetItemImage", new { id = itemImage.ID }, itemImage);
+            return CreatedAtAction("GetMedia", new { id = Media.ID }, Media);
         }
 
-        // DELETE: api/ItemImages/5
+        // DELETE: api/Medias/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteItemImage([FromRoute] int id)
+        public async Task<IActionResult> DeleteMedia([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var itemImage = await _context.ItemImage.FindAsync(id);
-            if (itemImage == null)
+            var Media = await _context.Medias.FindAsync(id);
+            if (Media == null)
             {
                 return NotFound();
             }
 
-            _context.ItemImage.Remove(itemImage);
+            _context.Medias.Remove(Media);
             await _context.SaveChangesAsync();
 
-            return Ok(itemImage);
+            return Ok(Media);
         }
 
-        private bool ItemImageExists(int id)
+        private bool MediaExists(int id)
         {
-            return _context.ItemImage.Any(e => e.ID == id);
+            return _context.Medias.Any(e => e.ID == id);
         }
     }
 }

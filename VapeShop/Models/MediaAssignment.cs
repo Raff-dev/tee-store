@@ -6,14 +6,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace VapeShop.Models
 {
-    public class ItemImage
+    public class MediaAssignment
     {
         public int ID { get; set; }
 
-        [Required]
-        public Item Item { get; set; }
-
-        [Required]
-        public string ImageFilePath { get; set; }
     }
 }

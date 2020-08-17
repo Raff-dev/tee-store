@@ -1,3 +1,6 @@
+using System.Xml.Schema;
+using System.Reflection;
+using System.Collections.Generic;
 using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -15,10 +18,20 @@ namespace VapeShop.Models
                 serviceProvider.GetRequiredService<
                     DbContextOptions<VapeShopContext>>()))
             {
-                if (context.User.Any() || context.Item.Any() || context.Review.Any())
+
+                var databaseContent = from prop in typeof(VapeShopContext).GetProperties()
+                                      select prop.PropertyType.Name.Any();
+                if (databaseContent != null)
                 {
                     return;
                 }
+
+                MediaAssignment mediaAssignment1 = new MediaAssignment();
+                Category category1 = new Category
+                {
+                    Name = "gżauka",
+                    MediaAssignment = mediaAssignment1,
+                };
 
                 User user1 = new User
                 {
@@ -38,29 +51,31 @@ namespace VapeShop.Models
                     BirthDayDate = DateTime.Today.AddYears(-18),
                 };
 
-                Item item1 = new Item
+                Product product1 = new Product
                 {
                     Name = "When Harry Met Sally",
                     Brand = "brand",
                     Price = 7.99M,
-                    Type = "grzauka",
+                    Category = category1,
                 };
 
-                Item item2 = new Item
+                Product product2 = new Product
                 {
                     Name = "wapito",
                     Brand = "wejp nejsz",
                     Price = 21.37M,
-                    Type = "wejp",
+                    Category = category1,
                 };
 
-                context.User.Add(user1);
-                context.Item.AddRange(item1, item2);
-                context.Review.AddRange(
+                context.MediaAssignments.Add(mediaAssignment1);
+                context.Categories.Add(category1);
+                context.Users.Add(user1);
+                context.Products.AddRange(product1, product2);
+                context.Reviews.AddRange(
                     new Review
                     {
                         User = user1,
-                        Item = item1,
+                        Product = product1,
                         ReviewDate = DateTime.Today,
                         Rating = 9,
                         Rewiew = "alles gut"
@@ -68,7 +83,7 @@ namespace VapeShop.Models
                     new Review
                     {
                         User = user2,
-                        Item = item1,
+                        Product = product1,
                         ReviewDate = DateTime.Today,
                         Rating = 3,
                         Rewiew = "suabe"
@@ -76,14 +91,12 @@ namespace VapeShop.Models
                     new Review
                     {
                         User = user2,
-                        Item = item2,
+                        Product = product2,
                         ReviewDate = DateTime.Today,
                         Rating = 9,
                         Rewiew = "welp"
                     }
                  );
-
-
                 context.SaveChanges();
             }
         }

@@ -8,7 +8,7 @@ namespace VapeShop.Models
         public int ID { get; set; }
 
         [Required]
-        public Item Item { get; set; }
+        public Product Product { get; set; }
 
         [Required]
         public User User { get; set; }
@@ -17,7 +17,6 @@ namespace VapeShop.Models
         [DataType(DataType.Date)]
         public DateTime ReviewDate { get; set; }
 
-        [RegularExpression(@"^[A-Z]+[a-zA-Z0-9""'\s-]*$")]
         [Range(0, 10)]
         [Required]
         public int Rating { get; set; }
