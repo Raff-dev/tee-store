@@ -18,6 +18,6 @@ export class Resource extends Component {
     }
 
     render() {
-        return this.props.render(this.state)
+        return this.props.render(this.state);
     }
 }

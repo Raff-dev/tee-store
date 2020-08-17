@@ -1,0 +1,14 @@
+.carousel{
+    overflow: hidden;
+
+    .item{
+        overflow: hidden;
+        justify-content: center;
+        align-items: center;
+        height: 300px;
+
+        img{
+            object-fit: contain;
+        }
+    }
+}

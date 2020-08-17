@@ -5,12 +5,9 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import { Home } from './components/Home';
 import { FetchData } from './components/FetchData';
-import { Items } from './components/Items';
 import { NavMenu } from './components/NavMenu'
 import { Grid } from 'react-bootstrap'
-
-
-
+import { Products } from './components/Products';
 
 
 const App = (props) => {
@@ -18,7 +15,7 @@ const App = (props) => {
         <Layout>
             <Route exact path='/' component={Home} />
             <Route path='/fetchdata' component={FetchData} />
-            <Route path='/items' component={Items} />
+            <Route path='/products' component={Products} />
         </Layout>
     );
 }
