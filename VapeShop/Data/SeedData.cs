@@ -34,7 +34,19 @@ namespace VapeShop.Models
 
                 Category category1 = new Category
                 {
-                    Name = "gżauka",
+                    Name = "Mods",
+                };
+                Category category2 = new Category
+                {
+                    Name = "Batteries",
+                };
+                Category category3 = new Category
+                {
+                    Name = "Vape juice",
+                };
+                Category category4 = new Category
+                {
+                    Name = "Parts",
                 };
 
                 User user1 = new User
@@ -110,7 +122,7 @@ namespace VapeShop.Models
                     MediaFilePath = "images/img1"
                 };
 
-                context.Categories.Add(category1);
+                context.Categories.AddRange(category1, category2, category3, category4);
                 context.Users.Add(user1);
                 context.Products.AddRange(product1, product2);
                 context.Reviews.AddRange(review1, review2, review3);

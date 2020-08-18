@@ -4,38 +4,15 @@ import { ButtonGroup, Button } from 'react-bootstrap'
 import Spinner from 'react-bootstrap/Spinner'
 
 import { Resource } from '../../utilities/Resource';
+import { Sidebar } from './Sidebar'
 import { DataTable } from './DataTable';
 import { AddEntry } from './AddEntry';
 
 export const Admin = (props) => {
-  const [models, setModels] = useState(null);
   const [activeModel, setActiveModel] = useState(null);
 
   const AdminInfo = () => {
     return <h2>Admin</h2>
-  }
-
-  const SideBar = (data) => {
-    if (data.loading) return <Spinner animation="border" />;
-
-    setModels(data.payload);
-
-    return (
-      <ButtonGroup >
-        {data.payload.map((model, index) => {
-          return (
-            <LinkContainer
-              key={index}
-              exact to={`/Admin/${model}`}
-              onClick={() => setActiveModel(model)}>
-              <Button variant="secondary">
-                {model}
-              </Button>
-            </LinkContainer>
-          );
-        })}
-      </ButtonGroup >
-    );
   }
 
   const Manager = () => {
@@ -62,10 +39,8 @@ export const Admin = (props) => {
 
   return (
     <section className="admin" >
-      <Resource
-        path="api/Admin/Models"
-        render={SideBar} />
-      {models && activeModel ? <Manager /> : <AdminInfo />}
+      <Sidebar onClick={setActiveModel} />
+      {activeModel ? <Manager /> : <AdminInfo />}
     </section>
   );
 }

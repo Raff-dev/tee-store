@@ -1,6 +1,6 @@
-﻿import React, { Component } from 'react';
+﻿import React from 'react';
 import { Link } from 'react-router-dom';
-import { Grid, Glyphicon, Nav, Navbar, NavItem, Col } from 'react-bootstrap';
+import { Glyphicon, Nav, Navbar, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
 export const NavMenu = (props) => {
@@ -18,12 +18,6 @@ export const NavMenu = (props) => {
                     <LinkContainer to={'/'} exact>
                         <NavItem>
                             <Glyphicon glyph='home' /> Home
-                            </NavItem>
-                    </LinkContainer>
-
-                    <LinkContainer to={'/fetchdata'}>
-                        <NavItem>
-                            <Glyphicon glyph='th-list' /> Fetch data
                             </NavItem>
                     </LinkContainer>
 
