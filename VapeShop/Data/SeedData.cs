@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Xml.Schema;
 using System.Reflection;
 using System.Collections.Generic;
@@ -12,16 +14,20 @@ namespace VapeShop.Models
 {
     public class SeedData
     {
+
         public static void Initialize(IServiceProvider serviceProvider)
         {
+
             using (var context = new VapeShopContext(
                 serviceProvider.GetRequiredService<
                     DbContextOptions<VapeShopContext>>()))
             {
 
-                var databaseContent = from prop in typeof(VapeShopContext).GetProperties()
-                                      select prop.PropertyType.Name.Any();
-                if (databaseContent != null)
+                if (context.Users.Any()
+                    || context.Products.Any()
+                    || context.Reviews.Any()
+                    || context.Medias.Any()
+                    || context.Categories.Any())
                 {
                     return;
                 }
@@ -65,35 +71,49 @@ namespace VapeShop.Models
                     Category = category1,
                 };
 
+                Review review1 = new Review
+                {
+                    User = user1,
+                    Product = product1,
+                    ReviewDate = DateTime.Today,
+                    Rating = 9,
+                    Rewiew = "alles gut"
+                };
+
+                Review review2 = new Review
+                {
+                    User = user2,
+                    Product = product1,
+                    ReviewDate = DateTime.Today,
+                    Rating = 3,
+                    Rewiew = "suabe"
+                };
+
+                Review review3 = new Review
+                {
+                    User = user2,
+                    Product = product2,
+                    ReviewDate = DateTime.Today,
+                    Rating = 9,
+                    Rewiew = "welp"
+                };
+
+                Media media1 = new Media
+                {
+                    MediaAssignmentID = product1.ID,
+                    MediaFilePath = "images/img1"
+                };
+
+                Media media2 = new Media
+                {
+                    MediaAssignmentID = category1.ID,
+                    MediaFilePath = "images/img1"
+                };
+
                 context.Categories.Add(category1);
                 context.Users.Add(user1);
                 context.Products.AddRange(product1, product2);
-                context.Reviews.AddRange(
-                    new Review
-                    {
-                        User = user1,
-                        Product = product1,
-                        ReviewDate = DateTime.Today,
-                        Rating = 9,
-                        Rewiew = "alles gut"
-                    },
-                    new Review
-                    {
-                        User = user2,
-                        Product = product1,
-                        ReviewDate = DateTime.Today,
-                        Rating = 3,
-                        Rewiew = "suabe"
-                    },
-                    new Review
-                    {
-                        User = user2,
-                        Product = product2,
-                        ReviewDate = DateTime.Today,
-                        Rating = 9,
-                        Rewiew = "welp"
-                    }
-                 );
+                context.Reviews.AddRange(review1, review2, review3);
                 context.SaveChanges();
             }
         }

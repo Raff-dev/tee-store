@@ -24,17 +24,16 @@ namespace VapeShop.Models
         [StringLength(60, MinimumLength = 3)]
         public string DisplayName { get; set; }
 
-        [Display(Name = "Creation Date")]
+        [Display(Name = "Creation Timestamp")]
         [DataType(DataType.DateTime)]
         [Required]
-        public DateTime CreationDate = DateTime.Now;
+        public DateTime CreationTimestamp = DateTime.Now;
 
         [Display(Name = "Birthday Date")]
         [DataType(DataType.Date)]
         [Required(ErrorMessage = "Birthday date is required")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime BirthDayDate { get; set; }
-
-        public string ProfilePucturePath { get; set; }
 
         public virtual ICollection<Review> Reviews { get; set; }
     }

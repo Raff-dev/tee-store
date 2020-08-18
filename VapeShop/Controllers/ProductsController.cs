@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VapeShop.Models;
+using Newtonsoft.Json.Linq;
+using System.Diagnostics;
 
 namespace VapeShop.Controllers
 {
@@ -82,45 +84,23 @@ namespace VapeShop.Controllers
             return NoContent();
         }
 
+        public partial class ProductPostModel : Product
+        {
+            public List<IFormFile> MediaFiles { get; set; }
+        }
+
         // POST: api/Products
         [HttpPost]
-        public async Task<IActionResult> PostProduct([FromBody] Product Product)
+        public async Task<IActionResult> PostProduct([FromBody] JObject data)
         {
+            Product product = data["product"].ToObject<Product>();
+            List<IFormFile> mediaFiles = data["media"].ToObject<List<IFormFile>>();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Products.Add(Product);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetProduct", new { id = Product.ID }, Product);
-        }
-
-        public class ProductPostModel
-        {
-            public string Name { get; set; }
-            public string Brand { get; set; }
-            public int CategoryID { get; set; }
-            public decimal Price { get; set; }
-            public List<IFormFile> Medias { get; set; }
-            public int Discount { get; set; }
-            public DateTime DiscountExpirationDate { get; set; }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> PostProduct(
-            [FromBody] ProductPostModel productPostModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            MediaAssignment mediaAssignment = new MediaAssignment();
-            _context.MediaAssignments.Add(mediaAssignment);
-
-            List<IFormFile> mediaFiles = productPostModel.Medias;
             foreach (IFormFile mediaFile in mediaFiles)
             {
                 if (mediaFiles.Count > 0)
@@ -132,36 +112,19 @@ namespace VapeShop.Controllers
                         await mediaFile.CopyToAsync(stream);
                     }
 
-                    Media media = new Media
-                    {
-                        MediaFilePath = filePath,
-                        MediaAssignment = mediaAssignment
-                    };
-                    _context.Medias.Add(media);
+                    _context.Medias.Add(
+                        new Media
+                        {
+                            MediaFilePath = filePath,
+                            MediaAssignmentID = product.ID
+                        }
+                    );
                 }
             }
 
-            Category category = await _context.Categories.FindAsync(productPostModel.CategoryID);
-
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            Product product = new Product
-            {
-                Name = productPostModel.Name,
-                Brand = productPostModel.Brand,
-                Category = category,
-                Price = productPostModel.Price,
-                Discount = productPostModel.Discount,
-                DiscountExpirationDate = productPostModel.DiscountExpirationDate,
-                MediaAssignment = mediaAssignment
-            };
-
             _context.Products.Add(product);
-
             await _context.SaveChangesAsync();
+
             return CreatedAtAction("GetProduct", new { id = product.ID }, product);
         }
 
