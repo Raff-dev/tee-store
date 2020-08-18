@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Products } from './Products';
+import { Products } from '../../Products';
 import { Carousel, Breadcrumb } from 'react-bootstrap'
-import { Resource } from './utilities/Resource';
+import { Resource } from '../../utilities/Resource';
 export class Home extends Component {
   displayName = Home.name
 

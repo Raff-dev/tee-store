@@ -2,7 +2,6 @@
 import { Link } from 'react-router-dom';
 import { Grid, Glyphicon, Nav, Navbar, NavItem, Col } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import './NavMenu.css';
 
 export const NavMenu = (props) => {
 
@@ -26,6 +25,18 @@ export const NavMenu = (props) => {
                         <NavItem>
                             <Glyphicon glyph='th-list' /> Fetch data
                             </NavItem>
+                    </LinkContainer>
+
+                    <LinkContainer to={'/Admin'} exact>
+                        <NavItem>
+                            <Glyphicon glyph='home' /> Admin
+                            </NavItem>
+                    </LinkContainer>
+
+                    <LinkContainer to={'/Cart'} exact>
+                        <NavItem>
+                            <Glyphicon glyph='shopping-cart' /> Cart
+                        </NavItem>
                     </LinkContainer>
                 </Nav>
             </Navbar.Collapse>

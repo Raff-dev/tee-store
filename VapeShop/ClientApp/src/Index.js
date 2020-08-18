@@ -7,8 +7,10 @@ import { BrowserRouter } from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
 
 import App from './App';
-import './Styles/mesh.scss';
-import './Styles/home.scss';
+import './Styles/index.css';
+import './Styles/Mesh.scss';
+import './Styles/Home.scss';
+import './Styles/NavMenu.scss';
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
