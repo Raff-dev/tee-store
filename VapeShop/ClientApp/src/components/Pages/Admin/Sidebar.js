@@ -15,7 +15,7 @@ export const Sidebar = (props) => {
                         <LinkContainer
                             key={index}
                             exact to={`/Admin/${model}`}
-                            onClick={() => props.OnClick(model)}
+                            onClick={() => props.onClick(model)}
                         >
                             <Button variant="secondary">
                                 {model}

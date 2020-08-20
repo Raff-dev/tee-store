@@ -13,7 +13,9 @@ export const DataTable = ({ columns, entries }) => {
         <Table responsive>
             <thead>
                 <tr>
-                    <th>Action</th>
+                    <th className="action-column-name">
+                        Action
+                    </th>
                     <th>Index</th>
                     {columns.map((column, index) => {
                         return <th key={index}>

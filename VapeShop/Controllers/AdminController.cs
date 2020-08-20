@@ -29,5 +29,24 @@ namespace VapeShop.Controllers
                                          select prop.Name;
             return models;
         }
+
+
+        [HttpGet("[action]")]
+        public IEnumerable<string> Form(string modelName)
+        {
+
+            return null;
+        }
+
+        public enum FieldTypes { text, asd, date }
+
+        public class FormInfoViewModel
+        {
+            public string PropertyName { get; set; }
+
+        }
     }
+
+
+
 }

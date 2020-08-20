@@ -1,5 +1,8 @@
 import React from 'react';
 import { Breadcrumb } from 'react-bootstrap'
+import Fab from '@material-ui/core/Fab';
+import NavigationIcon from '@material-ui/icons/Navigation';
+
 import { CategoriesMesh } from './CategoriesMesh'
 import { PromotionCarousel } from './PromotionCarousel'
 
@@ -10,6 +13,9 @@ export const Home = (props) => {
       <PromotionCarousel />
       <PathIndicator />
       <CategoriesMesh />
+      <Fab color="secondary" variant="extended">
+        <NavigationIcon />
+      </Fab>
     </div>
   );
 }

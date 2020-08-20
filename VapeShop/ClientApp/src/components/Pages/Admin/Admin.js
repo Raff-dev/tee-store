@@ -6,7 +6,14 @@ import Spinner from 'react-bootstrap/Spinner'
 import { Resource } from '../../utilities/Resource';
 import { Sidebar } from './Sidebar'
 import { DataTable } from './DataTable';
-import { AddEntry } from './AddEntry';
+
+import { UsersForm } from './ModelForm/UsersForm'
+import { CategoriesForm } from './ModelForm/CategoriesForm'
+import { ProductsForm } from './ModelForm/ProductsForm'
+import { ReviewsForm } from './ModelForm/ReviewsForm'
+import { MediasForm } from './ModelForm/MediasForm'
+import { NotFound } from './ModelForm/NotFound'
+
 
 export const Admin = (props) => {
   const [activeModel, setActiveModel] = useState(null);
@@ -16,6 +23,22 @@ export const Admin = (props) => {
   }
 
   const Manager = () => {
+    const Submit = async (values) => {
+      await new Promise(resolve => setTimeout(resolve, 500));
+      alert(JSON.stringify(values, null, 2));
+    }
+
+    const GetForm = (model) => {
+      switch (model) {
+        case 'Users': return <UsersForm submit={Submit} />;
+        case 'Categories': return <CategoriesForm submit={Submit} />;
+        case 'Products': return <ProductsForm submit={Submit} />;
+        case 'Reviews': return <ReviewsForm submit={Submit} />;
+        case 'Medias': return <MediasForm submit={Submit} />;
+        default: return <NotFound />;
+      }
+    }
+
     const render = (data) => {
       if (data.loading || data.payload.length === 0) return <Spinner animation="border" />;
 
@@ -29,7 +52,7 @@ export const Admin = (props) => {
             <h2>{activeModel}</h2>
           </div>
           <DataTable columns={columns} entries={entries} />
-          <AddEntry />
+          {GetForm(activeModel)}
         </div >
       );
     }
@@ -41,6 +64,7 @@ export const Admin = (props) => {
     <section className="admin" >
       <Sidebar onClick={setActiveModel} />
       {activeModel ? <Manager /> : <AdminInfo />}
+      <ProductsForm />
     </section>
   );
 }
