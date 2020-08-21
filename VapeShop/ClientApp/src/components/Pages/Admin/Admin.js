@@ -21,12 +21,12 @@ export const Admin = (props) => {
   const AdminInfo = () => {
     return <h2>Admin</h2>
   }
-
+  const Submit = async (values) => {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    alert(JSON.stringify(values, null, 2));
+  }
   const Manager = () => {
-    const Submit = async (values) => {
-      await new Promise(resolve => setTimeout(resolve, 500));
-      alert(JSON.stringify(values, null, 2));
-    }
+
 
     const GetForm = (model) => {
       switch (model) {
@@ -64,7 +64,6 @@ export const Admin = (props) => {
     <section className="admin" >
       <Sidebar onClick={setActiveModel} />
       {activeModel ? <Manager /> : <AdminInfo />}
-      <ProductsForm />
     </section>
   );
 }

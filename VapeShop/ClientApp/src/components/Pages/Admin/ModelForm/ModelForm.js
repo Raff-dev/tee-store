@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik'
-import TextField from '@material-ui/core/TextField';
+import {
+    TextField, FormControl, InputLabel,
+    Select, FormHelperText, MenuItem, Checkbox, FormControlLabel
+} from '@material-ui/core';
 
 import { Resource } from '../../../utilities/Resource';
-import { FormControl, InputLabel, Select, FormHelperText, MenuItem } from '@material-ui/core';
-
 
 
 export const ModelForm = (props) => {
@@ -27,26 +28,46 @@ export const FormikText = ({ name, label, type = "text", ...props }) => {
     );
 
 }
-const MaterialUISelectField = ({ name, label, errorMessage, children, ...props }) => {
+
+export const FormikChecbox = ({ name, label, ...props }) => {
     return (
-        <FormControl {...props}>
-            <InputLabel {...props}>{label}</InputLabel>
-            <Select name={name} {...props}>
+        <Field
+            as={FormControlLabel}
+            name={name}
+            label={label}
+            control={<Checkbox />}
+            {...props}
+        />
+    );
+
+}
+
+
+const MaterialUISelectField = ({ name, label, onChange, onBlur, children, value, fullWidth }) => {
+    return (
+        <FormControl fullWidth={fullWidth}>
+            <InputLabel >{label}</InputLabel>
+            <Select name={name} onChange={onChange} onBlur={onBlur} value={value}>
                 {children}
             </Select>
-            <FormHelperText>{errorMessage}</FormHelperText>
+            <FormHelperText>
+                <ErrorMessage name={name} />
+            </FormHelperText>
         </FormControl>
     );
 }
 
 export const FormikSelect = ({ name, label, items, ...props }) => {
+
+
+
     return (
         <div className="formik-select">
             <Field
                 as={MaterialUISelectField}
                 name={name}
                 label={label}
-                errorMessage={<ErrorMessage name={name} />}
+
                 {...props}
             >
                 {items.map(item => (

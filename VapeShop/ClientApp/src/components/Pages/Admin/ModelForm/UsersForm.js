@@ -13,13 +13,11 @@ export const UsersForm = ({ submit, ...props }) => {
             }}
             onSubmit={submit}
         >
-            <div>Users</div>
             <Form className="d-block">
                 <Field name="name" type="text" />
                 <Field name="email" type="email" />
                 <Button size="large" disableElevation variant="contained" color="primary" type="submit">Submit</Button>
             </Form>
-
         </Formik>
     );
 };
