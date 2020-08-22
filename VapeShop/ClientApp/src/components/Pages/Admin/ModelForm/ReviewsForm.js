@@ -22,12 +22,26 @@ export const ReviewsForm = ({ submit, ...props }) => {
     });
 
 
-    const schema = {
+    const schema = Yup.object().shape({
         name: Yup.string()
             .min(3)
-            .max(60)
-            .required()
-    };
+            .max(30)
+            .required(),
+        user: Yup.number()
+            .required(),
+
+        product: Yup.number()
+            .required(),
+        rating: Yup.number()
+            .min(0)
+            .max(10)
+            .required(),
+        review: Yup.string()
+            .min(10)
+            .max(100)
+            .required(),
+
+    });
 
     const initialValues = {
         name: "",

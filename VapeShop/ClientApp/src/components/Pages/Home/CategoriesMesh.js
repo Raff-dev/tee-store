@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React from 'react';
 import { ItemMesh } from '../../utilities/ItemMesh'
 
 export const CategoriesMesh = (props) => {

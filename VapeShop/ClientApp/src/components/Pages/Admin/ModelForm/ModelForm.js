@@ -161,7 +161,7 @@ const SUPPORTED_FORMATS = [
 
 export const IconSchema = Yup.mixed()
     .test('fileSize', "File Size is too large!",
-        value => value.size <= MAX_FILE_SIZE)
+        value => value != null && value.size <= MAX_FILE_SIZE)
     .test('fileType', "Unsupported File Format!",
-        value => SUPPORTED_FORMATS.includes(value.type))
+        value => value != null && SUPPORTED_FORMATS.includes(value.type))
     .required('An icon is required!');

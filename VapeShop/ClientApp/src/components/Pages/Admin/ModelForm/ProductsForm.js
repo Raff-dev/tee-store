@@ -47,8 +47,8 @@ export const ProductsForm = ({ submit, ...props }) => {
 
     const initialValues = {
         name: "",
-        brand: brands[0],
-        category: categories[0],
+        brand: brands[0].id,
+        category: categories[0].id,
         price: "",
         toggleDiscount: true,
         discount: "0",
