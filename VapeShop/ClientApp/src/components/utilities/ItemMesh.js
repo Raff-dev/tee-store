@@ -1,7 +1,7 @@
 import React from 'react';
 import { Resource } from './Resource'
 
-export const ItemMesh = (props) => {
+export const ItemMesh = ({ ...props }) => {
 
     const render = data => {
         return (
@@ -10,7 +10,7 @@ export const ItemMesh = (props) => {
                     ? <p>Loading...</p>
                     : <section className={`${props.ItemCard.name} mesh`}>
                         {data.payload.map((item, index) => {
-                            return <props.ItemCard item={item} index={index} />
+                            return <props.ItemCard item={item} index={index} {...props} />
                         })}
                     </section>
                 }

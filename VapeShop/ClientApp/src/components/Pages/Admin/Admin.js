@@ -10,7 +10,7 @@ import { ProductsForm } from './ModelForm/ProductsForm'
 import { ReviewsForm } from './ModelForm/ReviewsForm'
 import { NotFound } from './ModelForm/NotFound'
 
-export const Admin = (props) => {
+const Admin = (props) => {
   const [activeModel, setActiveModel] = useState(null);
   const models = [
     'Users',
@@ -66,3 +66,4 @@ export const Admin = (props) => {
   );
 }
 
+export default Admin;

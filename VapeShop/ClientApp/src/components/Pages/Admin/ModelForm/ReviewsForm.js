@@ -21,7 +21,6 @@ export const ReviewsForm = ({ submit, ...props }) => {
         return { name: i, id: i }
     });
 
-
     const schema = Yup.object().shape({
         name: Yup.string()
             .min(3)
@@ -29,7 +28,6 @@ export const ReviewsForm = ({ submit, ...props }) => {
             .required(),
         user: Yup.number()
             .required(),
-
         product: Yup.number()
             .required(),
         rating: Yup.number()
@@ -40,7 +38,6 @@ export const ReviewsForm = ({ submit, ...props }) => {
             .min(10)
             .max(100)
             .required(),
-
     });
 
     const initialValues = {

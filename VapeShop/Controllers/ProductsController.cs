@@ -30,6 +30,18 @@ namespace VapeShop.Controllers
             return _context.Products;
         }
 
+        // GET: api/Products
+        [HttpGet("{category}", Name = "")]
+        public IEnumerable<Product> GetProductsOfCategory([FromRoute] string category)
+        {
+            var categoryProducts = from product in _context.Products
+                                   where product.Category.Name.Equals(category)
+                                   select product;
+
+            return categoryProducts;
+        }
+
+
         // GET: api/Products/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProduct([FromRoute] int id)
