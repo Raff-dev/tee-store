@@ -3,16 +3,16 @@ import { Breadcrumb } from 'react-bootstrap'
 import Fab from '@material-ui/core/Fab';
 import NavigationIcon from '@material-ui/icons/Navigation';
 
-import { CategoriesMesh } from './CategoriesMesh'
+import { CategoryCard } from './CategoryCard'
 import { PromotionCarousel } from './PromotionCarousel'
+import { ItemMesh } from '../../utilities/ItemMesh'
 
-export const Home = (props) => {
+const Home = (props) => {
 
   return (
     <div>
       <PromotionCarousel />
-      <PathIndicator />
-      <CategoriesMesh />
+      <ItemMesh path='/api/Categories' ItemCard={CategoryCard} />
       <Fab color="secondary" variant="extended">
         <NavigationIcon />
       </Fab>
@@ -20,17 +20,4 @@ export const Home = (props) => {
   );
 }
 
-
-const PathIndicator = (props) => {
-  return (
-    <Breadcrumb>
-      <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
-      <Breadcrumb.Item
-        href="https://getbootstrap.com/docs/4.0/components/breadcrumb/">
-        Library
-     </Breadcrumb.Item>
-      <Breadcrumb.Item active>Data</Breadcrumb.Item>
-    </Breadcrumb>
-  );
-}
-
+export default Home;

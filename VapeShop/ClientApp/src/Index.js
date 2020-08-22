@@ -3,19 +3,19 @@ import 'bootstrap/dist/css/bootstrap-theme.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
 
-import { Route } from 'react-router-dom';
+import { } from 'react-router-dom';
 import { NavMenu } from './components/NavMenu/NavMenu'
 import { Grid } from 'react-bootstrap'
 
-import { Home } from './components/Pages/Home/Home';
-import { Admin } from './components/Pages/Admin/Admin'
-import { ProductsMesh } from './components/Pages/Category/ProductsMesh';
-import Switch from 'react-bootstrap/esm/Switch';
+import Home from './components/Pages/Home/Home';
+import Admin from './components/Pages/Admin/Admin'
+import Cart from './components/Pages/Cart/Cart'
+import { Category } from './components/Pages/Category/Category'
+import { ProductDetail } from './components/Pages/ProductDetail/ProductDetail'
 
-// import App from './App';
 import './Styles/index.css';
 import './Styles/Mesh.scss';
 import './Styles/Home.scss';
@@ -30,8 +30,10 @@ ReactDOM.render(
       <NavMenu />
       <Switch>
         <Route exact path='/' component={Home} />
-        <Route path='/products' component={ProductsMesh} />
-        <Route path='/admin' component={Admin} />
+        <Route path='/Category/:category' component={Category} />
+        <Route path='/Product/:product' component={ProductDetail} />
+        <Route path='/Cart' component={Cart} />
+        <Route path='/Admin' component={Admin} />
       </Switch>
     </Grid>
   </BrowserRouter>,
