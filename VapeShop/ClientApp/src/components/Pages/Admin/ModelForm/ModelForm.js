@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import * as Yup from 'yup';
-import { Formik, Form, Field, ErrorMessage } from 'formik'
+import { Field, ErrorMessage } from 'formik'
 import {
     TextField, FormControl, InputLabel,
     Button, Select, FormHelperText,
@@ -43,11 +43,11 @@ export const FormikChecbox = ({ ...props }) => {
     );
 }
 
-const MaterialUISelectField = ({ name, label, onChange, onBlur, children, value, fullWidth }) => {
+const MaterialUISelectField = ({ name, label, required, children, fullWidth, ...props }) => {
     return (
         <FormControl fullWidth={fullWidth}>
-            <InputLabel >{label}</InputLabel>
-            <Select name={name} onChange={onChange} onBlur={onBlur} value={value}>
+            <InputLabel required={required} >{label}</InputLabel>
+            <Select name={name} {...props}>
                 {children}
             </Select>
             <FormHelperText>
@@ -93,32 +93,35 @@ const MaterialUIFileUpload = ({ name, setFieldValue, multiple }) => {
     const [files, _setFiles] = useState([]);
 
     const handleChange = (event) => {
-        const newFiles = [...event.currentTarget.files]
+        const newFiles = [...event.currentTarget.files];
 
         if (newFiles.length > 0) {
-            multiple ? setFiles(files.concat(newFiles)) : setFiles(newFiles)
+            multiple ? setFiles(files.concat(newFiles)) : setFiles(newFiles[0]);
         }
     }
     const setFiles = value => {
         setFieldValue(name, value);
-        _setFiles(value)
-    }
+        _setFiles(value);
+    };
 
     const handleClose = index => {
         var newFiles = files;
-        const removed = newFiles.splice(index, 1);
+        newFiles.splice(index, 1);
         setFiles(newFiles);
-    }
+    };
 
     return (
         <FormControl fullWidth >
             <div className="relative d-flex flex-wrap justify-content-center">
                 {files.length > 0 &&
                     files.map((file, index) => {
-                        return <IconThumbnail
-                            key={index}
-                            file={file}
-                            onClose={() => handleClose(index)} />
+                        return (
+                            <IconThumbnail
+                                key={index}
+                                file={file}
+                                onClose={() => handleClose(index)}
+                            />
+                        );
                     })
                 }
             </div>

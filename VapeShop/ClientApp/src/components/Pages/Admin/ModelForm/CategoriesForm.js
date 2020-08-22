@@ -1,20 +1,21 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
-import { Button } from '@material-ui/core'
-import { FormikText, } from './ModelForm'
+import { FormikText, SubmitButton, FormikFileField, IconSchema } from './ModelForm'
 import * as Yup from 'yup';
 
 export const CategoriesForm = ({ submit, ...props }) => {
-    const schema = {
-        name: Yup.string()
-            .min(3)
-            .max(60)
-            .required()
+    const initialValues = {
+        name: "",
+        iconFile: null,
     }
 
-    const initialValues = {
-        name: ""
-    }
+    const schema = Yup.object().shape({
+        name: Yup.string()
+            .min(3)
+            .max(16)
+            .required(),
+        iconFile: IconSchema
+    });
 
     return (
         <Formik
@@ -22,16 +23,24 @@ export const CategoriesForm = ({ submit, ...props }) => {
             initialValues={initialValues}
             onSubmit={submit}
         >
-            <Form className="d-block">
-                <FormikText
-                    name="name"
-                    label="Name"
-                    required
-                    fullWidth
-                    autoComplete="off"
-                />
-                <Button size="large" disableElevation variant="contained" color="primary" type="submit">Submit</Button>
-            </Form>
+            {({ dirty, isValid, setFieldValue }) => {
+                return (
+                    <Form className="d-block">
+                        <FormikText
+                            name="name"
+                            label="Name"
+                            required
+                        />
+                        <FormikFileField
+                            name="iconFile"
+                            label="Category Image"
+                            setFieldValue={setFieldValue}
+                            required
+                        />
+                        <SubmitButton text="Create" disabled={!dirty || !isValid} />
+                    </Form>
+                );
+            }}
         </Formik>
     );
 };

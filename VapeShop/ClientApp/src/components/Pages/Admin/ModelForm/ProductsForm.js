@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Formik, Form, } from 'formik'
-import { Button } from '@material-ui/core'
-import { FormikText, FormikSelect, FormikChecbox } from './ModelForm'
+import { SubmitButton, FormikText, FormikSelect, FormikChecbox, FormikFileField } from './ModelForm'
 import * as Yup from 'yup'
 
 export const ProductsForm = ({ submit, ...props }) => {
@@ -11,13 +10,13 @@ export const ProductsForm = ({ submit, ...props }) => {
         { name: 'mods', id: 1 },
         { name: 'batteries', id: 2 },
         { name: 'juices', id: 3 },
-    ]
+    ];
 
     const brands = [
         { name: 'eleaf', id: 1 },
         { name: 'smoke', id: 2 },
         { name: 'konia vapes', id: 3 },
-    ]
+    ];
 
     const discountSchema = disableDiscount
         ? null
@@ -25,11 +24,12 @@ export const ProductsForm = ({ submit, ...props }) => {
 
     const discountExpirationDateSchema = disableDiscount
         ? null
-        : Yup.date().min(new Date().toJSON().slice(0, 10)).required()
+        : Yup.date().min(new Date().toJSON().slice(0, 10)).required();
 
     const schema = Yup.object().shape({
         name: Yup.string()
             .min(3, 'Too Short!')
+            .max(32, 'Maximmum name length is 32!')
             .required('Name is required!'),
         brand: Yup.number()
             .required('Brand is required!'),
@@ -39,8 +39,7 @@ export const ProductsForm = ({ submit, ...props }) => {
             .matches(/^[1-9][0-9]*(\.{0,1}[0-9]{1,2}){0,1}$/, {
                 message: 'incorrect price format. Example: 12.99',
                 excludeEmptyString: true
-            }
-            )
+            })
             .required('Price is required!'),
         discount: discountSchema,
         discountExpirationDate: discountExpirationDateSchema
@@ -48,13 +47,13 @@ export const ProductsForm = ({ submit, ...props }) => {
 
     const initialValues = {
         name: "",
-        brand: "",
-        category: "",
+        brand: brands[0],
+        category: categories[0],
         price: "",
         toggleDiscount: true,
-        discount: "0.00",
+        discount: "0",
         discountExpirationDate: new Date().toJSON().slice(0, -5),
-    }
+    };
 
     return (
         <Formik
@@ -62,33 +61,36 @@ export const ProductsForm = ({ submit, ...props }) => {
             validationSchema={schema}
             onSubmit={submit}
         >
-            {({ dirty, isValid }) => {
+            {({ dirty, isValid, setFieldValue }) => {
                 return (
                     <Form className="d-block">
                         <FormikText
                             name="name"
                             label="Name"
                             required
-                            fullWidth
-                            autoComplete="off" />
+                        />
                         <FormikSelect
                             items={categories}
                             name="category"
-                            label="category"
+                            label="Category"
                             required
-                            fullWidth />
+                        />
                         <FormikSelect
                             items={brands}
                             name="brand"
-                            label="brand"
-                            required
-                            fullWidth />
+                            label="Brand"
+                            required />
                         <FormikText
                             name="price"
                             label="Price"
+                            required />
+                        <FormikFileField
+                            name="iconFiles"
+                            label="Product Images"
+                            setFieldValue={setFieldValue}
+                            multiple
                             required
-                            fullWidth
-                            autoComplete="off" />
+                        />
                         <div>
                             <FormikChecbox
                                 checked={!disableDiscount}
@@ -102,8 +104,6 @@ export const ProductsForm = ({ submit, ...props }) => {
                                 disabled={disableDiscount}
                                 name="discount"
                                 label="Discount %"
-                                autoComplete="off"
-                                fullWidth
                                 required={!disableDiscount}
 
                             />
@@ -112,20 +112,10 @@ export const ProductsForm = ({ submit, ...props }) => {
                                 name="discountExpirationDate"
                                 label="Discount Expiration Date"
                                 type="datetime-local"
-                                placeholder=""
                                 required={!disableDiscount}
                             />
                         </div>
-                        <Button
-                            size="large"
-                            disableElevation
-                            disabled={!dirty || !isValid}
-                            variant="contained"
-                            color="primary"
-                            type="submit"
-                        >
-                            Submit
-                        </Button>
+                        <SubmitButton text="Create" disabled={!dirty || !isValid} />
                     </Form >
                 );
             }}
