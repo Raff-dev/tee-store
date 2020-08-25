@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import { Formik, Form, } from 'formik'
 import * as Yup from 'yup'
+
 import {
     SubmitButton, FormikText, FormikSelect,
     FormikChecbox, FormikFileField, IconSchema
-} from './ModelForm'
+} from '../CustomFormFields'
+import { ProductDetail } from '../../ProductDetail/ProductDetail';
 
-export const ProductsForm = ({ submit, ...props }) => {
+const ProductsForm = ({ submit, ...props }) => {
     const [disableDiscount, setDisableDiscount] = useState(true);
 
     const categories = [
@@ -129,4 +131,4 @@ export const ProductsForm = ({ submit, ...props }) => {
     );
 };
 
-
+export default ProductsForm;

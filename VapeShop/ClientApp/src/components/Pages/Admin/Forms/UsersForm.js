@@ -5,9 +5,9 @@ import * as Yup from 'yup';
 import {
     SubmitButton, FormikText,
     FormikFileField, IconSchema
-} from './ModelForm';
+} from '../CustomFormFields';
 
-export const UsersForm = ({ submit, ...props }) => {
+const UsersForm = ({ submit, ...props }) => {
 
     const schema = Yup.object().shape({
         name: Yup.string()
@@ -72,3 +72,5 @@ export const UsersForm = ({ submit, ...props }) => {
         </Formik>
     );
 };
+
+export default UsersForm;

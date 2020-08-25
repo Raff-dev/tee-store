@@ -1,7 +1,9 @@
 import React from 'react'
 
-export const NotFound = () => {
+const NotFound = () => {
     return (
         <p>No such model form was found</p>
     );
 }
+
+export default NotFound;

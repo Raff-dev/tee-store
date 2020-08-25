@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 
+import { LinkContainer } from 'react-router-bootstrap';
+import { Button } from '@material-ui/core';
+import { Route, Switch } from 'react-router-dom';
+
 import { Resource } from '../../utilities/Resource';
 import { Sidebar } from './Sidebar'
 import { DataTable } from './DataTable';
-import { LinkContainer } from 'react-router-bootstrap';
+import UsersForm from './Forms/UsersForm'
+import CategoriesForm from './Forms/CategoriesForm'
+import ProductsForm from './Forms/ProductsForm'
+import ReviewsForm from './Forms/ReviewsForm'
+import NotFound from './Forms/NotFound'
 
-import { UsersForm } from './ModelForm/UsersForm'
-import { CategoriesForm } from './ModelForm/CategoriesForm'
-import { ProductsForm } from './ModelForm/ProductsForm'
-import { ReviewsForm } from './ModelForm/ReviewsForm'
-import { NotFound } from './ModelForm/NotFound'
-import { Button } from '@material-ui/core';
-import { Route, Switch } from 'react-router-dom';
+import ModelForm from './ModelForm';
 
 const Admin = (props) => {
   const [model, setModel] = useState(null);
@@ -51,7 +53,7 @@ const Admin = (props) => {
             </LinkContainer>
           </div>
           <Switch>
-            <Route path={`/Admin/:model/Create`} component={() => GetForm(model)} />
+            <Route path={`/Admin/:model/Create`} component={ModelForm} />
             <Route path={`/Admin/:model/Read`} exact component={({ match }) =>
               <DataTable
                 model={match.params.model}

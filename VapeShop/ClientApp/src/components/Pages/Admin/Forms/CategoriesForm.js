@@ -2,12 +2,13 @@ import React from 'react';
 import axios from 'axios';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
+
 import {
     FormikText, SubmitButton,
     FormikFileField, IconSchema
-} from './ModelForm'
+} from '../CustomFormFields'
 
-export const CategoriesForm = ({ match, history, location }) => {
+const CategoriesForm = ({ match, history, location }) => {
 
     const toFormData = (values) => {
         const formData = new FormData();
@@ -72,4 +73,4 @@ export const CategoriesForm = ({ match, history, location }) => {
     );
 };
 
-
+export default CategoriesForm;

@@ -1,9 +1,12 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import { FormikText, SubmitButton, FormikSelect } from './ModelForm'
+import {
+    FormikText, SubmitButton,
+    FormikSelect
+} from '../CustomFormFields'
 
-export const ReviewsForm = ({ submit, ...props }) => {
+const ReviewsForm = ({ submit, ...props }) => {
 
     const products = [
         { name: 'ijust1', id: 1 },
@@ -95,3 +98,4 @@ export const ReviewsForm = ({ submit, ...props }) => {
     );
 };
 
+export default ReviewsForm;
