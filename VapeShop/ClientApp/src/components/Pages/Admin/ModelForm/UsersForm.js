@@ -2,16 +2,12 @@ import React from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 
-import { SubmitButton, FormikText, FormikFileField, IconSchema } from './ModelForm';
+import {
+    SubmitButton, FormikText,
+    FormikFileField, IconSchema
+} from './ModelForm';
 
 export const UsersForm = ({ submit, ...props }) => {
-    const initialValues = {
-        name: "",
-        email: "",
-        surname: "",
-        displayName: "",
-        iconFile: null
-    }
 
     const schema = Yup.object().shape({
         name: Yup.string()
@@ -21,12 +17,21 @@ export const UsersForm = ({ submit, ...props }) => {
         email: Yup.string()
             .min(3, 'Too Short!')
             .max(30, 'Maximmum name length is 16!')
+            .email("Enter a valid E-mail address!")
             .required('Email is required!'),
         displayName: Yup.string()
             .min(3, 'Too Short!')
             .max(16, 'Maximmum name length is 16!'),
-        iconFile: IconSchema
+        mediaFile: IconSchema(false),
     });
+
+    const initialValues = {
+        name: "",
+        email: "",
+        surname: "",
+        displayName: "",
+        mediaFile: []
+    }
 
     return (
         <Formik
@@ -34,7 +39,7 @@ export const UsersForm = ({ submit, ...props }) => {
             validationSchema={schema}
             onSubmit={submit}
         >
-            {({ dirty, isValid, setFieldValue }) => {
+            {({ values, dirty, isValid, setFieldValue }) => {
                 console.log('isvalid' + isValid)
                 return (
                     <Form className="d-block">
@@ -55,9 +60,10 @@ export const UsersForm = ({ submit, ...props }) => {
                             name="displayName"
                             label="Display Name" />
                         <FormikFileField
-                            name="iconFile"
+                            name="mediaFile"
                             label="Profile Image"
                             setFieldValue={setFieldValue}
+                            icons={values.mediaFile}
                         />
                         <SubmitButton text="Create" disabled={!dirty || !isValid} />
                     </Form>

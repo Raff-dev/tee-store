@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -81,19 +82,51 @@ namespace VapeShop.Controllers
             return NoContent();
         }
 
+        public class CategoryModel
+        {
+            public string Name { get; set; }
+            public IFormFile MediaFile { get; set; }
+        }
+
         // POST: api/Categories
         [HttpPost]
-        public async Task<IActionResult> PostCategory([FromBody] Category Category)
+        public async Task<IActionResult> PostCategory([FromForm] CategoryModel categoryModel)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Categories.Add(Category);
+            var mediaFile = categoryModel.MediaFile;
+
+            if (mediaFile == null)
+            {
+                return BadRequest("No media file attached");
+            }
+
+            var filePath = Path.GetTempFileName();
+
+            using (var stream = System.IO.File.Create(filePath))
+            {
+                await mediaFile.CopyToAsync(stream);
+            }
+
+            Category category = new Category
+            {
+                Name = categoryModel.Name
+            };
+
+            Media media = new Media
+            {
+                MediaAssignmentID = category.ID,
+                MediaAssignment = category,
+            };
+
+            _context.Medias.Add(media);
+            _context.Categories.Add(category);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCategory", new { id = Category.ID }, Category);
+            return CreatedAtAction("PostCategory", new { categoryId = category.ID }, category);
         }
 
         // DELETE: api/Categories/5

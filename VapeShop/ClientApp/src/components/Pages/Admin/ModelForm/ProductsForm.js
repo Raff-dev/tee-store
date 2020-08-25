@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import { Formik, Form, } from 'formik'
-import { SubmitButton, FormikText, FormikSelect, FormikChecbox, FormikFileField } from './ModelForm'
 import * as Yup from 'yup'
+import {
+    SubmitButton, FormikText, FormikSelect,
+    FormikChecbox, FormikFileField, IconSchema
+} from './ModelForm'
 
 export const ProductsForm = ({ submit, ...props }) => {
     const [disableDiscount, setDisableDiscount] = useState(true);
@@ -42,7 +45,8 @@ export const ProductsForm = ({ submit, ...props }) => {
             })
             .required('Price is required!'),
         discount: discountSchema,
-        discountExpirationDate: discountExpirationDateSchema
+        discountExpirationDate: discountExpirationDateSchema,
+        mediaFiles: IconSchema(true),
     });
 
     const initialValues = {
@@ -53,6 +57,7 @@ export const ProductsForm = ({ submit, ...props }) => {
         toggleDiscount: true,
         discount: "0",
         discountExpirationDate: new Date().toJSON().slice(0, -5),
+        mediaFiles: []
     };
 
     return (
@@ -61,7 +66,7 @@ export const ProductsForm = ({ submit, ...props }) => {
             validationSchema={schema}
             onSubmit={submit}
         >
-            {({ dirty, isValid, setFieldValue }) => {
+            {({ values, dirty, isValid, setFieldValue }) => {
                 return (
                     <Form className="d-block">
                         <FormikText
@@ -85,9 +90,10 @@ export const ProductsForm = ({ submit, ...props }) => {
                             label="Price"
                             required />
                         <FormikFileField
-                            name="iconFiles"
+                            name="mediaFiles"
                             label="Product Images"
                             setFieldValue={setFieldValue}
+                            icons={values.mediaFiles}
                             multiple
                             required
                         />

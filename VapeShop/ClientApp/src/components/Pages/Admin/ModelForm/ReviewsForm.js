@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
-import { FormikText, SubmitButton, FormikSelect } from './ModelForm'
 import * as Yup from 'yup';
+import { FormikText, SubmitButton, FormikSelect } from './ModelForm'
 
 export const ReviewsForm = ({ submit, ...props }) => {
 

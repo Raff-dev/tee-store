@@ -1,12 +1,33 @@
 import React from 'react';
+import axios from 'axios';
 import { Formik, Form } from 'formik';
-import { FormikText, SubmitButton, FormikFileField, IconSchema } from './ModelForm'
 import * as Yup from 'yup';
+import {
+    FormikText, SubmitButton,
+    FormikFileField, IconSchema
+} from './ModelForm'
 
-export const CategoriesForm = ({ submit, ...props }) => {
-    const initialValues = {
-        name: "",
-        iconFile: null,
+export const CategoriesForm = ({ match, history, location }) => {
+
+    const toFormData = (values) => {
+        const formData = new FormData();
+
+        for (const key in values) {
+            formData.append(key, values[key]);
+        }
+
+        console.log(formData);
+        return formData;
+    }
+
+    const handleSubmit = async (values, { resetForm }) => {
+        values.mediaFile = values.mediaFile[0];
+        console.log('mediafile ' + values.mediaFile.name);
+
+        axios.post('api/Categories', toFormData(values))
+            .then(res => alert(res))
+            .catch(err => console.log(err));
+        resetForm({});
     }
 
     const schema = Yup.object().shape({
@@ -14,16 +35,21 @@ export const CategoriesForm = ({ submit, ...props }) => {
             .min(3)
             .max(16)
             .required(),
-        iconFile: IconSchema
+        mediaFile: IconSchema(true)
     });
+
+    const initialValues = {
+        name: "",
+        mediaFile: [],
+    }
 
     return (
         <Formik
             validationSchema={schema}
             initialValues={initialValues}
-            onSubmit={submit}
+            onSubmit={handleSubmit}
         >
-            {({ dirty, isValid, setFieldValue }) => {
+            {({ values, dirty, isValid, setFieldValue }) => {
                 return (
                     <Form className="d-block">
                         <FormikText
@@ -32,9 +58,10 @@ export const CategoriesForm = ({ submit, ...props }) => {
                             required
                         />
                         <FormikFileField
-                            name="iconFile"
+                            name="mediaFile"
                             label="Category Image"
                             setFieldValue={setFieldValue}
+                            icons={values.mediaFile}
                             required
                         />
                         <SubmitButton text="Create" disabled={!dirty || !isValid} />

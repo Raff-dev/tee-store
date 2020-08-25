@@ -1,49 +1,45 @@
 import React from 'react';
 import { Button, Glyphicon } from 'react-bootstrap'
 import Table from 'react-bootstrap/Table'
+import { LinkContainer } from 'react-router-bootstrap';
 
-export const DataTable = ({ columns, entries }) => {
+export const DataTable = ({ model, columns, entries }) => {
+
+    const DataTableRow = (instance, rowIndex) => {
+        return (
+            <tr key={rowIndex} >
+                <LinkContainer to={`/Admin/${model}/Edit`}>
+                    <Button variant="contained" color="primary">
+                        <Glyphicon glyph="pencil" />
+                    </Button>
+                </LinkContainer>
+                <LinkContainer to={`/Admin/${model}/Delete`}>
+                    <Button variant="danger" >
+                        <Glyphicon glyph="trash" />
+                    </Button>
+                </LinkContainer>
+                <td>{rowIndex}</td>
+                {Object.entries(instance).map(([key, value], columnIndex) => {
+                    return <td key={columnIndex}>{value}</td>
+                })}
+            </tr>
+        );
+    }
+
     return (
         <Table responsive>
             <thead>
                 <tr>
-                    <th className="action-column-name">
-                        Action
-                    </th>
+                    <th className="action-column-name">Action</th>
                     <th>Index</th>
                     {columns.map((column, index) => {
-                        return <th key={index}>
-                            {FirstToUppercase(column)}
-                        </th>
+                        return <th key={index}>{FirstToUppercase(column)}</th>
                     })}
                 </tr>
             </thead>
-            <tbody>
-                {entries.map(DataTableRow)}
-            </tbody>
+            <tbody>{entries.map(DataTableRow)}</tbody>
         </Table>
     );
-}
-
-const DataTableRow = (instance, rowIndex) => {
-    const entry = Object.entries(instance);
-
-    return (
-        <tr key={rowIndex} >
-            <Button variant="primary">
-                <Glyphicon glyph="pencil" />
-            </Button>
-            <Button variant="danger" >
-                <Glyphicon glyph="trash" />
-            </Button>
-            <td>{rowIndex}</td>
-            {
-                entry.map(([key, value], columnIndex) => {
-                    return <td key={columnIndex}>
-                        {value}
-                    </td>
-                })}
-        </tr>);
 }
 
 function FirstToUppercase(string) {

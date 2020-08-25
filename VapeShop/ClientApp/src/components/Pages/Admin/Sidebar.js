@@ -9,7 +9,7 @@ export const Sidebar = ({ models, handleOnClick }) => {
                 return (
                     <LinkContainer
                         key={index}
-                        exact to={`/Admin/${model}`}
+                        exact to={`/Admin/${model}/Read`}
                         onClick={() => handleOnClick(model)}
                     >
                         <Button variant="secondary">

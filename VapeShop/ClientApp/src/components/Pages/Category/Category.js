@@ -3,9 +3,9 @@ import { ProductCard } from './ProductCard'
 import { ItemMesh } from '../../utilities/ItemMesh'
 import ScrollableTabsButtonAuto from '../../utilities/CategoriesTab'
 
+
 export const Category = ({ match, location, history }) => {
     const { category } = match.params;
-    console.log(category);
     return (
         <div>
             <ScrollableTabsButtonAuto />

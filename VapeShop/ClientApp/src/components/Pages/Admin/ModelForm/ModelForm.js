@@ -6,6 +6,13 @@ import {
     Button, Select, FormHelperText,
     MenuItem, Checkbox, FormControlLabel,
 } from '@material-ui/core';
+import { LinkContainer } from 'react-router-bootstrap';
+
+export const Submit = async (values, { resetForm }) => {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    alert(JSON.stringify(values, null, 2));
+    resetForm({});
+}
 
 const DefaultField = ({ fullWidth = true, autoComplete = "off", ...props }) => {
     return <Field fullWidth={fullWidth} autoComplete="off" {...props} />
@@ -89,14 +96,14 @@ const IconThumbnail = ({ file, height = 200, width = 200, onClose }) => {
     );
 }
 
-const MaterialUIFileUpload = ({ name, setFieldValue, multiple }) => {
+const MaterialUIFileUpload = ({ icons, name, setFieldValue, multiple }) => {
     const [files, _setFiles] = useState([]);
 
     const handleChange = (event) => {
         const newFiles = [...event.currentTarget.files];
 
         if (newFiles.length > 0) {
-            multiple ? setFiles(files.concat(newFiles)) : setFiles(newFiles[0]);
+            multiple ? setFiles(files.concat(newFiles)) : setFiles(newFiles);
         }
     }
     const setFiles = value => {
@@ -113,8 +120,8 @@ const MaterialUIFileUpload = ({ name, setFieldValue, multiple }) => {
     return (
         <FormControl fullWidth >
             <div className="relative d-flex flex-wrap justify-content-center">
-                {files.length > 0 &&
-                    files.map((file, index) => {
+                {icons.length > 0 &&
+                    icons.map((file, index) => {
                         return (
                             <IconThumbnail
                                 key={index}
@@ -140,9 +147,10 @@ const MaterialUIFileUpload = ({ name, setFieldValue, multiple }) => {
 }
 
 export const FormikFileField = ({ label, required, ...props }) => {
+    console.log(props.values)
     return (
         <div className="pt-2 d-block">
-            <InputLabel required={required} disableAnimation={true} >{label}</InputLabel>
+            <InputLabel className="py-2" required={required} disableAnimation={true} >{label}</InputLabel>
             <DefaultField as={MaterialUIFileUpload}{...props} />
             <ErrorMessage name={props.name} />
         </div>
@@ -159,9 +167,14 @@ const SUPPORTED_FORMATS = [
     'image/png'
 ];
 
-export const IconSchema = Yup.mixed()
-    .test('fileSize', "File Size is too large!",
-        value => value != null && value.size <= MAX_FILE_SIZE)
-    .test('fileType', "Unsupported File Format!",
-        value => value != null && SUPPORTED_FORMATS.includes(value.type))
-    .required('An icon is required!');
+export const IconSchema = (required) => {
+    const schema = Yup.mixed()
+        .test('fileSize', "File Size is too large!",
+            icons => icons != null && icons.every(icon => icon.size <= MAX_FILE_SIZE))
+        .test('fileType', "Unsupported File Format!",
+            icons => icons != null && icons.every(icon => SUPPORTED_FORMATS.includes(icon.type)))
+
+    return required
+        ? schema.test('fileCount', "An icon is required!", icons => icons.length > 0)
+        : schema;
+}
