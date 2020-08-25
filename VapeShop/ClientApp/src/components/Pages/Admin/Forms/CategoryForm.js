@@ -1,56 +1,45 @@
 import React from 'react';
 import axios from 'axios';
-import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
+import { Formik, Form } from 'formik';
 
-import {
-    FormikText, SubmitButton,
-    FormikFileField, IconSchema
-} from '../CustomFormFields'
+import { IconSchema } from '../FormValidation';
+import { DataToFormData } from '../ModelForm';
+import { SubmitButton, FormikText, FormikFileField } from '../CustomFormFields';
 
-const CategoriesForm = ({ match, history, location }) => {
-
-    const toFormData = (values) => {
-        const formData = new FormData();
-
-        for (const key in values) {
-            formData.append(key, values[key]);
-        }
-
-        console.log(formData);
-        return formData;
-    }
+const CategoryFormFields = ({ history }) => {
 
     const handleSubmit = async (values, { resetForm }) => {
         values.mediaFile = values.mediaFile[0];
         console.log('mediafile ' + values.mediaFile.name);
 
-        axios.post('api/Categories', toFormData(values))
+        axios.post('api/Categories', DataToFormData(values))
             .then(res => alert(res))
             .catch(err => console.log(err));
         resetForm({});
+        history.push('/Admin/Categories/Read');
     }
 
-    const schema = Yup.object().shape({
+    const validationSchema = Yup.object().shape({
         name: Yup.string()
             .min(3)
             .max(16)
             .required(),
-        mediaFile: IconSchema(true)
+        mediaFile: IconSchema(true),
     });
 
     const initialValues = {
         name: "",
         mediaFile: [],
-    }
+    };
 
     return (
         <Formik
-            validationSchema={schema}
+            validationSchema={validationSchema}
             initialValues={initialValues}
             onSubmit={handleSubmit}
         >
-            {({ values, dirty, isValid, setFieldValue }) => {
+            {({ values, setFieldValue, dirty, isValid }) => {
                 return (
                     <Form className="d-block">
                         <FormikText
@@ -65,12 +54,11 @@ const CategoriesForm = ({ match, history, location }) => {
                             icons={values.mediaFile}
                             required
                         />
-                        <SubmitButton text="Create" disabled={!dirty || !isValid} />
+                        <SubmitButton text="Save" disabled={!dirty || !isValid} />
                     </Form>
                 );
             }}
         </Formik>
     );
-};
-
-export default CategoriesForm;
+}
+export default CategoryFormFields;

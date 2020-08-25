@@ -4,11 +4,11 @@ import * as Yup from 'yup'
 
 import {
     SubmitButton, FormikText, FormikSelect,
-    FormikChecbox, FormikFileField, IconSchema
+    FormikChecbox, FormikFileField
 } from '../CustomFormFields'
-import { ProductDetail } from '../../ProductDetail/ProductDetail';
+import { IconSchema } from '../FormValidation';
 
-const ProductsForm = ({ submit, ...props }) => {
+const ProductFormFields = ({ submit, ...props }) => {
     const [disableDiscount, setDisableDiscount] = useState(true);
 
     const categories = [
@@ -131,4 +131,4 @@ const ProductsForm = ({ submit, ...props }) => {
     );
 };
 
-export default ProductsForm;
+export default ProductFormFields;

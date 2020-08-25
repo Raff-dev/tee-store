@@ -2,12 +2,10 @@ import React from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 
-import {
-    SubmitButton, FormikText,
-    FormikFileField, IconSchema
-} from '../CustomFormFields';
+import { SubmitButton, FormikText, FormikFileField } from '../CustomFormFields';
+import { IconSchema } from '../FormValidation';
 
-const UsersForm = ({ submit, ...props }) => {
+const UserFormFields = ({ submit, ...props }) => {
 
     const schema = Yup.object().shape({
         name: Yup.string()
@@ -73,4 +71,4 @@ const UsersForm = ({ submit, ...props }) => {
     );
 };
 
-export default UsersForm;
+export default UserFormFields;

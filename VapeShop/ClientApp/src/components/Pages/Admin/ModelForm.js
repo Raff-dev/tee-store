@@ -1,29 +1,34 @@
 import React from 'react';
-import UsersForm from './Forms/UsersForm'
-import CategoriesForm from './Forms/CategoriesForm'
-import ProductsForm from './Forms/ProductsForm'
-import ReviewsForm from './Forms/ReviewsForm'
+import UserFormFields from './Forms/UserForm'
+import CategoryFormFields from './Forms/CategoryForm'
+import ProductFormFields from './Forms/ProductForm'
+import ReviewFormFields from './Forms/ReviewForm'
 import NotFound from './Forms/NotFound'
 
 const ModelForm = ({ match, history, location }) => {
-    const { category } = match.params;
+    const { model } = match.params;
 
-    const Form = ({ ...params }) => {
-        switch (category) {
-            case 'Users': return <UsersForm />;
-            case 'Categories': return <CategoriesForm />;
-            case 'Products': return <ProductsForm />;
-            case 'Reviews': return <ReviewsForm />;
-            default: return <NotFound />;
+    const FormFields = ({ ...props }) => {
+        switch (model) {
+            case 'Users': return <UserFormFields {...props} />;
+            case 'Categories': return <CategoryFormFields {...props} />;
+            case 'Products': return <ProductFormFields {...props} />;
+            case 'Reviews': return <ReviewFormFields {...props} />;
+            default: <NotFound {...props} />;
         }
+    };
+
+    return <FormFields history={history} />
+};
+
+export const DataToFormData = (values) => {
+    const formData = new FormData();
+
+    for (const key in values) {
+        formData.append(key, values[key]);
     }
 
-    return (
-        <div>modelformitis
-            <button onClick={() => history.goBack()}>bakc</button>
-
-        </div>
-    );
+    return formData;
 };
 
 export default ModelForm;
