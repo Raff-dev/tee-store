@@ -2,11 +2,19 @@ using System.Collections.Generic;
 using System.Data;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace VapeShop.Models
 {
-    public partial class User : MediaAssignment
+    public class User
     {
+        public User()
+        {
+            CreationTimestamp = DateTime.Now;
+        }
+
+        public int Id { get; set; }
+
         [StringLength(60, MinimumLength = 3)]
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
@@ -27,7 +35,7 @@ namespace VapeShop.Models
         [Display(Name = "Creation Timestamp")]
         [DataType(DataType.DateTime)]
         [Required]
-        public DateTime CreationTimestamp = DateTime.Now;
+        public DateTime CreationTimestamp { get; set; }
 
         [Display(Name = "Birthday Date")]
         [DataType(DataType.Date)]
@@ -35,6 +43,8 @@ namespace VapeShop.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime BirthDayDate { get; set; }
 
-        public virtual ICollection<Review> Reviews { get; set; }
+        public virtual List<Review> Reviews { get; set; }
+
+        public virtual List<Media> Medias { get; set; }
     }
 }

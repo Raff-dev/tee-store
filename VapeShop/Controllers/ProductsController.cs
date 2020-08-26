@@ -70,7 +70,7 @@ namespace VapeShop.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != Product.ID)
+            if (id != Product.Id)
             {
                 return BadRequest();
             }
@@ -127,8 +127,8 @@ namespace VapeShop.Controllers
                     _context.Medias.Add(
                         new Media
                         {
+                            ProductId = product.Id,
                             MediaFilePath = filePath,
-                            MediaAssignmentID = product.ID
                         }
                     );
                 }
@@ -137,7 +137,7 @@ namespace VapeShop.Controllers
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProduct", new { id = product.ID }, product);
+            return CreatedAtAction("GetProduct", new { id = product.Id }, product);
         }
 
         // DELETE: api/Products/5
@@ -163,7 +163,7 @@ namespace VapeShop.Controllers
 
         private bool ProductExists(int id)
         {
-            return _context.Products.Any(e => e.ID == id);
+            return _context.Products.Any(e => e.Id == id);
         }
     }
 }

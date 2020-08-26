@@ -55,7 +55,7 @@ namespace VapeShop.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != review.ID)
+            if (id != review.Id)
             {
                 return BadRequest();
             }
@@ -93,7 +93,7 @@ namespace VapeShop.Controllers
             _context.Reviews.Add(review);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetReview", new { id = review.ID }, review);
+            return CreatedAtAction("GetReview", new { id = review.Id }, review);
         }
 
         // DELETE: api/Reviews/5
@@ -119,7 +119,7 @@ namespace VapeShop.Controllers
 
         private bool ReviewExists(int id)
         {
-            return _context.Reviews.Any(e => e.ID == id);
+            return _context.Reviews.Any(e => e.Id == id);
         }
     }
 }

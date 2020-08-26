@@ -6,20 +6,24 @@ namespace VapeShop.Models
 {
     public class Review
     {
-        public int ID { get; set; }
+        public Review()
+        {
+            ReviewDate = DateTime.Now;
+        }
 
-        [Required]
-        [ForeignKey("Product")]
-        public int ProductID { get; set; }
+        public int Id { get; set; }
+
+        [ForeignKey("ProductId")]
         public virtual Product Product { get; set; }
+        public int ProductId { get; set; }
 
-        [Required]
-        [ForeignKey("User")]
-        public int UserID { get; set; }
+
+        [ForeignKey("UserId")]
         public virtual User User { get; set; }
+        public int UserId { get; set; }
 
         [Display(Name = "Review Date")]
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime)]
         public DateTime ReviewDate { get; set; }
 
         [Range(0, 10)]

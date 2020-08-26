@@ -6,8 +6,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace VapeShop.Models
 {
-    public partial class Product : MediaAssignment
+    public class Product
     {
+        public int Id { get; set; }
 
         [StringLength(60, MinimumLength = 3)]
         [Required]
@@ -17,23 +18,24 @@ namespace VapeShop.Models
         [Required]
         public string Brand { get; set; }
 
-        [Required]
-        [ForeignKey("Category")]
-        public int CategoryID { get; set; }
+        [ForeignKey("CategoryId")]
         public virtual Category Category { get; set; }
+        public int CategoryId { get; set; }
 
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18,2)")]
+        [Required]
         public decimal Price { get; set; }
 
         [Range(0, 100)]
-        [Required(ErrorMessage = "Discount is required")]
         public int Discount { get; set; }
 
         [Display(Name = "Discount Expiration Date")]
         [DataType(DataType.Date)]
         public DateTime DiscountExpirationDate { get; set; }
 
-        public virtual ICollection<Review> Reviews { get; set; }
+        public virtual List<Review> Reviews { get; set; }
+
+        public virtual List<Media> Medias { get; set; }
     }
 }

@@ -82,6 +82,13 @@ namespace VapeShop.Models
                     Price = 21.37M,
                     Category = category1,
                 };
+                Product product3 = new Product
+                {
+                    Name = "kękę",
+                    Brand = "wejp nejsz",
+                    Price = 21.37M,
+                    Category = category2,
+                };
 
                 Review review1 = new Review
                 {
@@ -112,19 +119,19 @@ namespace VapeShop.Models
 
                 Media media1 = new Media
                 {
-                    MediaAssignmentID = product1.ID,
+                    ProductId = product1.Id,
                     MediaFilePath = "images/img1"
                 };
 
                 Media media2 = new Media
                 {
-                    MediaAssignmentID = category1.ID,
+                    CategoryId = category1.Id,
                     MediaFilePath = "images/img1"
                 };
 
                 context.Categories.AddRange(category1, category2, category3, category4);
                 context.Users.Add(user1);
-                context.Products.AddRange(product1, product2);
+                context.Products.AddRange(product1, product2, product3);
                 context.Reviews.AddRange(review1, review2, review3);
                 context.SaveChanges();
             }
