@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Builder;
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using VapeShop.Models;
 
 namespace VapeShop
@@ -23,9 +24,11 @@ namespace VapeShop
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<VapeShopContext>(opt =>
-                opt.UseInMemoryDatabase("VapeShop"));
+                opt.UseSqlServer(Configuration.GetConnectionString("VapeShopContext")));
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddControllers().AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -35,7 +38,7 @@ namespace VapeShop
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -51,11 +54,17 @@ namespace VapeShop
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
-            app.UseMvc(routes =>
+            app.UseRouting();
+
+            app.UseCors();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
+                endpoints.MapControllers();
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
 
             app.UseSpa(spa =>
