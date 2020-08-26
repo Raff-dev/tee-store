@@ -1,23 +1,20 @@
-import { Component } from 'react';
+import { Component, useState, useEffect } from 'react';
+import axios from 'axios'
 
-export class Resource extends Component {
-    state = {
-        paylolad: [],
-        loading: true
-    };
+import React from 'react';
 
-    componentDidMount() {
-        fetch(this.props.path)
-            .then(response => response.json())
-            .then(data => {
-                this.setState({
-                    payload: data,
-                    loading: false
-                });
-            });
-    }
+export const Resource = ({ path, render, ...props }) => {
+    const [loading, setLoading] = useState(true);
+    const [payload, setPayload] = useState([]);
 
-    render() {
-        return this.props.render(this.state);
-    }
-}
+    useEffect(() => {
+        axios.get(path)
+            .then(res => {
+                setPayload(res.data)
+                setLoading(false)
+            })
+            .catch(console.log)
+    }, [path])
+
+    return render({ loading, payload, props });
+};

@@ -2,7 +2,7 @@ import React from 'react'
 import { LinkContainer } from 'react-router-bootstrap';
 import { ButtonGroup, Button } from 'react-bootstrap'
 
-export const Sidebar = ({ models, handleOnClick }) => {
+export const Sidebar = ({ models, setModel }) => {
     return (
         <ButtonGroup >
             {models.map((model, index) => {
@@ -10,7 +10,7 @@ export const Sidebar = ({ models, handleOnClick }) => {
                     <LinkContainer
                         key={index}
                         exact to={`/Admin/${model}/Read`}
-                        onClick={() => handleOnClick(model)}
+                        onClick={() => setModel(model)}
                     >
                         <Button variant="secondary">
                             {model}

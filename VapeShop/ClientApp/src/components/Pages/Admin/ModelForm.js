@@ -1,24 +1,18 @@
 import React from 'react';
-import UserFormFields from './Forms/UserForm'
-import CategoryFormFields from './Forms/CategoryForm'
-import ProductFormFields from './Forms/ProductForm'
-import ReviewFormFields from './Forms/ReviewForm'
+import UserForm from './Forms/UserForm'
+import CategoryForm from './Forms/CategoryForm'
+import ProductForm from './Forms/ProductForm'
+import ReviewForm from './Forms/ReviewForm'
 import NotFound from './Forms/NotFound'
 
-const ModelForm = ({ match, history, location }) => {
-    const { model } = match.params;
-
-    const FormFields = ({ ...props }) => {
-        switch (model) {
-            case 'Users': return <UserFormFields {...props} />;
-            case 'Categories': return <CategoryFormFields {...props} />;
-            case 'Products': return <ProductFormFields {...props} />;
-            case 'Reviews': return <ReviewFormFields {...props} />;
-            default: <NotFound {...props} />;
-        }
-    };
-
-    return <FormFields history={history} />
+const ModelForm = props => {
+    switch (props.match.params.model) {
+        case 'Users': return <UserForm {...props} />;
+        case 'Categories': return <CategoryForm {...props} />;
+        case 'Products': return <ProductForm {...props} />;
+        case 'Reviews': return <ReviewForm {...props} />;
+        default: return <NotFound {...props} />;
+    }
 };
 
 export const DataToFormData = (values) => {

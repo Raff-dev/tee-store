@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import { SubmitButton, FormikText, FormikFileField } from '../CustomFormFields';
 import { IconSchema } from '../FormValidation';
 
-const UserFormFields = ({ submit, ...props }) => {
+const UserForm = ({ submit, ...props }) => {
 
     const schema = Yup.object().shape({
         name: Yup.string()
@@ -38,7 +38,6 @@ const UserFormFields = ({ submit, ...props }) => {
             onSubmit={submit}
         >
             {({ values, dirty, isValid, setFieldValue }) => {
-                console.log('isvalid' + isValid)
                 return (
                     <Form className="d-block">
                         <FormikText
@@ -71,4 +70,4 @@ const UserFormFields = ({ submit, ...props }) => {
     );
 };
 
-export default UserFormFields;
+export default UserForm;

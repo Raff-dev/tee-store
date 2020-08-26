@@ -8,7 +8,7 @@ import {
 } from '../CustomFormFields'
 import { IconSchema } from '../FormValidation';
 
-const ProductFormFields = ({ submit, ...props }) => {
+const ProductForm = ({ submit, ...props }) => {
     const [disableDiscount, setDisableDiscount] = useState(true);
 
     const categories = [
@@ -131,4 +131,4 @@ const ProductFormFields = ({ submit, ...props }) => {
     );
 };
 
-export default ProductFormFields;
+export default ProductForm;

@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 
 import { FormikText, SubmitButton, FormikSelect } from '../CustomFormFields'
 
-const ReviewFormFields = ({ submit, ...props }) => {
+const ReviewForm = ({ submit, ...props }) => {
 
     const products = [
         { name: 'ijust1', id: 1 },
@@ -96,4 +96,4 @@ const ReviewFormFields = ({ submit, ...props }) => {
     );
 };
 
-export default ReviewFormFields;
+export default ReviewForm;
