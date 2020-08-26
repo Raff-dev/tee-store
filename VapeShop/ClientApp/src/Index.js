@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
-  BrowserRouter as Router,
+  BrowserRouter,
   Route,
   Switch
 } from 'react-router-dom';
-import registerServiceWorker from './registerServiceWorker';
 import { Grid } from 'react-bootstrap'
 
+import registerServiceWorker from './registerServiceWorker';
 import Home from './components/Pages/Home/Home';
 import Admin from './components/Pages/Admin/Admin'
 import Cart from './components/Pages/Cart/Cart'
@@ -27,7 +27,7 @@ const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
 
 ReactDOM.render(
-  <Router basename={baseUrl}>
+  <BrowserRouter basename={baseUrl} >
     <Grid>
       <NavMenu />
       <Switch>
@@ -38,6 +38,6 @@ ReactDOM.render(
         <Route path='/Admin' component={Admin} />
       </Switch>
     </Grid>
-  </Router>,
+  </BrowserRouter>,
   rootElement);
 registerServiceWorker();
