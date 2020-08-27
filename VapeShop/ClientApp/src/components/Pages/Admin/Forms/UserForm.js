@@ -1,11 +1,32 @@
 import React from 'react';
-import { Formik, Form } from 'formik';
+import axios from 'axios';
 import * as Yup from 'yup';
+import { Formik, Form } from 'formik';
 
+import { DataToFormData } from '../ModelForm';
 import { SubmitButton, FormikText, FormikFileField } from '../CustomFormFields';
-import { IconSchema } from '../FormValidation';
+import { IconSchema, Exists } from '../FormValidation';
 
-const UserForm = ({ submit, ...props }) => {
+export const initialValues = {
+    name: "",
+    email: "",
+    surname: "",
+    displayName: "",
+    medias: []
+}
+
+const UserForm = ({ instance, match, history }) => {
+
+    const handleSubmit = async (values) => {
+        values.medias = values.medias[0];
+        console.log('medias ' + values.medias.name);
+
+        const request = instance ? axios.put : axios.post;
+        request('api/Reviews', DataToFormData(values))
+            .then(res => alert(res))
+            .catch(err => console.log(err));
+        history.push('/Admin/Reviews/Read');
+    }
 
     const schema = Yup.object().shape({
         name: Yup.string()
@@ -16,26 +37,23 @@ const UserForm = ({ submit, ...props }) => {
             .min(3, 'Too Short!')
             .max(30, 'Maximmum name length is 16!')
             .email("Enter a valid E-mail address!")
+            .test('uniqueEmail', 'This E-mail is already taken!',
+                async value => {
+                    let exists = await Exists('/api/Users/UserEmailExists', { 'email': value })
+                    return !exists;
+                })
             .required('Email is required!'),
         displayName: Yup.string()
             .min(3, 'Too Short!')
             .max(16, 'Maximmum name length is 16!'),
-        mediaFile: IconSchema(false),
+        medias: IconSchema(false),
     });
-
-    const initialValues = {
-        name: "",
-        email: "",
-        surname: "",
-        displayName: "",
-        mediaFile: []
-    }
 
     return (
         <Formik
-            initialValues={initialValues}
             validationSchema={schema}
-            onSubmit={submit}
+            initialValues={instance ? instance : initialValues}
+            onSubmit={handleSubmit}
         >
             {({ values, dirty, isValid, setFieldValue }) => {
                 return (
@@ -57,10 +75,10 @@ const UserForm = ({ submit, ...props }) => {
                             name="displayName"
                             label="Display Name" />
                         <FormikFileField
-                            name="mediaFile"
+                            name="medias"
                             label="Profile Image"
                             setFieldValue={setFieldValue}
-                            icons={values.mediaFile}
+                            icons={values.medias}
                         />
                         <SubmitButton text="Create" disabled={!dirty || !isValid} />
                     </Form>

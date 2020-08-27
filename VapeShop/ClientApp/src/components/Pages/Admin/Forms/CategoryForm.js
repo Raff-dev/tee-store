@@ -1,64 +1,48 @@
-import React from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
-import { Formik, Form } from 'formik';
 
-import { IconSchema } from '../FormValidation';
-import { DataToFormData } from '../ModelForm';
-import { SubmitButton, FormikText, FormikFileField } from '../CustomFormFields';
+import { IconSchema, Exists } from '../FormValidation';
+import { FormikText, FormikFileField } from '../CustomFormFields';
 
-const CategoryFormFields = ({ history }) => {
+export const initialValues = {
+    name: "konia",
+    mediaFile: null,
+};
 
-    const handleSubmit = async (values, { resetForm }) => {
-        values.mediaFile = values.mediaFile[0];
-        console.log('mediafile ' + values.mediaFile.name);
+const CategoryForm = ({ setValidationSchema, ...props }) => {
 
-        axios.post('api/Categories', DataToFormData(values))
-            .then(res => alert(res))
-            .catch(err => console.log(err));
-        resetForm({});
-        history.push('/Admin/Categories/Read');
-    }
+    useEffect(() => setValidationSchema(validationSchema), []);
 
     const validationSchema = Yup.object().shape({
         name: Yup.string()
             .min(3)
             .max(16)
+            .test('uniqueCategoryName', "This Category name already exists!",
+                async value => {
+                    let exists = await Exists('/api/Categories/CategoryExists', { 'name': value })
+                    return !exists;
+                })
             .required(),
         mediaFile: IconSchema(true),
     });
 
-    const initialValues = {
-        name: "",
-        mediaFile: [],
-    };
+    const { values, setFieldValue } = props;
 
     return (
-        <Formik
-            validationSchema={validationSchema}
-            initialValues={initialValues}
-            onSubmit={handleSubmit}
-        >
-            {({ values, setFieldValue, dirty, isValid }) => {
-                return (
-                    <Form className="d-block">
-                        <FormikText
-                            name="name"
-                            label="Name"
-                            required
-                        />
-                        <FormikFileField
-                            name="mediaFile"
-                            label="Category Image"
-                            setFieldValue={setFieldValue}
-                            icons={values.mediaFile}
-                            required
-                        />
-                        <SubmitButton text="Save" disabled={!dirty || !isValid} />
-                    </Form>
-                );
-            }}
-        </Formik>
+        <div>
+            <FormikText
+                name="name"
+                label="Category Name"
+                required
+            />
+            <FormikFileField
+                name="mediaFile"
+                label="Category Image"
+                setFieldValue={setFieldValue}
+                icons={values ? values.mediaFile : initialValues.mediaFile}
+                required
+            />
+        </div>
     );
 }
-export default CategoryFormFields;
+export default CategoryForm;
