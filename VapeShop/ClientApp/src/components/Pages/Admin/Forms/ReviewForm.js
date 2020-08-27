@@ -1,10 +1,20 @@
 import React from 'react';
-import { Formik, Form } from 'formik';
+import axios from 'axios';
 import * as Yup from 'yup';
+import { Formik, Form } from 'formik';
 
+import { DataToFormData } from '../ModelForm';
 import { FormikText, SubmitButton, FormikSelect } from '../CustomFormFields'
 
-const ReviewForm = ({ submit, ...props }) => {
+
+export const initialValues = {
+    user: "User",
+    product: "Product",
+    rating: "Rating",
+    review: "",
+};
+
+const ReviewForm = ({ instance, match, history }) => {
 
     const products = [
         { name: 'ijust1', id: 1 },
@@ -18,51 +28,44 @@ const ReviewForm = ({ submit, ...props }) => {
         { name: 'user3@user.com', id: 3 },
     ];
 
-    const ratings = [...Array(11).keys()].map((k, i) => {
-        return { name: i, id: i }
+    const ratings = [...Array(10).keys()].map((k, i) => {
+        return { name: i + 1, id: i + 1 }
     });
 
+    const handleSubmit = async (values) => {
+        values.medias = values.medias[0];
+        console.log('medias ' + values.medias.name);
+
+        const request = instance ? axios.put : axios.post;
+        request('api/Reviews', DataToFormData(values))
+            .then(res => alert(res))
+            .catch(err => console.log(err));
+        history.push('/Admin/Reviews/Read');
+    }
+
     const schema = Yup.object().shape({
-        name: Yup.string()
-            .min(3)
-            .max(30)
-            .required(),
+
         user: Yup.number()
             .required(),
         product: Yup.number()
             .required(),
         rating: Yup.number()
-            .min(0)
-            .max(10)
             .required(),
         review: Yup.string()
-            .min(10)
-            .max(100)
-            .required(),
+            .max(300)
     });
 
-    const initialValues = {
-        name: "",
-        user: users[0].id,
-        product: products[0].id,
-        rating: ratings[0].id,
-        review: "",
-    };
+
 
     return (
         <Formik
             validationSchema={schema}
-            initialValues={initialValues}
-            onSubmit={submit}
+            initialValues={instance ? instance : initialValues}
+            onSubmit={handleSubmit}
         >
-            {({ dirty, isValid, setFieldValue }) => {
+            {({ dirty, isValid }) => {
                 return (
                     <Form className="d-block">
-                        <FormikText
-                            name="name"
-                            label="Name"
-                            required
-                        />
                         <FormikSelect
                             name="user"
                             label="User"
@@ -84,7 +87,6 @@ const ReviewForm = ({ submit, ...props }) => {
                         <FormikText
                             name="review"
                             label="Review"
-                            required
                             multiline
                             rows={3}
                         />

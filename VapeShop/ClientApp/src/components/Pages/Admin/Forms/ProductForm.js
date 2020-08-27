@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
-import { Formik, Form, } from 'formik'
-import * as Yup from 'yup'
+import React, { useState, useEffect } from 'react';
+import * as Yup from 'yup';
 
 import {
     SubmitButton, FormikText, FormikSelect,
@@ -8,37 +7,43 @@ import {
 } from '../CustomFormFields'
 import { IconSchema } from '../FormValidation';
 
-const ProductForm = ({ submit, ...props }) => {
-    const [disableDiscount, setDisableDiscount] = useState(true);
+const CATEGORIES = [
+    { name: 'mods', id: 1 },
+    { name: 'batteries', id: 2 },
+    { name: 'juices', id: 3 },
+];
 
-    const categories = [
-        { name: 'mods', id: 1 },
-        { name: 'batteries', id: 2 },
-        { name: 'juices', id: 3 },
-    ];
+const BRANDS = [
+    { name: 'eleaf', id: 'eleaf' },
+    { name: 'smoke', id: 'smoke' },
+    { name: 'konia vapes', id: 'konia vapes' },
+];
 
-    const brands = [
-        { name: 'eleaf', id: 1 },
-        { name: 'smoke', id: 2 },
-        { name: 'konia vapes', id: 3 },
-    ];
+export const initialValues = {
+    name: "konia",
+    brand: BRANDS[0].id,
+    categoryId: CATEGORIES[0].id,
+    price: 11,
+    discountDisabled: true,
+    discount: 0,
+    mediaFiles: []
+};
 
-    const discountSchema = disableDiscount
-        ? null
-        : Yup.number().min(0).max(100).required();
+const ProductForm = ({ setValidationSchema, ...props }) => {
+    const [discountDisabled, setDiscountDisabled] = useState(true);
 
-    const discountExpirationDateSchema = disableDiscount
-        ? null
-        : Yup.date().min(new Date().toJSON().slice(0, 10)).required();
+    useEffect(() => setValidationSchema(validationSchema), [discountDisabled]);
 
-    const schema = Yup.object().shape({
+    const validationSchema = Yup.object().shape({
         name: Yup.string()
             .min(3, 'Too Short!')
             .max(32, 'Maximmum name length is 32!')
             .required('Name is required!'),
-        brand: Yup.number()
+        brand: Yup.string()
+            .min(3, 'Too Short!')
+            .max(32, 'Maximmum name length is 32!')
             .required('Brand is required!'),
-        category: Yup.number()
+        categoryId: Yup.number()
             .required('Category is required!'),
         price: Yup.string()
             .matches(/^[1-9][0-9]*(\.{0,1}[0-9]{1,2}){0,1}$/, {
@@ -46,88 +51,61 @@ const ProductForm = ({ submit, ...props }) => {
                 excludeEmptyString: true
             })
             .required('Price is required!'),
-        discount: discountSchema,
-        discountExpirationDate: discountExpirationDateSchema,
+        discount: discountDisabled
+            ? null
+            : Yup.number().min(0).max(100).required(),
         mediaFiles: IconSchema(true),
     });
 
-    const initialValues = {
-        name: "",
-        brand: brands[0].id,
-        category: categories[0].id,
-        price: "",
-        toggleDiscount: true,
-        discount: "0",
-        discountExpirationDate: new Date().toJSON().slice(0, -5),
-        mediaFiles: []
-    };
+    const { values, setFieldValue } = props;
 
     return (
-        <Formik
-            initialValues={initialValues}
-            validationSchema={schema}
-            onSubmit={submit}
-        >
-            {({ values, dirty, isValid, setFieldValue }) => {
-                return (
-                    <Form className="d-block">
-                        <FormikText
-                            name="name"
-                            label="Name"
-                            required
-                        />
-                        <FormikSelect
-                            items={categories}
-                            name="category"
-                            label="Category"
-                            required
-                        />
-                        <FormikSelect
-                            items={brands}
-                            name="brand"
-                            label="Brand"
-                            required />
-                        <FormikText
-                            name="price"
-                            label="Price"
-                            required />
-                        <FormikFileField
-                            name="mediaFiles"
-                            label="Product Images"
-                            setFieldValue={setFieldValue}
-                            icons={values.mediaFiles}
-                            multiple
-                            required
-                        />
-                        <div>
-                            <FormikChecbox
-                                checked={!disableDiscount}
-                                onChange={e => setDisableDiscount(!e.target.checked)}
-                                name="toggleDiscount"
-                                label="Enable Discount"
-                                color="secondary"
-                                inputProps={{ 'aria-label': 'secondary checkbox' }}
-                            />
-                            <FormikText
-                                disabled={disableDiscount}
-                                name="discount"
-                                label="Discount %"
-                                required={!disableDiscount}
-
-                            />
-                            <FormikText
-                                disabled={disableDiscount}
-                                name="discountExpirationDate"
-                                label="Discount Expiration Date"
-                                type="datetime-local"
-                                required={!disableDiscount}
-                            />
-                        </div>
-                        <SubmitButton text="Create" disabled={!dirty || !isValid} />
-                    </Form >
-                );
-            }}
-        </Formik >
+        <div>
+            <FormikText
+                name="name"
+                label="Product Name"
+                required
+            />
+            <FormikSelect
+                items={CATEGORIES}
+                name="categoryId"
+                label="Product Category"
+                required
+            />
+            <FormikSelect
+                items={BRANDS}
+                name="brand"
+                label="Product Brand"
+                required />
+            <FormikText
+                name="price"
+                label="Product Price"
+                required />
+            <FormikFileField
+                name="mediaFiles"
+                label="Product Images"
+                setFieldValue={setFieldValue}
+                icons={values.mediaFiles}
+                multiple
+                required
+            />
+            <div>
+                <FormikChecbox
+                    checked={!discountDisabled}
+                    onChange={e => setDiscountDisabled(!e.target.checked)}
+                    name="discountDisabled"
+                    label="Enable Discount"
+                    color="secondary"
+                    inputProps={{ 'aria-label': 'secondary checkbox' }}
+                />
+                <FormikText
+                    disabled={discountDisabled}
+                    name="discount"
+                    label="Product Discount %"
+                    required={!discountDisabled}
+                />
+            </div>
+        </div>
     );
 };
 
