@@ -17,9 +17,9 @@ namespace VapeShop.Models
         public virtual Product Product { get; set; }
         public int ProductId { get; set; }
 
-        [ForeignKey("UserId")]
+        [ForeignKey("UserEmail")]
         public virtual User User { get; set; }
-        public int UserId { get; set; }
+        public int UserEmail { get; set; }
 
         [Display(Name = "Review Date")]
         [DataType(DataType.DateTime)]

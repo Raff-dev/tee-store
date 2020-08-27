@@ -62,7 +62,7 @@ namespace VapeShop.Models
                 {
                     Name = "name2",
                     Surname = "surname2",
-                    Email = "email1@email.com",
+                    Email = "email2@email.com",
                     DisplayName = "User1",
                     BirthDayDate = DateTime.Today.AddYears(-18),
                 };
@@ -125,7 +125,7 @@ namespace VapeShop.Models
 
                 Media media2 = new Media
                 {
-                    CategoryId = category1.Id,
+                    CategoryName = category1.Name,
                     MediaFilePath = "images/img1"
                 };
 

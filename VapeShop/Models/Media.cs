@@ -13,7 +13,7 @@ namespace VapeShop.Models
         [Required]
         public string MediaFilePath { get; set; }
 
-        [ForeignKey("UserId")]
+        [ForeignKey("UserUserEmail")]
         public User User { get; set; }
         public int? UserId { get; set; }
 
@@ -21,8 +21,8 @@ namespace VapeShop.Models
         public Product Product { get; set; }
         public int? ProductId { get; set; }
 
-        [ForeignKey("CategoryId")]
+        [ForeignKey("CategoryName")]
         public Category Category { get; set; }
-        public int? CategoryId { get; set; }
+        public string CategoryName { get; set; }
     }
 }

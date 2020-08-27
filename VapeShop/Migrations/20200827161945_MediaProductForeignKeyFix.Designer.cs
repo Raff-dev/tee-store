@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VapeShop.Models;
 
 namespace VapeShop.Migrations
 {
     [DbContext(typeof(VapeShopContext))]
-    partial class VapeShopContextModelSnapshot : ModelSnapshot
+    [Migration("20200827161945_MediaProductForeignKeyFix")]
+    partial class MediaProductForeignKeyFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,9 +55,6 @@ namespace VapeShop.Migrations
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserUserEmail")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryName")
@@ -66,9 +65,7 @@ namespace VapeShop.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.HasIndex("UserUserEmail")
-                        .IsUnique()
-                        .HasFilter("[UserUserEmail] IS NOT NULL");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Medias");
                 });
@@ -126,14 +123,14 @@ namespace VapeShop.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
-                    b.Property<int>("UserEmail")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
 
-                    b.HasIndex("UserEmail");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Reviews");
                 });
@@ -172,8 +169,6 @@ namespace VapeShop.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("Email");
-
                     b.ToTable("Users");
                 });
 
@@ -192,8 +187,8 @@ namespace VapeShop.Migrations
                         .HasForeignKey("ProductId");
 
                     b.HasOne("VapeShop.Models.User", "User")
-                        .WithOne("Media")
-                        .HasForeignKey("VapeShop.Models.Media", "UserUserEmail");
+                        .WithMany("Medias")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("VapeShop.Models.Product", b =>
@@ -213,7 +208,7 @@ namespace VapeShop.Migrations
 
                     b.HasOne("VapeShop.Models.User", "User")
                         .WithMany("Reviews")
-                        .HasForeignKey("UserEmail")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

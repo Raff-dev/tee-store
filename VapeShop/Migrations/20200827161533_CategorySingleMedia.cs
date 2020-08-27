@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace VapeShop.Migrations
 {
-    public partial class initial : Migration
+    public partial class CategorySingleMedia : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,13 +11,11 @@ namespace VapeShop.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 30, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.Id);
+                    table.PrimaryKey("PK_Categories", x => x.Name);
                 });
 
             migrationBuilder.CreateTable(
@@ -46,7 +44,7 @@ namespace VapeShop.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 60, nullable: false),
                     Brand = table.Column<string>(maxLength: 60, nullable: false),
-                    CategoryId = table.Column<int>(nullable: false),
+                    CategoryName = table.Column<string>(nullable: true),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Discount = table.Column<int>(nullable: false)
                 },
@@ -54,11 +52,11 @@ namespace VapeShop.Migrations
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_Categories_CategoryId",
-                        column: x => x.CategoryId,
+                        name: "FK_Products_Categories_CategoryName",
+                        column: x => x.CategoryName,
                         principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Name",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -69,24 +67,31 @@ namespace VapeShop.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MediaFilePath = table.Column<string>(nullable: false),
                     UserId = table.Column<int>(nullable: true),
-                    ProductId = table.Column<int>(nullable: true),
-                    CategoryId = table.Column<int>(nullable: true)
+                    ProductId = table.Column<int>(nullable: false),
+                    CategoryName1 = table.Column<string>(nullable: true),
+                    CategoryName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Medias", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Medias_Categories_CategoryId",
-                        column: x => x.CategoryId,
+                        name: "FK_Medias_Categories_CategoryName",
+                        column: x => x.CategoryName,
                         principalTable: "Categories",
-                        principalColumn: "Id",
+                        principalColumn: "Name",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Medias_Categories_CategoryName1",
+                        column: x => x.CategoryName1,
+                        principalTable: "Categories",
+                        principalColumn: "Name",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Medias_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Medias_Users_UserId",
                         column: x => x.UserId,
@@ -125,9 +130,16 @@ namespace VapeShop.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Medias_CategoryId",
+                name: "IX_Medias_CategoryName",
                 table: "Medias",
-                column: "CategoryId");
+                column: "CategoryName",
+                unique: true,
+                filter: "[CategoryName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Medias_CategoryName1",
+                table: "Medias",
+                column: "CategoryName1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Medias_ProductId",
@@ -140,9 +152,9 @@ namespace VapeShop.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_CategoryId",
+                name: "IX_Products_CategoryName",
                 table: "Products",
-                column: "CategoryId");
+                column: "CategoryName");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reviews_ProductId",

@@ -117,9 +117,17 @@ namespace VapeShop.Controllers
             return Ok(user);
         }
 
+        [HttpPost("[action]")]
+        public bool UserEmailExists([FromForm] string email)
+        {
+            Console.WriteLine(email);
+            return db.Users.Any(e => e.Email.ToLower() == email.ToLower());
+        }
+
         private bool UserExists(int id)
         {
             return db.Users.Any(e => e.Id == id);
         }
+
     }
 }

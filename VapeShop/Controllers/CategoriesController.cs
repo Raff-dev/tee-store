@@ -24,7 +24,7 @@ namespace VapeShop.Controllers
         public class CategoryDto
         {
             public string Name { get; set; }
-            public IFormFile Medias { get; set; }
+            public IFormFile MediaFile { get; set; }
         }
 
         // GET: api/Categories
@@ -34,7 +34,7 @@ namespace VapeShop.Controllers
             return db.Categories;
         }
 
-        // GET: api/Categories/5
+        // GET: api/Categories/name
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCategory([FromRoute] int id)
         {
@@ -53,16 +53,16 @@ namespace VapeShop.Controllers
             return Ok(Category);
         }
 
-        // PUT: api/Categories/5
+        // PUT: api/Categories/name
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategory([FromRoute] int id, [FromBody] Category Category)
+        public async Task<IActionResult> PutCategory([FromRoute] string name, [FromBody] Category Category)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != Category.Id)
+            if (name != Category.Name)
             {
                 return BadRequest();
             }
@@ -75,7 +75,7 @@ namespace VapeShop.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CategoryExists(id))
+                if (!CategoryExists(name))
                 {
                     return NotFound();
                 }
@@ -97,18 +97,19 @@ namespace VapeShop.Controllers
                 return BadRequest(ModelState);
             }
 
-            var medias = categoryDto.Medias;
+            var mediaFile = categoryDto.MediaFile;
 
-            if (medias == null)
+            if (mediaFile == null)
             {
                 return BadRequest("No Media file attached");
             }
 
-            Media media = await Utils.IFormFileToMedia(medias);
+            Media media = await Utils.IFormFileToMedia(mediaFile);
 
             Category category = new Category
             {
                 Name = categoryDto.Name,
+                Media = media,
             };
 
             media.Category = category;
@@ -117,7 +118,7 @@ namespace VapeShop.Controllers
             db.Categories.Add(category);
             await db.SaveChangesAsync();
 
-            return CreatedAtAction("PostCategory", new { CategoryId = category.Id }, category);
+            return CreatedAtAction("PostCategory", new { CategoryName = category.Name }, category);
         }
 
         // DELETE: api/Categories/5
@@ -148,9 +149,11 @@ namespace VapeShop.Controllers
             return Ok(Category);
         }
 
-        private bool CategoryExists(int id)
+        [HttpPost("[action]")]
+        public bool CategoryExists([FromForm] string name)
         {
-            return db.Categories.Any(e => e.Id == id);
+            Console.WriteLine(name);
+            return db.Categories.Any(e => e.Name == name);
         }
     }
 }

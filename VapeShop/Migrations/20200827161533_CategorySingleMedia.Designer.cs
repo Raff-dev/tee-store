@@ -10,8 +10,8 @@ using VapeShop.Models;
 namespace VapeShop.Migrations
 {
     [DbContext(typeof(VapeShopContext))]
-    [Migration("20200827094149_initial")]
-    partial class initial
+    [Migration("20200827161533_CategorySingleMedia")]
+    partial class CategorySingleMedia
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,17 +23,11 @@ namespace VapeShop.Migrations
 
             modelBuilder.Entity("VapeShop.Models.Category", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(30)")
                         .HasMaxLength(30);
 
-                    b.HasKey("Id");
+                    b.HasKey("Name");
 
                     b.ToTable("Categories");
                 });
@@ -45,14 +39,17 @@ namespace VapeShop.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("CategoryName1")
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("MediaFilePath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int?>("UserId")
@@ -60,7 +57,11 @@ namespace VapeShop.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategoryName")
+                        .IsUnique()
+                        .HasFilter("[CategoryName] IS NOT NULL");
+
+                    b.HasIndex("CategoryName1");
 
                     b.HasIndex("ProductId");
 
@@ -81,8 +82,8 @@ namespace VapeShop.Migrations
                         .HasColumnType("nvarchar(60)")
                         .HasMaxLength(60);
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<int>("Discount")
                         .HasColumnType("int");
@@ -97,7 +98,7 @@ namespace VapeShop.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategoryName");
 
                     b.ToTable("Products");
                 });
@@ -173,13 +174,19 @@ namespace VapeShop.Migrations
 
             modelBuilder.Entity("VapeShop.Models.Media", b =>
                 {
+                    b.HasOne("VapeShop.Models.Category", null)
+                        .WithOne("Media")
+                        .HasForeignKey("VapeShop.Models.Media", "CategoryName");
+
                     b.HasOne("VapeShop.Models.Category", "Category")
-                        .WithMany("Medias")
-                        .HasForeignKey("CategoryId");
+                        .WithMany()
+                        .HasForeignKey("CategoryName1");
 
                     b.HasOne("VapeShop.Models.Product", "Product")
                         .WithMany("Medias")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("VapeShop.Models.User", "User")
                         .WithMany("Medias")
@@ -190,9 +197,7 @@ namespace VapeShop.Migrations
                 {
                     b.HasOne("VapeShop.Models.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryName");
                 });
 
             modelBuilder.Entity("VapeShop.Models.Review", b =>

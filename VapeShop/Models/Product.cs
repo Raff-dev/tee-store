@@ -18,9 +18,9 @@ namespace VapeShop.Models
         [Required]
         public string Brand { get; set; }
 
-        [ForeignKey("CategoryId")]
+        [ForeignKey("CategoryName")]
         public virtual Category Category { get; set; }
-        public int CategoryId { get; set; }
+        public string CategoryName { get; set; }
 
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18,2)")]

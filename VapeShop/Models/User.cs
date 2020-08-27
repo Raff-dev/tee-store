@@ -12,7 +12,6 @@ namespace VapeShop.Models
         {
             CreationTimestamp = DateTime.Now;
         }
-
         public int Id { get; set; }
 
         [StringLength(60, MinimumLength = 3)]
@@ -45,6 +44,6 @@ namespace VapeShop.Models
 
         public virtual List<Review> Reviews { get; set; }
 
-        public virtual List<Media> Medias { get; set; }
+        public virtual Media Media { get; set; }
     }
 }
