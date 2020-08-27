@@ -30,10 +30,6 @@ namespace VapeShop.Models
         [Range(0, 100)]
         public int Discount { get; set; }
 
-        [Display(Name = "Discount Expiration Date")]
-        [DataType(DataType.Date)]
-        public DateTime DiscountExpirationDate { get; set; }
-
         public virtual List<Review> Reviews { get; set; }
 
         public virtual List<Media> Medias { get; set; }

@@ -16,5 +16,5 @@ export const Resource = ({ path, render, ...props }) => {
             .catch(console.log)
     }, [path])
 
-    return render({ loading, payload, props });
+    return render({ loading, payload, ...props });
 };

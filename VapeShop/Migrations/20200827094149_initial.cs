@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace VapeShop.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -48,8 +48,7 @@ namespace VapeShop.Migrations
                     Brand = table.Column<string>(maxLength: 60, nullable: false),
                     CategoryId = table.Column<int>(nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Discount = table.Column<int>(nullable: false),
-                    DiscountExpirationDate = table.Column<DateTime>(nullable: false)
+                    Discount = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

@@ -10,8 +10,8 @@ using VapeShop.Models;
 namespace VapeShop.Migrations
 {
     [DbContext(typeof(VapeShopContext))]
-    [Migration("20200826093245_Initial")]
-    partial class Initial
+    [Migration("20200827094149_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -86,9 +86,6 @@ namespace VapeShop.Migrations
 
                     b.Property<int>("Discount")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("DiscountExpirationDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()

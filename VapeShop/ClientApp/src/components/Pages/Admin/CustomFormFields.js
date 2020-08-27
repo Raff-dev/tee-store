@@ -75,8 +75,6 @@ export const FormikSelect = ({ items, ...props }) => {
 }
 
 const IconThumbnail = ({ icon, height = 200, width = 200, onClose }) => {
-
-    console.log('ICOOOON ' + icon);
     return (
         <article className="p-2">
             <img
@@ -97,25 +95,19 @@ const IconThumbnail = ({ icon, height = 200, width = 200, onClose }) => {
 }
 
 const MaterialUIFileUpload = ({ icons, name, setFieldValue, multiple }) => {
-    const [files, _setFiles] = useState(multiple ? [] : null);
+    const setFiles = value => setFieldValue(name, value);
 
     const handleChange = (event) => {
         const newFiles = [...event.currentTarget.files];
 
         if (newFiles.length > 0) {
-            multiple ? setFiles(files.concat(newFiles)) : setFiles(newFiles[0]);
+            multiple ? setFiles(icons.concat(newFiles)) : setFiles(newFiles[0]);
         }
     }
 
-    const setFiles = value => {
-        console.log(value)
-        setFieldValue(name, value);
-        _setFiles(value);
-    };
-
     const handleClose = index => {
         if (multiple) {
-            var newFiles = files;
+            var newFiles = icons;
             newFiles.splice(index, 1);
             setFiles(newFiles);
         } else {

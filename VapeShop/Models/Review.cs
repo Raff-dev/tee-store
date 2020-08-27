@@ -17,7 +17,6 @@ namespace VapeShop.Models
         public virtual Product Product { get; set; }
         public int ProductId { get; set; }
 
-
         [ForeignKey("UserId")]
         public virtual User User { get; set; }
         public int UserId { get; set; }
@@ -26,7 +25,7 @@ namespace VapeShop.Models
         [DataType(DataType.DateTime)]
         public DateTime ReviewDate { get; set; }
 
-        [Range(0, 10)]
+        [Range(1, 10)]
         [Required]
         public int Rating { get; set; }
 

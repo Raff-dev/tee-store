@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { Formik, Form } from 'formik';
 import { SubmitButton } from './CustomFormFields';
@@ -26,10 +26,18 @@ const INITIAL_VALUES = {
 export const DataToFormData = (values) => {
     const formData = new FormData();
 
-    for (const key in values) {
-        formData.append(key, values[key]);
+    for (let key in values) {
+        if (Array.isArray(values[key])) {
+            for (let elem of values[key]) {
+                formData.append(key, elem);
+            }
+        } else {
+            formData.append(key, values[key]);
+        }
     }
-
+    for (let [key, value] of formData.entries()) {
+        console.log(key + ' ' + value);
+    }
     return formData;
 };
 
@@ -41,6 +49,7 @@ const ModelForm = ({ instance, match, history }) => {
     const initialValues = INITIAL_VALUES[model];
 
     const handleSubmit = async (values) => {
+        console.log(values);
         let url = `api/${model}`;
         let data = DataToFormData(values);
         let request = instance ? axios.put : axios.post;
@@ -66,7 +75,7 @@ const ModelForm = ({ instance, match, history }) => {
                                 {...props} />
                             : <NotFound />
                         }
-                        <SubmitButton text="Save" disabled={!dirty || !isValid} />
+                        <SubmitButton text={instance ? 'Save' : 'Create'} disabled={!dirty || !isValid} />
                     </Form>
                 );
             }}

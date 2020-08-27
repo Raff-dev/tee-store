@@ -13,18 +13,18 @@ namespace VapeShop.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly VapeShopContext _context;
+        private readonly VapeShopContext db;
 
         public UsersController(VapeShopContext context)
         {
-            _context = context;
+            db = context;
         }
 
         // GET: api/Users
         [HttpGet]
         public IEnumerable<User> GetUser()
         {
-            return _context.Users;
+            return db.Users;
         }
 
         // GET: api/Users/5
@@ -36,7 +36,7 @@ namespace VapeShop.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = await _context.Users.FindAsync(id);
+            var user = await db.Users.FindAsync(id);
 
             if (user == null)
             {
@@ -60,11 +60,11 @@ namespace VapeShop.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            db.Entry(user).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -90,8 +90,8 @@ namespace VapeShop.Controllers
                 return BadRequest(ModelState);
             }
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            db.Users.Add(user);
+            await db.SaveChangesAsync();
 
             return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
@@ -105,21 +105,21 @@ namespace VapeShop.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = await _context.Users.FindAsync(id);
+            var user = await db.Users.FindAsync(id);
             if (user == null)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
+            db.Users.Remove(user);
+            await db.SaveChangesAsync();
 
             return Ok(user);
         }
 
         private bool UserExists(int id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return db.Users.Any(e => e.Id == id);
         }
     }
 }

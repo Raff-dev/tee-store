@@ -10,11 +10,11 @@ namespace VapeShop.Controllers
     [ApiController]
     public class AdminController : ControllerBase
     {
-        private readonly VapeShopContext _context;
+        private readonly VapeShopContext db;
 
         public AdminController(VapeShopContext context)
         {
-            _context = context;
+            db = context;
         }
 
 
@@ -24,7 +24,7 @@ namespace VapeShop.Controllers
         {
             string[] excluded = new string[] { "Database", "ChangeTracker", "Model" };
 
-            IEnumerable<string> models = from prop in _context.GetType().GetProperties()
+            IEnumerable<string> models = from prop in db.GetType().GetProperties()
                                          where !excluded.Contains(prop.Name)
                                          select prop.Name;
             return models;

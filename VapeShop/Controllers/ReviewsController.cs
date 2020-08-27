@@ -13,18 +13,18 @@ namespace VapeShop.Controllers
     [ApiController]
     public class ReviewsController : ControllerBase
     {
-        private readonly VapeShopContext _context;
+        private readonly VapeShopContext db;
 
         public ReviewsController(VapeShopContext context)
         {
-            _context = context;
+            db = context;
         }
 
         // GET: api/Reviews
         [HttpGet]
         public IEnumerable<Review> GetReview()
         {
-            return _context.Reviews;
+            return db.Reviews;
         }
 
         // GET: api/Reviews/5
@@ -36,7 +36,7 @@ namespace VapeShop.Controllers
                 return BadRequest(ModelState);
             }
 
-            var review = await _context.Reviews.FindAsync(id);
+            var review = await db.Reviews.FindAsync(id);
 
             if (review == null)
             {
@@ -60,11 +60,11 @@ namespace VapeShop.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(review).State = EntityState.Modified;
+            db.Entry(review).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -90,8 +90,8 @@ namespace VapeShop.Controllers
                 return BadRequest(ModelState);
             }
 
-            _context.Reviews.Add(review);
-            await _context.SaveChangesAsync();
+            db.Reviews.Add(review);
+            await db.SaveChangesAsync();
 
             return CreatedAtAction("GetReview", new { id = review.Id }, review);
         }
@@ -105,21 +105,21 @@ namespace VapeShop.Controllers
                 return BadRequest(ModelState);
             }
 
-            var review = await _context.Reviews.FindAsync(id);
+            var review = await db.Reviews.FindAsync(id);
             if (review == null)
             {
                 return NotFound();
             }
 
-            _context.Reviews.Remove(review);
-            await _context.SaveChangesAsync();
+            db.Reviews.Remove(review);
+            await db.SaveChangesAsync();
 
             return Ok(review);
         }
 
         private bool ReviewExists(int id)
         {
-            return _context.Reviews.Any(e => e.Id == id);
+            return db.Reviews.Any(e => e.Id == id);
         }
     }
 }
