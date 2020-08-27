@@ -1,19 +1,27 @@
-import React from 'react';
-import UserForm from './Forms/UserForm'
-import CategoryForm from './Forms/CategoryForm'
-import ProductForm from './Forms/ProductForm'
-import ReviewForm from './Forms/ReviewForm'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { Formik, Form } from 'formik';
+import { SubmitButton } from './CustomFormFields';
+
+import UserForm, { initialValues as UserInitialValues } from './Forms/UserForm'
+import CategoryForm, { initialValues as CategoryInitialValues } from './Forms/CategoryForm'
+import ProductForm, { initialValues as ProductInitialValues } from './Forms/ProductForm'
+import ReviewForm, { initialValues as ReviewInitialValues } from './Forms/ReviewForm'
 import NotFound from './Forms/NotFound'
 
-const ModelForm = props => {
-    switch (props.match.params.model) {
-        case 'Users': return <UserForm {...props} />;
-        case 'Categories': return <CategoryForm {...props} />;
-        case 'Products': return <ProductForm {...props} />;
-        case 'Reviews': return <ReviewForm {...props} />;
-        default: return <NotFound {...props} />;
-    }
-};
+const FORM_FIELDS = {
+    'Users': UserForm,
+    'Categories': CategoryForm,
+    'Products': ProductForm,
+    'Reviews': ReviewForm
+}
+
+const INITIAL_VALUES = {
+    'Users': UserInitialValues,
+    'Categories': CategoryInitialValues,
+    'Products': ProductInitialValues,
+    'Reviews': ReviewInitialValues
+}
 
 export const DataToFormData = (values) => {
     const formData = new FormData();
@@ -24,5 +32,46 @@ export const DataToFormData = (values) => {
 
     return formData;
 };
+
+const ModelForm = ({ instance, match, history }) => {
+    const [validationSchema, setValidationSchema] = useState(null)
+
+    const { model } = match.params;
+    const FormFields = FORM_FIELDS[model];
+    const initialValues = INITIAL_VALUES[model];
+
+    const handleSubmit = async (values) => {
+        let url = `api/${model}`;
+        let data = DataToFormData(values);
+        let request = instance ? axios.put : axios.post;
+
+        request(url, data).then(console.log).catch(console.log);
+
+        history.push(`/Admin/${model}/Read`);
+    }
+
+    return (
+        <Formik
+            validationSchema={validationSchema}
+            initialValues={instance || initialValues}
+            onSubmit={handleSubmit}
+        >
+            {({ dirty, isValid, ...props }) => {
+                return (
+                    <Form className="d-block">
+                        {FormFields
+                            ? <FormFields
+                                setValidationSchema={setValidationSchema}
+                                handleSubmit={handleSubmit}
+                                {...props} />
+                            : <NotFound />
+                        }
+                        <SubmitButton text="Save" disabled={!dirty || !isValid} />
+                    </Form>
+                );
+            }}
+        </Formik>
+    );
+}
 
 export default ModelForm;
