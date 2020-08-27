@@ -3,7 +3,7 @@ import { Field, ErrorMessage } from 'formik'
 import {
     TextField, FormControl, InputLabel,
     Button, Select, FormHelperText,
-    MenuItem, Checkbox, FormControlLabel,
+    MenuItem, Checkbox, FormControlLabel, Icon,
 } from '@material-ui/core';
 
 export const Submit = async (values, { resetForm }) => {
@@ -74,13 +74,15 @@ export const FormikSelect = ({ items, ...props }) => {
     );
 }
 
-const IconThumbnail = ({ file, height = 200, width = 200, onClose }) => {
+const IconThumbnail = ({ icon, height = 200, width = 200, onClose }) => {
+
+    console.log('ICOOOON ' + icon);
     return (
         <article className="p-2">
             <img
-                src={URL.createObjectURL(file)}
-                alt={file.name}
-                className="img-thumbnail mt-2"
+                src={URL.createObjectURL(icon)}
+                alt={icon.name}
+                className="img-thumbnail m-2"
                 height={height}
                 width={width} />
             <div className="d-flex justify-content-center">
@@ -95,40 +97,43 @@ const IconThumbnail = ({ file, height = 200, width = 200, onClose }) => {
 }
 
 const MaterialUIFileUpload = ({ icons, name, setFieldValue, multiple }) => {
-    const [files, _setFiles] = useState([]);
+    const [files, _setFiles] = useState(multiple ? [] : null);
 
     const handleChange = (event) => {
         const newFiles = [...event.currentTarget.files];
 
         if (newFiles.length > 0) {
-            multiple ? setFiles(files.concat(newFiles)) : setFiles(newFiles);
+            multiple ? setFiles(files.concat(newFiles)) : setFiles(newFiles[0]);
         }
     }
+
     const setFiles = value => {
+        console.log(value)
         setFieldValue(name, value);
         _setFiles(value);
     };
 
     const handleClose = index => {
-        var newFiles = files;
-        newFiles.splice(index, 1);
-        setFiles(newFiles);
+        if (multiple) {
+            var newFiles = files;
+            newFiles.splice(index, 1);
+            setFiles(newFiles);
+        } else {
+            setFiles(null);
+        }
     };
 
     return (
-        <FormControl fullWidth >
+        <FormControl fullWidth>
             <div className="relative d-flex flex-wrap justify-content-center">
-                {icons.length > 0 &&
-                    icons.map((file, index) => {
-                        return (
-                            <IconThumbnail
-                                key={index}
-                                file={file}
-                                onClose={() => handleClose(index)}
-                            />
-                        );
-                    })
-                }
+                {icons && Array.isArray(icons) &&
+                    icons.map((icon, index) =>
+                        <IconThumbnail
+                            icon={icon}
+                            key={index}
+                            onClose={() => handleClose(index)} />)}
+                {icons && !Array.isArray(icons) &&
+                    <IconThumbnail icon={icons} onClose={() => handleClose()} />}
             </div>
             <Button
                 size="large"
@@ -137,7 +142,7 @@ const MaterialUIFileUpload = ({ icons, name, setFieldValue, multiple }) => {
                 color="secondary"
                 onClick={() => document.getElementById(name).click()}
             >
-                Upload File
+                Upload {multiple ? 'Files' : 'File'}
                 <input multiple={multiple} id={name} className="d-none" type="file" onChange={handleChange} />
             </Button>
         </FormControl>
@@ -145,7 +150,6 @@ const MaterialUIFileUpload = ({ icons, name, setFieldValue, multiple }) => {
 }
 
 export const FormikFileField = ({ label, required, ...props }) => {
-    console.log(props.values)
     return (
         <div className="pt-2 d-block">
             <InputLabel className="py-2" required={required} disableAnimation={true} >{label}</InputLabel>
