@@ -13,27 +13,23 @@ export const NavMenu = (props) => {
                 </Navbar.Brand>
                 <Navbar.Toggle />
             </Navbar.Header>
-            <Navbar.Collapse>
-                <Nav>
-                    <LinkContainer to={'/'} exact>
-                        <NavItem>
-                            <Glyphicon glyph='home' /> Home
-                            </NavItem>
-                    </LinkContainer>
+            <LinkContainer to={'/'} exact>
+                <NavItem>
+                    <Glyphicon glyph='home' /> Home
+                    </NavItem>
+            </LinkContainer>
 
-                    <LinkContainer to={'/Admin'} exact>
-                        <NavItem>
-                            <Glyphicon glyph='home' /> Admin
-                            </NavItem>
-                    </LinkContainer>
+            <LinkContainer to={'/Admin'} exact>
+                <NavItem>
+                    <Glyphicon glyph='home' /> Admin
+                    </NavItem>
+            </LinkContainer>
 
-                    <LinkContainer to={'/Cart'} exact>
-                        <NavItem>
-                            <Glyphicon glyph='shopping-cart' /> Cart
-                        </NavItem>
-                    </LinkContainer>
-                </Nav>
-            </Navbar.Collapse>
+            <LinkContainer to={'/Cart'} exact>
+                <NavItem>
+                    <Glyphicon glyph='shopping-cart' /> Cart
+                    </NavItem>
+            </LinkContainer>
         </Navbar>
     );
 }

@@ -1,11 +1,7 @@
-import React from 'react';
-import axios from 'axios';
+import React, { useEffect } from 'react';
 import * as Yup from 'yup';
-import { Formik, Form } from 'formik';
 
-import { DataToFormData } from '../ModelForm';
-import { FormikText, SubmitButton, FormikSelect } from '../CustomFormFields'
-
+import { FormikText, FormikSelect } from '../../../utilities/CustomFormFields'
 
 export const initialValues = {
     user: "User",
@@ -14,7 +10,10 @@ export const initialValues = {
     review: "",
 };
 
-const ReviewForm = ({ instance, match, history }) => {
+const ReviewForm = ({ setValidationSchema, ...props }) => {
+    const { values, setFieldValue } = props;
+
+    useEffect(() => setValidationSchema(validationSchema), []);
 
     const products = [
         { name: 'ijust1', id: 1 },
@@ -32,18 +31,7 @@ const ReviewForm = ({ instance, match, history }) => {
         return { name: i + 1, id: i + 1 }
     });
 
-    const handleSubmit = async (values) => {
-        values.medias = values.medias[0];
-        console.log('medias ' + values.medias.name);
-
-        const request = instance ? axios.put : axios.post;
-        request('api/Reviews', DataToFormData(values))
-            .then(res => alert(res))
-            .catch(err => console.log(err));
-        history.push('/Admin/Reviews/Read');
-    }
-
-    const schema = Yup.object().shape({
+    const validationSchema = Yup.object().shape({
 
         user: Yup.number()
             .required(),
@@ -55,47 +43,33 @@ const ReviewForm = ({ instance, match, history }) => {
             .max(300)
     });
 
-
-
     return (
-        <Formik
-            validationSchema={schema}
-            initialValues={instance ? instance : initialValues}
-            onSubmit={handleSubmit}
-        >
-            {({ dirty, isValid }) => {
-                return (
-                    <Form className="d-block">
-                        <FormikSelect
-                            name="user"
-                            label="User"
-                            items={users}
-                            required
-                        />
-                        <FormikSelect
-                            name="product"
-                            label="Product"
-                            items={products}
-                            required
-                        />
-                        <FormikSelect
-                            name="rating"
-                            label="Rating"
-                            items={ratings}
-                            required
-                        />
-                        <FormikText
-                            name="review"
-                            label="Review"
-                            multiline
-                            rows={3}
-                        />
-                        <SubmitButton text="Create" disabled={!dirty || !isValid} />
-                    </Form>
-                );
-            }}
-        </Formik>
+        <div>
+            <FormikSelect
+                name="user"
+                label="User"
+                items={users}
+                required
+            />
+            <FormikSelect
+                name="product"
+                label="Product"
+                items={products}
+                required
+            />
+            <FormikSelect
+                name="rating"
+                label="Rating"
+                items={ratings}
+                required
+            />
+            <FormikText
+                name="review"
+                label="Review"
+                multiline
+                rows={6}
+            />
+        </div>
     );
 };
-
 export default ReviewForm;
