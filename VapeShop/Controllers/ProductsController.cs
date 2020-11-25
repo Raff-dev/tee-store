@@ -28,7 +28,7 @@ namespace VapeShop.Controllers
             public bool DiscountDisabled { get; set; }
         }
 
-        private Product ProductDtoToProduct(ProductDto productDto)
+        private Product ProductDtoToProduct(ProductDto productDto, List<Media> medias = null)
         {
             Product product = new Product
             {
@@ -39,6 +39,7 @@ namespace VapeShop.Controllers
                 Discount = productDto.DiscountDisabled
                             ? productDto.Discount
                             : 0,
+                Medias = medias
             };
             return product;
         }
@@ -101,14 +102,13 @@ namespace VapeShop.Controllers
                 return BadRequest("No Media file attached");
             }
 
-            Product product = ProductDtoToProduct(productDto);
             List<Media> medias = new List<Media>();
 
             foreach (IFormFile mediaFile in mediaFiles)
             {
                 medias.Add(await Utils.IFormFileToMedia(mediaFile));
             }
-            product.Medias = medias;
+            Product product = ProductDtoToProduct(productDto, medias);
 
             db.Entry(product).State = EntityState.Modified;
 
@@ -141,20 +141,18 @@ namespace VapeShop.Controllers
             }
 
             List<IFormFile> mediaFiles = productDto.MediaFiles;
-
             if (mediaFiles == null || mediaFiles.Count() == 0)
             {
                 return BadRequest("No Media file attached");
             }
 
-            Product product = ProductDtoToProduct(productDto);
             List<Media> medias = new List<Media>();
-
             foreach (IFormFile mediaFile in mediaFiles)
             {
                 medias.Add(await Utils.IFormFileToMedia(mediaFile));
             }
-            product.Medias = medias;
+
+            Product product = ProductDtoToProduct(productDto, medias);
             db.Products.Add(product);
 
             await db.SaveChangesAsync();
@@ -176,7 +174,11 @@ namespace VapeShop.Controllers
             {
                 return NotFound();
             }
+            var productMedias = db.Medias.Where(m => m.ProductId == id);
+            var productReviews = db.Reviews.Where(r => r.ProductId == id);
 
+            db.Medias.RemoveRange(productMedias);
+            db.Reviews.RemoveRange(productReviews);
             db.Products.Remove(Product);
             await db.SaveChangesAsync();
 

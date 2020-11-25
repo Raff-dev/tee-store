@@ -14,6 +14,7 @@ import Cart from './components/Pages/Cart/Cart'
 import { NavMenu } from './components/NavMenu/NavMenu'
 import { Category } from './components/Pages/Category/Category'
 import { ProductDetail } from './components/Pages/ProductDetail/ProductDetail'
+import { ToastProvider } from 'react-toast-notifications'
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
@@ -28,16 +29,18 @@ const rootElement = document.getElementById('root');
 
 ReactDOM.render(
   <BrowserRouter basename={baseUrl} >
-    <Grid>
-      <NavMenu />
-      <Switch>
-        <Route exact path='/' component={Home} />
-        <Route path='/Category/:category' component={Category} />
-        <Route path='/Product/:product' component={ProductDetail} />
-        <Route path='/Cart' component={Cart} />
-        <Route path='/Admin' component={Admin} />
-      </Switch>
-    </Grid>
+    <ToastProvider>
+      <Grid>
+        <NavMenu />
+        <Switch>
+          <Route exact path='/' component={Home} />
+          <Route path='/Category/:category' component={Category} />
+          <Route path='/Product/:product' component={ProductDetail} />
+          <Route path='/Cart' component={Cart} />
+          <Route path='/Admin' component={Admin} />
+        </Switch>
+      </Grid>
+    </ToastProvider>
   </BrowserRouter>,
   rootElement);
 registerServiceWorker();

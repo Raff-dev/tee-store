@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Diagnostics;
+using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,19 +32,19 @@ namespace VapeShop.Controllers
         [HttpGet]
         public IEnumerable<Category> GetCategory()
         {
-            return db.Categories;
+            return db.Categories.Include(c => c.Products);
         }
 
         // GET: api/Categories/name
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCategory([FromRoute] int id)
+        public async Task<IActionResult> GetCategory([FromRoute] int name)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var Category = await db.Categories.FindAsync(id);
+            var Category = await db.Categories.FindAsync(name);
 
             if (Category == null)
             {
@@ -121,16 +122,16 @@ namespace VapeShop.Controllers
             return CreatedAtAction("PostCategory", new { CategoryName = category.Name }, category);
         }
 
-        // DELETE: api/Categories/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory([FromRoute] int id)
+        // DELETE: api/Categories/Name
+        [HttpDelete("{name}")]
+        public async Task<IActionResult> DeleteCategory([FromRoute] string name)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var Category = await db.Categories.FindAsync(id);
+            var Category = await db.Categories.FindAsync(name);
             var CategoryMedias = db.Medias.Where(m => m.Category == Category);
             var CategoryProducts = db.Products.Where(p => p.Category == Category);
             var CategoryProductsMedias = CategoryProducts.SelectMany(p => p.Medias);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Runtime.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,9 +21,40 @@ namespace VapeShop.Controllers
             db = context;
         }
 
+        public partial class UserDto : User
+        {
+            public IFormFile MediaFile { get; set; }
+            public List<int> ReviewsIds { get; set; }
+        }
+
+        private async Task<User> UserDtoToUser(UserDto userDto)
+        {
+            List<Review> reviews = new List<Review>();
+            foreach (int id in userDto.ReviewsIds)
+            {
+                var review = await db.Reviews.FindAsync(id);
+                reviews.Add(review);
+            }
+            Media media = await Utils.IFormFileToMedia(userDto.MediaFile);
+
+            User user = new User
+            {
+                Name = userDto.Name,
+                Surname = userDto.Surname,
+                Email = userDto.Email,
+                DisplayName = userDto.DisplayName,
+                CreationTimestamp = userDto.CreationTimestamp,
+                BirthDayDate = userDto.BirthDayDate,
+                Reviews = reviews,
+                Media = media,
+            };
+
+            return user;
+        }
+
         // GET: api/Users
         [HttpGet]
-        public IEnumerable<User> GetUser()
+        public IEnumerable<User> GetUsers()
         {
             return db.Users;
         }
@@ -48,17 +80,18 @@ namespace VapeShop.Controllers
 
         // PUT: api/Users/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser([FromRoute] int id, [FromBody] User user)
+        public async Task<IActionResult> PutUser([FromRoute] int id, [FromForm] UserDto userDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != user.Id)
+            if (id != userDto.Id)
             {
                 return BadRequest();
             }
+            User user = await UserDtoToUser(userDto);
 
             db.Entry(user).State = EntityState.Modified;
 
@@ -83,12 +116,13 @@ namespace VapeShop.Controllers
 
         // POST: api/Users
         [HttpPost]
-        public async Task<IActionResult> PostUser([FromBody] User user)
+        public async Task<IActionResult> PostUser([FromForm] UserDto userDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            User user = await UserDtoToUser(userDto);
 
             db.Users.Add(user);
             await db.SaveChangesAsync();
