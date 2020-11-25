@@ -23,12 +23,13 @@ namespace VapeShop.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Media>()
-                    .HasOne<Category>()
-                    .WithOne(c => c.Media)
-                    .HasForeignKey<Media>(m => m.CategoryName)
-                    .IsRequired(false);
+                .HasOne<Category>()
+                .WithOne(c => c.Media)
+                .HasForeignKey<Media>(m => m.CategoryName)
+                .IsRequired(false);
 
-            modelBuilder.Entity<User>().HasAlternateKey(u => u.Email);
+            modelBuilder.Entity<User>()
+                .HasAlternateKey(u => u.Email);
         }
     }
 }
