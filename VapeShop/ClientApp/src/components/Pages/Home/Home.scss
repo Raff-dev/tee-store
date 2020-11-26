@@ -1,0 +1,55 @@
+@import "../../../index.scss";
+
+.carousel{
+    overflow: hidden;
+
+    .item{
+        overflow: hidden;
+        justify-content: center;
+        align-items: center;
+        height: 300px;
+
+        img{
+            object-fit: contain;
+        }
+    }
+}
+
+.category-mesh{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+
+    .card{
+        
+        padding: 5px;
+        margin: 15px;
+        width: 30%;
+        min-width: 200px;
+        transition: 0.15s ease-out;
+    
+        background-color: var(--white-color);
+        justify-content: center;
+        text-align: center;
+        font-weight: bolder;
+        text-transform: uppercase;
+
+        border-collapse: separate;
+        border-bottom: 2px solid #0004;
+        
+        &:hover{
+            box-shadow: 0px 0px 5px  #ffff;
+            cursor: pointer;
+        }
+
+        img{
+            // display: none;
+            object-fit: cover;
+            height: 200px;
+        }
+
+        .card-title{
+            font-size: 1.2rem;
+        }
+    }
+}
