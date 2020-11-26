@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios'
 
 
-export const Resource = ({ path, render, ...props }) => {
+export const Resource = ({ path, children, ...props }) => {
     const [loading, setLoading] = useState(true);
     const [payload, setPayload] = useState([]);
     const [refreshVar, setRefreshVar] = useState(false);
@@ -20,5 +20,5 @@ export const Resource = ({ path, render, ...props }) => {
             .catch(console.log)
     }, [path, refreshVar]);
 
-    return render({ loading, payload, refresh, props });
+    return children({ loading, payload, refresh, ...props });
 };

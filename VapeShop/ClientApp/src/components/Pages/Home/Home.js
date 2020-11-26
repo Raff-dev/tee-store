@@ -2,14 +2,23 @@ import React from 'react';
 
 import { CategoryCard } from './CategoryCard'
 import { PromotionCarousel } from './PromotionCarousel'
-import { ItemMesh } from '../../utilities/ItemMesh'
+import { Resource } from '../../utilities/Resource'
+import './Home.scss';
+import Card from 'react-bootstrap/Card';
 
 const Home = (props) => {
 
   return (
     <div>
       <PromotionCarousel />
-      <ItemMesh path='/api/Categories' ItemCard={CategoryCard} />
+      <br />
+      <Resource path='/api/Categories' >
+        {({ payload, loading, refresh }) =>
+          <section className="category-mesh">
+            {payload.map((item, index) => <CategoryCard item={item} index={index} />)}
+          </section>
+        }
+      </Resource>
     </div>
   );
 }

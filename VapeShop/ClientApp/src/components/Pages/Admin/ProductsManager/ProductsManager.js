@@ -76,7 +76,7 @@ export const ProductsManager = ({ loading, payload, refresh }) => {
                         onClick={() => setModalState({ show: 'Products' })}
                     >Add Product</Button>
                 </div>
-                <Loadable isLoading={loading}>
+                <Loadable loading={loading}>
                     <Accordion>
                         {Object.entries(payload).map(c => CategoryEntry(setModalState, c))}
                     </Accordion>
