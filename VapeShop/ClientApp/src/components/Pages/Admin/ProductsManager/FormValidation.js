@@ -53,6 +53,6 @@ export const DataToFormData = (values) => {
 };
 
 export const Exists = async (url, data) => {
-    let result = await axios.post(url, DataToFormData(data));
+    let result = await axios.get(url, DataToFormData(data));
     return result['data'];
 }

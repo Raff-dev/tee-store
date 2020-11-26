@@ -17,54 +17,14 @@ namespace VapeShop.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly VapeShopContext db;
-
         public ProductsController(VapeShopContext context)
         {
             db = context;
         }
-        public partial class ProductDto : Product
-        {
-            public List<IFormFile> MediaFiles { get; set; }
-            public bool DiscountDisabled { get; set; }
-        }
-
-        private Product ProductDtoToProduct(ProductDto productDto, List<Media> medias = null)
-        {
-            Product product = new Product
-            {
-                Name = productDto.Name,
-                Brand = productDto.Brand,
-                CategoryName = productDto.CategoryName,
-                Price = productDto.Price,
-                Discount = productDto.DiscountDisabled
-                            ? productDto.Discount
-                            : 0,
-                Medias = medias
-            };
-            return product;
-        }
-        // GET: api/Products
-        [HttpGet]
-        public IEnumerable<Product> GetProducts()
-        {
-            return db.Products;
-        }
-
-        // GET: api/Products
-        [HttpGet("{category}", Name = "")]
-        public IEnumerable<Product> GetProductsOfCategory([FromRoute] string category)
-        {
-            var categoryProducts = from product in db.Products
-                                   where product.Category.Name.Equals(category)
-                                   select product;
-
-            return categoryProducts;
-        }
-
 
         // GET: api/Products/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetProduct([FromRoute] int id)
+        public async Task<IActionResult> Get([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
@@ -81,9 +41,18 @@ namespace VapeShop.Controllers
             return Ok(Product);
         }
 
+        // GET: api/Products
+        [HttpGet]
+        public IEnumerable<Product> GetAll()
+        {
+            var products = db.Products.Include(p => p.Medias);
+            IEnumerable<ProductServe> productsServe = from product in products select new ProductServe(product);
+            return productsServe;
+        }
+
         // PUT: api/Products/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct([FromRoute] int id, [FromForm] ProductDto productDto)
+        public async Task<IActionResult> Put([FromRoute] int id, [FromForm] ProductRecieve ProductRecieve)
         {
             if (!ModelState.IsValid)
             {
@@ -91,11 +60,11 @@ namespace VapeShop.Controllers
             }
 
 
-            if (id != productDto.Id)
+            if (id != ProductRecieve.Id)
             {
                 return BadRequest();
             }
-            List<IFormFile> mediaFiles = productDto.MediaFiles;
+            List<IFormFile> mediaFiles = ProductRecieve.MediaFiles;
 
             if (mediaFiles == null || mediaFiles.Count() == 0)
             {
@@ -108,7 +77,7 @@ namespace VapeShop.Controllers
             {
                 medias.Add(await Utils.IFormFileToMedia(mediaFile));
             }
-            Product product = ProductDtoToProduct(productDto, medias);
+            Product product = ProductRecieveToProduct(ProductRecieve, medias);
 
             db.Entry(product).State = EntityState.Modified;
 
@@ -118,7 +87,7 @@ namespace VapeShop.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProductExists(id))
+                if (!Exists(id))
                 {
                     return NotFound();
                 }
@@ -133,14 +102,14 @@ namespace VapeShop.Controllers
 
         // POST: api/Products
         [HttpPost]
-        public async Task<IActionResult> PostProduct([FromForm] ProductDto productDto)
+        public async Task<IActionResult> Post([FromForm] ProductRecieve ProductRecieve)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            List<IFormFile> mediaFiles = productDto.MediaFiles;
+            List<IFormFile> mediaFiles = ProductRecieve.MediaFiles;
             if (mediaFiles == null || mediaFiles.Count() == 0)
             {
                 return BadRequest("No Media file attached");
@@ -152,7 +121,7 @@ namespace VapeShop.Controllers
                 medias.Add(await Utils.IFormFileToMedia(mediaFile));
             }
 
-            Product product = ProductDtoToProduct(productDto, medias);
+            Product product = ProductRecieveToProduct(ProductRecieve, medias);
             db.Products.Add(product);
 
             await db.SaveChangesAsync();
@@ -162,7 +131,7 @@ namespace VapeShop.Controllers
 
         // DELETE: api/Products/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct([FromRoute] int id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
@@ -185,10 +154,54 @@ namespace VapeShop.Controllers
             return Ok(Product);
         }
 
-        [HttpGet("action")]
-        private bool ProductExists(int id)
+        [HttpGet("[action]/{categoryName}")]
+        public IEnumerable<Product> OfCategory([FromRoute] string categoryName)
+        {
+            var categoryProducts = db.Products.Where(p => p.CategoryName == categoryName).Include(p => p.Medias);
+            IEnumerable<ProductServe> categoryProductsServe = from product in categoryProducts select new ProductServe(product);
+            return categoryProductsServe;
+        }
+
+        [HttpGet("[action]")]
+        private bool Exists(int id)
         {
             return db.Products.Any(e => e.Id == id);
+        }
+
+        public partial class ProductRecieve : Product
+        {
+            public List<IFormFile> MediaFiles { get; set; }
+            public bool DiscountDisabled { get; set; }
+        }
+
+        public partial class ProductServe : Product
+        {
+            public IEnumerable<string> MediaFilesSources { get; set; }
+
+            public ProductServe(Product product)
+            {
+                this.Name = product.Name;
+                this.Brand = product.Brand;
+                this.CategoryName = product.CategoryName;
+                this.Price = product.Price;
+                this.Discount = product.Discount;
+                this.MediaFilesSources = from media in product.Medias
+                                         select Utils.PathToFileSource(media.MediaFilePath);
+            }
+        }
+
+        private Product ProductRecieveToProduct(ProductRecieve productRecieve, List<Media> medias = null)
+        {
+            Product product = new Product
+            {
+                Name = productRecieve.Name,
+                Brand = productRecieve.Brand,
+                CategoryName = productRecieve.CategoryName,
+                Price = productRecieve.Price,
+                Discount = productRecieve.DiscountDisabled ? productRecieve.Discount : 0,
+                Medias = medias
+            };
+            return product;
         }
     }
 }

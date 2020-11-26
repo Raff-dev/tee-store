@@ -28,5 +28,11 @@ namespace VapeShop.Controllers
 
             return media;
         }
+
+        public static string PathToFileSource(string path)
+        {
+            return @"data:image/gif;base64," + Convert.ToBase64String(System.IO.File.ReadAllBytes(path));
+        }
     }
+
 }

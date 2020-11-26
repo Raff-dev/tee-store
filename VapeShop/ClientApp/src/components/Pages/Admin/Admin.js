@@ -6,7 +6,9 @@ import { ProductsManager } from './ProductsManager/ProductsManager'
 const Admin = () => {
   return (
     <section className="admin" >
-      <Resource path={`api/Categories`} render={ProductsManager} />
+      <Resource path={`api/Categories/WithProducts`} >
+        {(props) => <ProductsManager {...props} />}
+      </Resource>
     </section>
   );
 }

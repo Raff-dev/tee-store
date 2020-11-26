@@ -13,7 +13,7 @@ export const CategoriesModal = ({ modalState, handleClose, handleSubmit }) => {
 
     const validationSchema = Yup.object().shape({
         name: Yup.string()
-            .matches(/^[a-zA-Z0-9]+$/, {
+            .matches(/^[a-zA-Z0-9 ]+$/, {
                 message: 'Special characters are not allowed',
                 excludeEmptyString: true
             })
@@ -21,7 +21,7 @@ export const CategoriesModal = ({ modalState, handleClose, handleSubmit }) => {
             .max(32, 'Maximmum name length is 32!')
             .test('uniqueCategoryName', "This Category name already exists!",
                 async value => {
-                    let exists = await Exists('/api/Categories/CategoryExists', { 'name': value })
+                    let exists = await Exists('/api/Categories/Exists', { name: value })
                     return !exists;
                 })
             .required(),

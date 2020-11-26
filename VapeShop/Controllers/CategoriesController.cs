@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VapeShop.Models;
 
+
 namespace VapeShop.Controllers
 {
     [Route("api/[controller]")]
@@ -22,22 +23,9 @@ namespace VapeShop.Controllers
             db = context;
         }
 
-        public class CategoryDto
-        {
-            public string Name { get; set; }
-            public IFormFile MediaFile { get; set; }
-        }
-
-        // GET: api/Categories
-        [HttpGet]
-        public IEnumerable<Category> GetCategory()
-        {
-            return db.Categories.Include(c => c.Products);
-        }
-
         // GET: api/Categories/name
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCategory([FromRoute] int name)
+        public async Task<IActionResult> Get([FromRoute] int name)
         {
             if (!ModelState.IsValid)
             {
@@ -54,9 +42,19 @@ namespace VapeShop.Controllers
             return Ok(Category);
         }
 
+        // GET: api/Categories/
+        [HttpGet]
+        public IEnumerable<CategoryServe> GetAll()
+        {
+            var categories = db.Categories.Include(c => c.Media);
+            IEnumerable<CategoryServe> categoriesDto = from category in categories
+                                                       select new CategoryServe(category);
+            return categoriesDto;
+        }
+
         // PUT: api/Categories/name
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategory([FromRoute] string name, [FromBody] Category Category)
+        public async Task<IActionResult> Put([FromRoute] string name, [FromBody] Category Category)
         {
             if (!ModelState.IsValid)
             {
@@ -76,7 +74,7 @@ namespace VapeShop.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CategoryExists(name))
+                if (!Exists(name))
                 {
                     return NotFound();
                 }
@@ -91,7 +89,7 @@ namespace VapeShop.Controllers
 
         // POST: api/Categories
         [HttpPost]
-        public async Task<IActionResult> PostCategory([FromForm] CategoryDto categoryDto)
+        public async Task<IActionResult> Post([FromForm] CategoryRecieve categoryDto)
         {
             if (!ModelState.IsValid)
             {
@@ -124,7 +122,7 @@ namespace VapeShop.Controllers
 
         // DELETE: api/Categories/Name
         [HttpDelete("{name}")]
-        public async Task<IActionResult> DeleteCategory([FromRoute] string name)
+        public async Task<IActionResult> Delete([FromRoute] string name)
         {
             if (!ModelState.IsValid)
             {
@@ -150,11 +148,38 @@ namespace VapeShop.Controllers
             return Ok(Category);
         }
 
-        [HttpPost("[action]")]
-        public bool CategoryExists([FromForm] string name)
+        // GET: api/Categories/WithProducts
+        [HttpGet("[action]")]
+        public IEnumerable<Category> WithProducts()
+        {
+            return db.Categories.Include(c => c.Products);
+        }
+
+        // GET: api/Categories/Exists
+        [HttpGet("[action]")]
+        public bool Exists([FromForm] string name)
         {
             Console.WriteLine(name);
-            return db.Categories.Any(e => e.Name == name);
+            return db.Categories.Any(c => c.Name == name);
         }
+
+        public partial class CategoryRecieve
+        {
+            public string Name { get; set; }
+            public IFormFile MediaFile { get; set; }
+        }
+
+        public partial class CategoryServe
+        {
+            public string Name { get; set; }
+            public string MediaFileSource { get; set; }
+
+            public CategoryServe(Category category)
+            {
+                this.Name = category.Name;
+                this.MediaFileSource = Utils.PathToFileSource(category.Media.MediaFilePath);
+            }
+        }
+
     }
 }
