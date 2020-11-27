@@ -28,7 +28,6 @@ const rootElement = document.getElementById('root');
 
 const CategoryRender = ({ match }) => {
   const { category } = match.params;
-  console.log('dziaa')
 
   return (
     <Resource path={`api/Products/OfCategory/${category}`}>
@@ -64,5 +63,3 @@ ReactDOM.render(
   </BrowserRouter>,
   rootElement);
 registerServiceWorker();
-
-
