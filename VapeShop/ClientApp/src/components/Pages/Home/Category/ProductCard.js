@@ -1,25 +1,27 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
+import { Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
-export const ProductCard = ({ item, index }) => {
+export const ProductCard = ({ item }) => {
+  const addToCart = () => {
+
+  }
+
   return (
-    <LinkContainer to={`/Product/${item.id}`}>
-      <Card>
-        <Card.Img variant="top" src={item.mediaFilesSources[0]} />
+    <Card>
+      <Card.Img variant="top" src={item.mediaFilesSources[0]} />
+      <LinkContainer to={`/Product/${item.id}`}>
         <Card.Body>
           <Card.Title>
-            <b>{item.name}</b>
-            <b>{item.id}</b>
+            <span className="text-muted">{item.name}</span>
           </Card.Title>
           <Card.Text>
-            <p>{item.brand}</p>
-            <p>{item.price}</p>
-            <p>{item.type}</p>
+            <span className="">${item.price}</span>
           </Card.Text>
         </Card.Body>
-      </Card>
-    </LinkContainer>
+      </LinkContainer>
+      <Button onClick={addToCart}>Add to Cart</Button>
+    </Card>
   );
 }
-
