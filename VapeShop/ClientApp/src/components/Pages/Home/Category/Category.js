@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from '@material-ui/core';
+import { Button, setRef } from '@material-ui/core';
 import Card from 'react-bootstrap/Card'
 import Form from 'react-bootstrap/Form'
 import Container from 'react-bootstrap/Container'
@@ -15,29 +15,30 @@ export const Category = ({ category, payload, loading }) => {
     const [filters, setFilters] = useState({});
     const [sorting, setSorting] = useState(undefined);
     const [products, setProducts] = useState(payload);
+    const [refreshVar, setRefreshVar] = useState(false);
+
+    const refresh = () => setRefreshVar(v => !v);
 
     const brands = payload.map(product => product.brand)
         .filter((value, index, self) => self.indexOf(value) === index)
 
     useEffect(() => {
         let filteredProducts = [...payload];
-        console.log(filters)
 
         for (let [name, filter] of Object.entries(filters)) {
-            console.log('filterin: ' + name)
             filteredProducts = filteredProducts.filter(filter);
         }
 
-        if (sorting != 'featured')
-            filteredProducts = filteredProducts.sort(sorting)
+        filteredProducts = filteredProducts.sort(sorting)
 
         setProducts(filteredProducts);
-    }, [payload, sorting, filters]);
+    }, [payload, sorting, filters, refreshVar]);
 
     const onSortingChange = (event) => {
         let sortingName = event.target.value;
         console.log(sortingName)
-        if (sortingName === 'featured') setSorting('featured');
+        if (sortingName === 'featured')
+            setSorting(() => (first, second) => 0);
 
         else if (sortingName === 'pricecasc')
             setSorting(() => (first, second) => first.price - second.price);
@@ -54,7 +55,7 @@ export const Category = ({ category, payload, loading }) => {
         <Container>
             <Row>
                 <Col sm={3}>
-                    <SideBar brands={brands} loading={loading} setFilters={setFilters} />
+                    <SideBar brands={brands} refresh={refresh} loading={loading} setFilters={setFilters} />
                 </Col>
                 <Col>
                     <Card >{category}</Card>
