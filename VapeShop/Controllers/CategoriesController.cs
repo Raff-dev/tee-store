@@ -54,19 +54,14 @@ namespace VapeShop.Controllers
 
         // PUT: api/Categories/name
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put([FromRoute] string name, [FromBody] Category Category)
+        public async Task<IActionResult> Put([FromBody] Category category)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (name != Category.Name)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(Category).State = EntityState.Modified;
+            db.Entry(category).State = EntityState.Modified;
 
             try
             {
@@ -74,7 +69,7 @@ namespace VapeShop.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!Exists(name))
+                if (!Exists(category.Name))
                 {
                     return NotFound();
                 }
