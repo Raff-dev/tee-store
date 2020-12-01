@@ -31,14 +31,15 @@ namespace VapeShop.Controllers
                 return BadRequest(ModelState);
             }
 
-            var Product = await db.Products.FindAsync(id);
+            Product product = db.Products.Where(p=>p.Id==id).Include(p=>p.Medias).First();
 
-            if (Product == null)
+            if (product == null)
             {
                 return NotFound();
             }
+            ProductServe productServe = new ProductServe(product);
 
-            return Ok(Product);
+            return Ok(productServe);
         }
 
         // GET: api/Products
@@ -180,6 +181,7 @@ namespace VapeShop.Controllers
 
             public ProductServe(Product product)
             {
+                this.Id = product.Id;
                 this.Name = product.Name;
                 this.Brand = product.Brand;
                 this.CategoryName = product.CategoryName;
