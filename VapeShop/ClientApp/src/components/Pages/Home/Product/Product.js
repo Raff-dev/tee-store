@@ -86,9 +86,7 @@ const ProductDetail = ({ id, categoryName, name, price, brand, mediaFilesSources
                             </Col>
                         </Row>
                         <br />
-                        <Row>
-                            <Col md={2}>                                <span>Quantity</span>                            </Col>
-                        </Row>
+                        <Row><Col md={2}><span>Quantity</span></Col></Row>
                         <Row>
                             <Col md={2}>
                                 <Form.Group controlId="fromQuantity" classname="d-flex">

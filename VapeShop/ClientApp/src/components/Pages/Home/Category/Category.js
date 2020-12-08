@@ -25,9 +25,8 @@ export const Category = ({ category, payload, loading }) => {
     useEffect(() => {
         let filteredProducts = [...payload];
 
-        for (let [name, filter] of Object.entries(filters)) {
+        for (let [name, filter] of Object.entries(filters)) 
             filteredProducts = filteredProducts.filter(filter);
-        }
 
         filteredProducts = filteredProducts.sort(sorting)
 
