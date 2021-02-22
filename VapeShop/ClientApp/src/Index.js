@@ -11,7 +11,9 @@ import registerServiceWorker from './registerServiceWorker';
 import Home from './components/Pages/Home/Home';
 import Admin from './components/Pages/Admin/Admin'
 import Cart from './components/Pages/Cart/Cart'
-import { NavMenu } from './components/NavMenu/NavMenu'
+import Footer from './components/Footer/Footer'
+import NavMenu from './components/NavMenu/NavMenu'
+
 import { Category } from './components/Pages/Home/Category/Category'
 import { Product } from './components/Pages/Home/Product/Product'
 import { ToastProvider } from 'react-toast-notifications'
@@ -49,8 +51,8 @@ const ProductsRender = ({ match }) => {
 ReactDOM.render(
   <BrowserRouter basename={baseUrl} >
     <ToastProvider>
+      <NavMenu />
       <Grid>
-        <NavMenu />
         <Switch>
           <Route exact path='/' component={Home} />
           <Route path='/Category/:category' component={CategoryRender} />
@@ -59,6 +61,7 @@ ReactDOM.render(
           <Route path='/Admin' component={Admin} />
         </Switch>
       </Grid>
+      <Footer />
     </ToastProvider>
   </BrowserRouter>,
   rootElement);
