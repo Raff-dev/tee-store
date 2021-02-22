@@ -35,6 +35,8 @@ namespace VapeShop
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddCoreAdmin();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
