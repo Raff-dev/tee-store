@@ -1,36 +1,28 @@
 ﻿import React from 'react';
 import { Link } from 'react-router-dom';
-import { Glyphicon, Nav, Navbar, NavItem } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
+import { Navbar, Glyphicon } from 'react-bootstrap';
+import Nav from 'react-bootstrap/Nav'
 import './NavMenu.scss'
 
-export const NavMenu = (props) => {
+const NavMenu = () => {
 
     return (
-        <Navbar inverse fixedTop fluid collapseOnSelect>
-            <Navbar.Header>
-                <Navbar.Brand>
-                    <Link to={'/'}>VapeShop</Link>
-                </Navbar.Brand>
-                <Navbar.Toggle />
-            </Navbar.Header>
-            <LinkContainer to={'/'} exact>
-                <NavItem>
-                    <Glyphicon glyph='home' /> Home
-                    </NavItem>
-            </LinkContainer>
+        <Navbar fixedTop class="d-flex justify-content-between">
+            <Navbar.Brand>
+                <Nav.Link as={Link} to={'/'} exact>Logo</Nav.Link>
+            </Navbar.Brand>
 
-            <LinkContainer to={'/Admin'} exact>
-                <NavItem>
-                    <Glyphicon glyph='home' /> Admin
-                    </NavItem>
-            </LinkContainer>
+            <Navbar.Brand>
+                VapeShop
+            </Navbar.Brand>
 
-            <LinkContainer to={'/Cart'} exact>
-                <NavItem>
+            <Nav.Item>
+                <Nav.Link as={Link} to="/cart" >
                     <Glyphicon glyph='shopping-cart' /> Cart
-                    </NavItem>
-            </LinkContainer>
+                </Nav.Link>
+            </Nav.Item>
         </Navbar>
     );
 }
+
+export default NavMenu;
