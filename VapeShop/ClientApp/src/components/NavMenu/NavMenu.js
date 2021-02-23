@@ -7,9 +7,9 @@ import './NavMenu.scss'
 const NavMenu = () => {
 
     return (
-        <Navbar fixedTop class="d-flex justify-content-between">
+        <Navbar >
             <Navbar.Brand>
-                <Nav.Link as={Link} to={'/'} exact>Logo</Nav.Link>
+                <Nav.Link as={Link} to={'/'}>Logo</Nav.Link>
             </Navbar.Brand>
 
             <Navbar.Brand>
