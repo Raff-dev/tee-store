@@ -182,6 +182,7 @@ dmypy.json
 # Translations
 
 # Django stuff:
+**/secret.py
 
 # Flask stuff:
 
