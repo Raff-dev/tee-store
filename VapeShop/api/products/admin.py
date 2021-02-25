@@ -1,3 +1,8 @@
 from django.contrib import admin
+from .models import Category, Product, SizedProduct, Variant, Image
 
-# Register your models here.
+admin.register(Category)
+admin.register(Product)
+admin.register(SizedProduct)
+admin.register(Variant)
+admin.register(Image)
