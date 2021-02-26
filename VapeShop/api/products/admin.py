@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import Category, Product, SizedProduct, Variant, Image
+from .models import Category, Product, Size, Variant, Image
 
-admin.register(Category)
-admin.register(Product)
-admin.register(SizedProduct)
-admin.register(Variant)
-admin.register(Image)
+admin.site.register(Category)
+admin.site.register(Product)
+admin.site.register(Size)
+admin.site.register(Variant)
+admin.site.register(Image)
