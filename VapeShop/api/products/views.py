@@ -1,24 +1,35 @@
-from rest_framework import status, viewsets
+from rest_framework import mixins, serializers, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Category, Product
-from .serializers import ProductSerializer, CategorySerializer
+from .models import Category, Product, Collection
+from .serializers import CollectionSerializer, ProductListSerializer, ProductDetailSerializer, CategorySerializer
 
 
-class ProductViewSet(viewsets.ModelViewSet):
+class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Product.objects.all()
-    serializer_class = ProductSerializer
 
-    @action(methods=['get'], detail=False)
-    def get_categories(self, request, *args, **kwargs):
-        category_name = kwargs['category']
-        category = Category.objects.filter(name=category_name).first()
-        products = self.queryset.filter(category=category)
+    def list(self, request, *args, **kwargs):
+        serializer = ProductListSerializer(self.queryset, many=True)
+        data = {
+            'categories': Category.objects.values_list('name', flat=True),
+            'collections': Collection.objects.values_list('name', flat=True),
+            'products': serializer.data,
+        }
+        return Response(data)
 
-        prorducts_serialized = products
-        return Response(data=prorducts_serialized, status=status.HTTP_200_OK)
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = ProductDetailSerializer(instance)
+        return Response(serializer.data)
 
 
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    lookup_field = 'name'
+
+
+class CollectionViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Collection.objects.all()
+    serializer_class = CollectionSerializer
+    lookup_field = 'name'
