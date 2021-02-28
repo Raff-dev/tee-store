@@ -16,9 +16,13 @@ class Category(models.Model):
 
 class Collection(models.Model):
     name = models.CharField(max_length=50, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
         return f'{self.name}'
+
+    class Meta:
+        ordering = ['-created_at']
 
 
 class Product(models.Model):
@@ -60,7 +64,7 @@ class Product(models.Model):
         return f'{self.name}'
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ['-collection__created_at', 'category__name']
 
 
 class Variant(models.Model):
@@ -80,23 +84,24 @@ class Variant(models.Model):
     def __str__(self) -> str:
         return f'{self.product} - {self.name}'
 
+    class Meta:
+        ordering = ['name']
+        unique_together = ['name', 'product']
+
+
+def get_upload_path(instance, filename):
+    return settings.MEDIA_ROOT/Image.IMAGES_PATH/instance.variant.product.category.name/filename
+
 
 class Image(models.Model):
     IMAGES_PATH = 'product_images'
     DEFAULT_IMAGE = 'default_product_image.png'
 
     image = models.ImageField(
-        upload_to=lambda instance, filename: instance.get_upload_path(filename),
+        upload_to=get_upload_path,
         default=f'{IMAGES_PATH}/{DEFAULT_IMAGE}')
     variant = models.ForeignKey(Variant, related_name='images', on_delete=models.CASCADE)
     ordering = models.PositiveIntegerField()
-
-    def get_upload_path(self, filename):
-        return settings.MEDIA_ROOT/Image.IMAGES_PATH/self.variant.product.category.name/filename
-
-    @property
-    def product(self):
-        return self.variant.product
 
     def __str__(self) -> str:
         return f'{self.variant} image'
