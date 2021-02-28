@@ -43,7 +43,6 @@ class Command(BaseCommand):
                 collection, _ = Collection.objects.get_or_create(name=name)
 
                 Product.objects.create(
-                    name=collection.name,
                     category=category,
                     collection=collection,
                     price=19.99,
