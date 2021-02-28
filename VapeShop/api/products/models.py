@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models.base import Model
 from django.db.models.fields.files import ImageField
+from django.conf import settings
 
 
 class Category(models.Model):
@@ -81,7 +82,15 @@ class Variant(models.Model):
 
 
 class Image(models.Model):
-    image = models.ImageField(upload_to='product_images', default='product_images/default_product_image.png')
+    IMAGES_PATH = 'product_images'
+    DEFAULT_IMAGE = 'default_product_image.png'
+
+    def get_upload_path(self, filename):
+        return settings.MEDIA_ROOT/Image.IMAGES_PATH/self.variant.product.category.name/filename
+
+    image = models.ImageField(
+        upload_to=lambda instance, filename: instance.get_upload_path(filename),
+        default=f'{IMAGES_PATH}/{DEFAULT_IMAGE}')
     variant = models.ForeignKey(Variant, related_name='images', on_delete=models.CASCADE)
     ordering = models.PositiveIntegerField()
 
