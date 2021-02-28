@@ -1,4 +1,5 @@
 import os
+import shutil
 from typing import Collection
 
 from django.core.management.base import BaseCommand
@@ -20,6 +21,13 @@ class Command(BaseCommand):
         self.seed_data()
 
     def erase_data(self):
+        path = settings.MEDIA_ROOT / Image.IMAGES_PATH
+
+        for dir in os.listdir(path):
+            if dir != Image.DEFAULT_IMAGE:
+                dir = path/dir
+                os.path.isfile(dir) and os.remove(dir) or shutil.rmtree(dir)
+
         for model in self.MODELS:
             model.objects.all().delete()
 
@@ -29,9 +37,10 @@ class Command(BaseCommand):
             category = Category.objects.create(name=category_name)
             for image_name in os.listdir(path/category_name):
                 name, variant_name = image_name.split('-')
+                variant_name = variant_name.split('.')[0]
                 image_file = open(path/category_name/image_name, 'rb')
 
-                collection, created = Collection.objects.get_or_create(name=name)
+                collection, _ = Collection.objects.get_or_create(name=name)
 
                 Product.objects.create(
                     name=collection.name,
