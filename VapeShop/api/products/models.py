@@ -85,14 +85,14 @@ class Image(models.Model):
     IMAGES_PATH = 'product_images'
     DEFAULT_IMAGE = 'default_product_image.png'
 
-    def get_upload_path(self, filename):
-        return settings.MEDIA_ROOT/Image.IMAGES_PATH/self.variant.product.category.name/filename
-
     image = models.ImageField(
         upload_to=lambda instance, filename: instance.get_upload_path(filename),
         default=f'{IMAGES_PATH}/{DEFAULT_IMAGE}')
     variant = models.ForeignKey(Variant, related_name='images', on_delete=models.CASCADE)
     ordering = models.PositiveIntegerField()
+
+    def get_upload_path(self, filename):
+        return settings.MEDIA_ROOT/Image.IMAGES_PATH/self.variant.product.category.name/filename
 
     @property
     def product(self):
