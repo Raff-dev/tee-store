@@ -82,10 +82,10 @@ class Variant(models.Model):
                 Size.objects.create(size=size_name, variant=self)
 
     def __str__(self) -> str:
-        return f'{self.product} - {self.name}'
+        return f'{self.product.category} - {self.product} - {self.name}'
 
     class Meta:
-        ordering = ['name']
+        ordering = ['product__collection__created_at', 'product__category__name', 'name']
         unique_together = ['name', 'product']
 
 
