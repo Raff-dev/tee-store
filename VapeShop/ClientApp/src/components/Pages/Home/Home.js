@@ -1,24 +1,31 @@
 import React from 'react';
-
-import { CategoryCard } from './CategoryCard'
+import { useState } from 'react';
+import { Grid, Row, Col } from 'react-bootstrap'
 import { PromotionCarousel } from './PromotionCarousel'
-import { Resource } from '../../utilities/Resource'
+import { CollectionButtonGroup } from './CollectionButtonGroup'
+import { CategoryButtonGroup } from './CategoryButtonGroup'
+import { ProductsMesh } from './ProductsMesh'
 import './Home.scss';
-import Card from 'react-bootstrap/Card';
 
 const Home = (props) => {
+  const [category, setCategory] = useState(null);
+  const [collection, setCollection] = useState(null);
 
   return (
     <div>
       <PromotionCarousel />
       <br />
-      <Resource path='/api/Categories' >
-        {({ payload, loading, refresh }) =>
-          <section className="category-mesh">
-            {payload.map((item, index) => <CategoryCard item={item} index={index} />)}
-          </section>
-        }
-      </Resource>
+      <CollectionButtonGroup setCollection={setCollection} />
+      <Grid>
+        <Row>
+          <Col>
+            <CategoryButtonGroup setCategory={setCategory} />
+          </Col>
+          <Col>
+            <ProductsMesh category={category} collection={collection} />
+          </Col>
+        </Row>
+      </Grid>
     </div>
   );
 }
