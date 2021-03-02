@@ -1,9 +1,10 @@
 import React from 'react';
+import styled from 'styled-components';
 import { Carousel } from 'react-bootstrap'
 
 export const PromotionCarousel = (props) => {
     return (
-        <Carousel>
+        <StyledCarousel>
             <Carousel.Item>
                 <img
                     className="d-block w-100"
@@ -39,6 +40,20 @@ export const PromotionCarousel = (props) => {
                     <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
                 </Carousel.Caption>
             </Carousel.Item>
-        </Carousel>
+        </StyledCarousel>
     );
 }
+
+const StyledCarousel = styled(Carousel)`
+    overflow: hidden;
+    .item{
+        overflow: hidden;
+        justify-content: center;
+        align-items: center;
+        height: 300px;
+    }
+
+    img{
+        object-fit: contain;
+    }
+`;
