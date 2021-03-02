@@ -1,20 +1,27 @@
 import React from 'react';
-import { Loadable } from '../../utilities/Loadable'
-import { Resource } from '../../utilities/Resource'
+import styled from 'styled-components'
+import { Grid, Row, Col } from 'react-bootstrap';
+
 import { ProductCard } from './ProductCard'
 
-export const ProductsMesh = ({ category, collection }) => {
+export const ProductsMesh = ({ products, category }) => {
     return (
-        <Resource path={'/api/Categories/' + category} >
-            {({ payload, loading }) =>
-                <section className="category-mesh">
-                    <Loadable loading={loading}>
-                        {payload.map((item, index) =>
-                            <ProductCard item={item} index={index} />
-                        )}
-                    </Loadable>
-                </section>
-            }
-        </Resource>
+        <Mesh>
+            <Row>
+                {products.map((product, _) =>
+                    (category === 'All products' || product.category === category) &&
+                    product.variants.map((variant, index) =>
+                        <Col xs={6} md={4}>
+                            <ProductCard product={product} variant={variant} key={variant.id} />
+                        </Col>
+                    )
+                )}
+            </Row>
+        </Mesh>
     );
 }
+
+const Mesh = styled(Grid)`
+    min-height:100vh;
+
+`;
