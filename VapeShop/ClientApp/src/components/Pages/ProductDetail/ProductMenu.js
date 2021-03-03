@@ -1,45 +1,108 @@
-import React from 'react';
+import React, { useRef, useContext } from 'react';
 import { Col, Button } from 'react-bootstrap'
 import Form from 'react-bootstrap/Form'
+import styled from 'styled-components';
+import { CartContext } from '../../../contexts/CartContext'
 
-export const ProductMenu = ({ product, variant }) => {
-    console.log(product);
+export const ProductMenu = ({ product, variant, openSizeModal }) => {
+    const cart = useContext(CartContext);
+    const sizeRef = useRef();
+
+    const addToCart = () => {
+        let id = sizeRef.current.value;
+        cart.addItem(id);
+    }
+
     return (
         <section>
-            <p>Price</p>
+            <p>PRICE</p>
             <p>${product.price}</p>
+            <p>{product.title}</p>
             <p>{product.description}</p>
-            <br />
-            <p>Color</p>
-            {product.variants.map((variant, index) =>
-                <div key={index}>
-                    <span>{variant.name}</span>
+            <ProductOption>
+                <div>
+                    <div>
+                        COLOR
+                    </div>
+                    <div>
+                        {variant.name}
+                    </div>
                 </div>
-            )}
-            <br />
+                <div>
+                    {product.variants.map((variant, index) =>
+                        <div key={index}>
+                            <span>{variant.name}</span>
+                        </div>
+                    )}
+                </div>
+            </ProductOption>
             <Form>
-                <Form.Row className="align-items-center">
-                    <Col xs="auto" className="my-1">
-                        <Form.Label className="mr-sm-2" htmlFor="inlineFormCustomSelect" srOnly>
-                            Preference
-                        </Form.Label>
-                        <Form.Control
-                            as="select"
-                            className="mr-sm-2"
-                            id="inlineFormCustomSelect"
-                            custom
-                        >
-                            <option value="0">Choose...</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </Form.Control>
-                    </Col>
-                    <Col xs="auto" className="my-1">
-                        <Button type="submit" variant="success">ADD TO CART</Button>
-                    </Col>
+                <Form.Row >
+                    <ProductOption>
+                        <div >
+                            <div>
+                                SIZE
+                            </div>
+                            <SizeModalButton>
+                                Sizing and fabric
+                            </SizeModalButton>
+                        </div>
+                        <div>
+                            <Form.Control
+                                ref={sizeRef}
+                                as="select"
+                                id="inlineFormCustomSelect"
+                                custom
+                            >
+                                {variant.sizes.map((size, index) =>
+                                    <option value={size.id} >{size.size}</option>
+                                )}
+                            </Form.Control>
+                        </div>
+                    </ProductOption>
+                </Form.Row>
+                <Form.Row className="justify-content-center">
+                    <SubmitButton onClick={addToCart}>ADD TO CART</SubmitButton>
                 </Form.Row>
             </Form>
-        </section>
+        </section >
     );
 }
+const ColorIcon = styled.div`
+
+`;
+const SizeModalButton = styled.div`
+    color : rgba(50,50,255,0.8);
+
+    :hover{
+        cursor: pointer;
+        opacity:0.8;
+    }
+`;
+
+const ProductOption = styled.div`
+    border: 1 solid grey;
+    display:flex;
+    justify-content:space-between;
+    padding-top:20px;
+    width:100%;
+`;
+
+const SubmitButton = styled.div`
+    color: white;
+    background-color: rgb(196, 131, 233);
+    border: 1 solid rgba(196, 131, 233,0.6);
+    border-radius:5px;
+    text-align:center;
+    padding: 12px;
+    margin-top:30px;
+    width:100%;
+    font-size:1.2rem;
+    font-weight: 300;
+    font-family: system-ui;
+
+    :hover{
+        opacity:0.8;
+        cursor:pointer;
+    }
+`;
