@@ -6,13 +6,13 @@ import {
   Route,
   Switch
 } from 'react-router-dom';
-import { ToastProvider } from 'react-toast-notifications'
 
 import Home from './components/Pages/Home/Home';
 import ProductDetail from './components/Pages/ProductDetail/ProductDetail';
 import Cart from './components/Pages/Cart/Cart'
 import Footer from './components/Footer/Footer'
 import NavMenu from './components/NavMenu/NavMenu'
+import { CartProvider } from './contexts/CartContext'
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
@@ -24,7 +24,7 @@ const rootElement = document.getElementById('root');
 
 ReactDOM.render(
   <BrowserRouter basename={baseUrl} >
-    <ToastProvider>
+    <CartProvider>
       <NavMenu />
       <Switch>
         <Route exact path='/' component={Home} />
@@ -32,7 +32,7 @@ ReactDOM.render(
         <Route path='/Cart' component={Cart} />
       </Switch>
       <Footer />
-    </ToastProvider>
+    </CartProvider>
   </BrowserRouter>,
   rootElement);
 registerServiceWorker();
