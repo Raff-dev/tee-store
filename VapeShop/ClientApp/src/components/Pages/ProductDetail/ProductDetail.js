@@ -22,13 +22,13 @@ const ProductDetail = ({ match }) => {
                     console.log(payload)
                     return (
                         <Loadable loading={loading}>
-                            <Container>
+                            <Grid>
                                 <Row >
                                     <Col lg={8} md={12} className="d-flex justify-content-center">
-                                        <ImagePreview variant={variant} />
+                                        <ImagePreview product={payload} variant={variant} />
                                     </Col>
                                     <Col lg={4} md={12}>
-                                        <ProductMenu product={payload} />
+                                        <ProductMenu product={payload} variant={variant} />
                                     </Col>
                                 </Row >
                                 <SocialIcons >
@@ -36,7 +36,7 @@ const ProductDetail = ({ match }) => {
                                     <SocialIcon url="http://twitter.com/" />
                                     <SocialIcon url="https://mail.google.com/" />
                                 </SocialIcons>
-                            </Container>
+                            </Grid>
                         </Loadable>
                     );
                 }}
