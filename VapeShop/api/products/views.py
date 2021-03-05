@@ -1,7 +1,11 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
-from .models import Category, Product, Collection
+from rest_framework import status
+from rest_framework.decorators import action
+from .models import Category, Product, Collection, Size
 from .serializers import CollectionSerializer, ProductListSerializer, ProductDetailSerializer, CategorySerializer
+from .cart_serializers import CartSizeSerializer
+import json
 
 
 class ProductViewSet(viewsets.ReadOnlyModelViewSet):
@@ -19,6 +23,22 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = ProductDetailSerializer(instance)
+
+        return Response(serializer.data)
+
+
+class SizeViewSet(viewsets.GenericViewSet):
+    queryset = Size.objects.all()
+    serializer_class = CartSizeSerializer
+
+    @action(methods=['POST'], detail=False)
+    def cart_products(self, request, *args, **kwargs):
+        if 'ids' not in request.data:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        ids = list(map(lambda id: int(id), request.data['ids']))
+        sizes = Size.objects.filter(id__in=ids)
+        serializer = CartSizeSerializer(sizes, many=True)
         return Response(serializer.data)
 
 
