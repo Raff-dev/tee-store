@@ -10,8 +10,11 @@ import {
 import Home from './components/Pages/Home/Home';
 import ProductDetail from './components/Pages/ProductDetail/ProductDetail';
 import Cart from './components/Pages/Cart/Cart'
+import Checkout from './components/Checkout/Checkout'
+
 import Footer from './components/Footer/Footer'
 import NavMenu from './components/NavMenu/NavMenu'
+
 import { CartProvider } from './contexts/CartContext'
 import { ApiProvider } from './contexts/ApiContext'
 
@@ -32,6 +35,7 @@ ReactDOM.render(
           <Route exact path='/' component={Home} />
           <Route path='/Product/:productId/:variantId' component={ProductDetail} />
           <Route path='/Cart' component={Cart} />
+          <Route path='/Checkout' component={Checkout} />
         </Switch>
         <Footer />
       </CartProvider>
