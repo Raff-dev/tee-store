@@ -1,34 +1,20 @@
 from rest_framework import serializers
-from .models import Image, Product, Category, Collection, Size, Variant
+from .models import Size
 
 
-class ImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Image
-        fields = ['image']
+class CartSerializer(serializers.ModelSerializer):
+    name = serializers.StringRelatedField(many=False)
+    variant = serializers.StringRelatedField(many=False)
+    size = serializers.StringRelatedField(many=False)
 
+    price = serializers.StringRelatedField(many=False)
+    title = serializers.StringRelatedField(many=False)
+    image = serializers.ImageField()
+    properties = serializers.StringRelatedField(many=False)
 
-class CartProductSerializer(serializers.ModelSerializer):
     category = serializers.StringRelatedField(many=False)
     collection = serializers.StringRelatedField(many=False)
 
     class Meta:
-        model = Product
-        fields = ['name', 'price', 'discount_price', 'title', 'category', 'collection']
-
-
-class CartVariantSerializer(serializers.ModelSerializer):
-    product = CartProductSerializer(many=False)
-    images = ImageSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Variant
-        fields = ['name', 'product', 'images']
-
-
-class CartSizeSerializer(serializers.ModelSerializer):
-    variant = CartVariantSerializer(many=False)
-
-    class Meta:
         model = Size
-        fields = ['size', 'variant']
+        fields = '__all__'
