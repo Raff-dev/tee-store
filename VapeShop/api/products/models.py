@@ -126,3 +126,27 @@ class Size(models.Model):
 
     def __str__(self) -> str:
         return f'{self.variant} - {self.size}: {self.quantity}'
+
+    @property
+    def category(self) -> str:
+        return self.variant.product.category
+
+    @property
+    def collection(self) -> str:
+        return self.variant.product.collection
+
+    @property
+    def title(self) -> str:
+        return self.variant.product.title
+
+    @property
+    def price(self):
+        return self.variant.product.price
+
+    @property
+    def properties(self):
+        return f'{self.price} - {self.variant.name} - {self.get_size_display()}'
+
+    @property
+    def image(self):
+        return self.variant.images.first().image
