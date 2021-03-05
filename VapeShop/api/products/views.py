@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.decorators import action
 from .models import Category, Product, Collection, Size
 from .serializers import CollectionSerializer, ProductListSerializer, ProductDetailSerializer, CategorySerializer
-from .cart_serializers import CartSizeSerializer
+from .cart_serializers import CartSerializer
 import json
 
 
@@ -29,7 +29,7 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
 
 class SizeViewSet(viewsets.GenericViewSet):
     queryset = Size.objects.all()
-    serializer_class = CartSizeSerializer
+    serializer_class = CartSerializer
 
     @action(methods=['POST'], detail=False)
     def cart_products(self, request, *args, **kwargs):
@@ -38,7 +38,7 @@ class SizeViewSet(viewsets.GenericViewSet):
 
         ids = list(map(lambda id: int(id), request.data['ids']))
         sizes = Size.objects.filter(id__in=ids)
-        serializer = CartSizeSerializer(sizes, many=True)
+        serializer = CartSerializer(sizes, many=True)
         return Response(serializer.data)
 
 
