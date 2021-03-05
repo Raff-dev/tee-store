@@ -13,6 +13,7 @@ import Cart from './components/Pages/Cart/Cart'
 import Footer from './components/Footer/Footer'
 import NavMenu from './components/NavMenu/NavMenu'
 import { CartProvider } from './contexts/CartContext'
+import { ApiProvider } from './contexts/ApiContext'
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
@@ -24,15 +25,17 @@ const rootElement = document.getElementById('root');
 
 ReactDOM.render(
   <BrowserRouter basename={baseUrl} >
-    <CartProvider>
-      <NavMenu />
-      <Switch>
-        <Route exact path='/' component={Home} />
-        <Route path='/Product/:productId/:variantId' component={ProductDetail} />
-        <Route path='/Cart' component={Cart} />
-      </Switch>
-      <Footer />
-    </CartProvider>
+    <ApiProvider>
+      <CartProvider>
+        <NavMenu />
+        <Switch>
+          <Route exact path='/' component={Home} />
+          <Route path='/Product/:productId/:variantId' component={ProductDetail} />
+          <Route path='/Cart' component={Cart} />
+        </Switch>
+        <Footer />
+      </CartProvider>
+    </ApiProvider>
   </BrowserRouter>,
   rootElement);
 registerServiceWorker();
