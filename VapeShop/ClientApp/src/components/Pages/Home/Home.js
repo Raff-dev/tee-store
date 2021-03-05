@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useState } from 'react';
 import { Grid, Row, Col } from 'react-bootstrap'
 
@@ -9,16 +9,18 @@ import { ProductsMesh } from './ProductsMesh'
 import { Resource } from '../../utilities/Resource';
 import { Loadable } from '../../utilities/Loadable';
 
+import { ApiContext } from '../../../contexts/ApiContext'
+
 const Home = (props) => {
   const allCategory = 'All products';
-  const apiUrl = 'http://127.0.0.1:8000/api/'
+  const api = useContext(ApiContext);
 
   const [category, setCategory] = useState(allCategory);
   const [collection, setCollection] = useState(null);
 
-
+  console.log(api)
   return (
-    <Resource path={apiUrl + 'Products'}>
+    <Resource path={api.products}>
       {({ payload, loading }) => {
         let { products, categories, collections } = payload;
         return (

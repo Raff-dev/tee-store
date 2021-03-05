@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
+import { ApiContext } from '../../../contexts/ApiContext';
 
 export const ImagePreview = ({ product, variant }) => {
-    const apiUrl = 'http://127.0.0.1:8000';
+    const api = useContext(ApiContext);
     const [imageIndex, setImageIndex] = useState(0);
 
     return (
@@ -14,12 +15,12 @@ export const ImagePreview = ({ product, variant }) => {
                 {variant.images.map((image, index) =>
                     <MiniatureImage
                         key={index}
-                        src={apiUrl + image.image}
+                        src={api.baseUrl + image.image}
                         onClick={() => setImageIndex(index)}
                         selected={imageIndex == index}
                     />
                 )}
-                <CurrentImage src={apiUrl + variant.images[imageIndex].image} />
+                <CurrentImage src={api.baseUrl + variant.images[imageIndex].image} />
             </ImagesContainer>
         </section>
     );
