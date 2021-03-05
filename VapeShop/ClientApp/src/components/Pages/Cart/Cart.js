@@ -11,10 +11,10 @@ import { Resource } from '../../utilities/Resource';
 const Cart = () => {
     const api = useContext(ApiContext);
     const cart = useContext(CartContext);
-    const ids = { ids: cart.ids };
+    const ids = { ids: Object.keys(cart.quantityMap) };
 
     return (
-        <Resource path={api.cart} data={ids} disabled={!!ids === false}>
+        <Resource path={api.cart} data={ids} disabled={!!ids['ids'] === false}>
             {({ payload, loading }) => {
                 console.log(payload)
                 console.log(cart)
@@ -23,10 +23,10 @@ const Cart = () => {
                         <Row>
                             <Title>YOUR CART</Title>
                             <Col lg={8} md={12}>
-                                <CartList />
+                                <CartList cartProducts={payload} />
                             </Col>
                             <Col lg={4} md={12}>
-                                <CartMenu />
+                                <CartMenu cartProducts={payload} />
                             </Col>
                         </Row>
                         <Row>
