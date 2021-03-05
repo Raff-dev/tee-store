@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Grid, Col, Row } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import { SocialIcon } from 'react-social-icons';
@@ -8,15 +8,15 @@ import { Loadable } from '../../utilities/Loadable';
 import { ImagePreview } from './ImagePreview';
 import { ProductMenu } from './ProductMenu';
 import styled from 'styled-components';
-
+import { ApiContext } from '../../../contexts/ApiContext'
 const ProductDetail = ({ match }) => {
     const { productId, variantId } = match.params;
-    const apiUrl = 'http://127.0.0.1:8000';
+    const api = useContext(ApiContext);
 
     console.log('here');
     return (
         <Grid className="mt-4">
-            <Resource path={apiUrl + '/api/Products/' + productId}>
+            <Resource path={api.products + productId}>
                 {({ payload, loading }) => {
                     let variant = loading || payload.variants.find(variant => variant.id == variantId);
                     console.log(payload)
