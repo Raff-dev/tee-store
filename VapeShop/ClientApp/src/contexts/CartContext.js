@@ -18,7 +18,7 @@ export const CartProvider = ({ children }) => {
 
     const addItem = (id) => {
         let cartCopy = [...items];
-        let existingItem = cartCopy.find(cartItem => cartItem.id === id);
+        let existingItem = cartCopy.find(cartItem => cartItem.id == id);
         if (existingItem) {
             existingItem.quantity += 1;
         } else {
@@ -33,9 +33,11 @@ export const CartProvider = ({ children }) => {
 
     const updateItem = (itemId, amount) => {
         let cartCopy = [...items];
-        let existentItem = cartCopy.find(cartItem => cartItem.id === itemId);
+        let existentItem = cartCopy.find(cartItem => cartItem.id == itemId);
+        console.log('existentItem')
+        console.log(existentItem)
         if (!existentItem) return;
-        existentItem.quantity += amount;
+        existentItem.quantity = amount;
         if (existentItem.quantity <= 0) {
             cartCopy = cartCopy.filter(cartItem => cartItem.id != itemId);
         }
@@ -52,11 +54,21 @@ export const CartProvider = ({ children }) => {
         localStorage.setItem('cart', cartString);
     }
 
+    const quantityMap = items.reduce(
+        (all, item) => ({ ...all, [item.id]: item.quantity }), {});
+
+    const subtotal = (cartProducts) => Math.round(cartProducts.reduce((sum, product) =>
+        sum + product.price * quantityMap[product.id], 0) * 100) / 100;
+
     const state = {
         items: items,
+        ids: items.map((item, index) => parseInt(item.id)),
+        shipping: 14.99,
         addItem: addItem,
+        subtotal: subtotal,
         updateItem: updateItem,
-        removeItem: removeItem
+        removeItem: removeItem,
+        quantityMap: quantityMap
     }
 
     return (
