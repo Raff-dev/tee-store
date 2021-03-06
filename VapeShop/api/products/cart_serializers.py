@@ -3,17 +3,17 @@ from .models import Size
 
 
 class CartSerializer(serializers.ModelSerializer):
-    name = serializers.StringRelatedField(many=False)
-    variant = serializers.StringRelatedField(many=False)
-    size = serializers.StringRelatedField(many=False)
+    name = serializers.StringRelatedField()
+    variant = serializers.StringRelatedField()
+    size = serializers.StringRelatedField()
 
-    price = serializers.StringRelatedField(many=False)
-    title = serializers.StringRelatedField(many=False)
+    price = serializers.StringRelatedField()
+    title = serializers.StringRelatedField()
     image = serializers.ImageField()
-    properties = serializers.StringRelatedField(many=False)
+    properties = serializers.StringRelatedField()
 
-    category = serializers.StringRelatedField(many=False)
-    collection = serializers.StringRelatedField(many=False)
+    category = serializers.StringRelatedField()
+    collection = serializers.StringRelatedField()
 
     class Meta:
         model = Size
