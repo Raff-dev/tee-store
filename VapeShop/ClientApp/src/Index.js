@@ -10,7 +10,7 @@ import {
 import Home from './components/Pages/Home/Home';
 import ProductDetail from './components/Pages/ProductDetail/ProductDetail';
 import Cart from './components/Pages/Cart/Cart'
-import Checkout from './components/Checkout/Checkout'
+import Checkout from './components/Pages/Checkout/Checkout'
 
 import Footer from './components/Footer/Footer'
 import NavMenu from './components/NavMenu/NavMenu'
