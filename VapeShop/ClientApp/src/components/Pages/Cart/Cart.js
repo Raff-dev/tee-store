@@ -4,35 +4,35 @@ import { Grid, Col, Row } from 'react-bootstrap';
 
 import { CartContext } from '../../../contexts/CartContext'
 import { ApiContext } from '../../../contexts/ApiContext'
-import { CartList } from './CartList'
+import { CartSummary } from './CartSummary'
 import { CartMenu } from './CartMenu'
 import { Resource } from '../../utilities/Resource';
+import { Loadable } from '../../utilities/Loadable';
 
 const Cart = () => {
     const api = useContext(ApiContext);
     const cart = useContext(CartContext);
-    const ids = { ids: Object.keys(cart.quantityMap) };
 
     return (
-        <Resource path={api.cart} data={ids} disabled={!!ids['ids'] === false}>
+        <Resource path={api.cartProducts} data={{ ids: cart.ids }} >
             {({ payload, loading }) => {
-                console.log(payload)
-                console.log(cart)
                 return (
-                    <Grid>
-                        <Row>
-                            <Title>YOUR CART</Title>
+                    <Loadable loading={loading}>
+                        <Grid>
                             <Col lg={8} md={12}>
-                                <CartList cartProducts={payload} />
+                                <Title>YOUR CART</Title>
+                                <CartSummary cartProducts={payload} />
                             </Col>
                             <Col lg={4} md={12}>
                                 <CartMenu cartProducts={payload} />
                             </Col>
-                        </Row>
-                        <Row>
-                            PROPOSED ITEMS
-                        </Row>
-                    </Grid>
+                        </Grid>
+                        <Grid>
+                            <Row>
+                                PROPOSED ITEMS
+                            </Row>
+                        </Grid>
+                    </Loadable>
                 );
             }}
         </Resource>

@@ -1,15 +1,13 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom'
-import { Button } from '@material-ui/core';
 import styled from 'styled-components';
 
-import { ApiContext } from '../../../contexts/ApiContext';
 import { CartContext } from '../../../contexts/CartContext';
 
 export const CartMenu = ({ cartProducts }) => {
-    const api = useContext(ApiContext);
     const cart = useContext(CartContext);
     const subtotal = cart.subtotal(cartProducts);
+
     return (
         <Container>
             <div>
