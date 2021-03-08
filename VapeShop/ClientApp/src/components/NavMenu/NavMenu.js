@@ -15,9 +15,9 @@ const NavMenu = () => {
                 <Nav.Link as={Link} to={'/'}>Logo</Nav.Link>
             </Navbar.Brand>
 
-            <Navbar.Brand>
+            <Brand>
                 VapeShop
-            </Navbar.Brand>
+            </Brand>
 
             <Nav.Item>
                 <Nav.Link as={Link} to="/Cart" >
@@ -28,6 +28,9 @@ const NavMenu = () => {
     );
 }
 
+const Brand = styled(Navbar.Brand)`
+    user-select:none;
+`;
 const MyNav = styled(Navbar)`
     position:sticky;
     margin:0;
@@ -35,6 +38,7 @@ const MyNav = styled(Navbar)`
     border: 0 solid #e5e7eb;
     background-color:transparent;
     background-image:none;
+
 `;
 
 export default NavMenu;
