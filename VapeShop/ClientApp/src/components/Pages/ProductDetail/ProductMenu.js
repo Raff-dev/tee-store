@@ -4,11 +4,12 @@ import Form from 'react-bootstrap/Form'
 import styled from 'styled-components';
 import { CartContext } from '../../../contexts/CartContext'
 
-export const ProductMenu = ({ product, variant, openSizeModal }) => {
+export const ProductMenu = ({ product, variant, openCartModal }) => {
     const cart = useContext(CartContext);
     const sizeRef = useRef();
 
     const addToCart = () => {
+        openCartModal();
         let id = sizeRef.current.value;
         cart.addItem(id);
     }

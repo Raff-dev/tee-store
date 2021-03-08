@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Grid, Col, Row } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import { SocialIcon } from 'react-social-icons';
@@ -9,8 +9,10 @@ import { ImagePreview } from './ImagePreview';
 import { ProductMenu } from './ProductMenu';
 import styled from 'styled-components';
 import { ApiContext } from '../../../contexts/ApiContext'
+import { CartModal } from './CartModal';
 const ProductDetail = ({ match }) => {
     const { productId, variantId } = match.params;
+    const [cartModalOpen, setCartModalOpen] = useState(false);
     const api = useContext(ApiContext);
 
     console.log('here');
@@ -22,13 +24,14 @@ const ProductDetail = ({ match }) => {
                     console.log(payload)
                     return (
                         <Loadable loading={loading}>
+                            <CartModal isOpen={cartModalOpen} closeCartModal={() => setCartModalOpen(false)} />
                             <Grid>
                                 <Row >
                                     <Col lg={8} md={12} className="d-flex justify-content-center">
                                         <ImagePreview product={payload} variant={variant} />
                                     </Col>
                                     <Col lg={4} md={12}>
-                                        <ProductMenu product={payload} variant={variant} />
+                                        <ProductMenu product={payload} variant={variant} openCartModal={() => setCartModalOpen(true)} />
                                     </Col>
                                 </Row >
                                 <SocialIcons >
