@@ -53,6 +53,11 @@ export const CartProvider = ({ children }) => {
         let cartString = JSON.stringify(cartCopy);
         localStorage.setItem('cart', cartString);
     }
+    const clearItems = () => {
+        localStorage.cart = undefined;
+        localCart = null;
+        setItems([]);
+    }
 
     const quantityMap = items.reduce(
         (all, item) => ({ ...all, [item.id]: item.quantity }), {});
@@ -68,6 +73,7 @@ export const CartProvider = ({ children }) => {
         subtotal: subtotal,
         updateItem: updateItem,
         removeItem: removeItem,
+        clearItems: clearItems,
         quantityMap: quantityMap
     }
 
