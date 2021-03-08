@@ -9,8 +9,8 @@ export const ApiProvider = ({ children }) => {
         baseUrl: baseUrl,
         apiUrl: apiUrl,
         products: apiUrl + 'Products/',
-        sizes: apiUrl + 'Sizes/',
-        cart: apiUrl + 'Sizes/cart_products/',
+        cart: apiUrl + 'Cart/',
+        cartProducts: apiUrl + 'Cart/cart_products/',
         categories: apiUrl + 'Categories/',
         collections: apiUrl + 'Collections/',
     }
