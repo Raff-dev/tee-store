@@ -6,7 +6,7 @@ import { ButtonGroup, Button } from '@material-ui/core';
 import { ApiContext } from '../../../contexts/ApiContext'
 import { CartContext } from '../../../contexts/CartContext'
 
-export const CartList = ({ cartProducts }) => {
+export const CartSummary = ({ cartProducts }) => {
     const api = useContext(ApiContext);
     const cart = useContext(CartContext);
 
@@ -44,7 +44,6 @@ export const CartList = ({ cartProducts }) => {
                     </QuantityMenu>
                 </ListEntry>
             )}
-
         </section>
     );
 }
@@ -58,19 +57,21 @@ const RemoveButton = styled.div`
 
 const ListEntry = styled.div`
     display:flex;
-    justify-content:space-between
+    justify-content:space-between;
 `;
 
 const ProductImage = styled.img`
     width:100px;
-
 `;
 const ProductDisplay = styled.div`
     display: flex;
 `;
 
-
 const Input = styled.input`
+    border:none;
+    width:50px;
+    text-align:right;
+    border-color:transparent;
 `;
 
 const QuantityMenu = styled.div`
