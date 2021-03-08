@@ -183,6 +183,7 @@ dmypy.json
 
 # Django stuff:
 **/secret.py
+**/secret.js
 
 # Flask stuff:
 
