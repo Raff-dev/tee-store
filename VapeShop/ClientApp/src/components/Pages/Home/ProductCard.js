@@ -18,7 +18,6 @@ export const ProductCard = ({ product, variant }) => {
 const Price = styled.span`
     color:rgb(196, 131, 233);
     font-size:1.1rem;
-
 `;
 
 const Name = styled.span`
@@ -34,7 +33,6 @@ const Card = styled(Link)`
     flex-direction: column;
     text-align: center;
     margin-bottom:5vh;
-
     animation: fadeIn 0.4s forwards;
 
     @-webkit-keyframes fadeIn {
