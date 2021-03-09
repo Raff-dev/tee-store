@@ -1,14 +1,17 @@
 import React, { useRef, useContext } from 'react';
-import { Col, Button } from 'react-bootstrap'
 import Form from 'react-bootstrap/Form'
 import styled from 'styled-components';
+
+import { Button } from '../../utilities/ThemeComponents'
+
 import { CartContext } from '../../../contexts/CartContext'
 
 export const ProductMenu = ({ product, variant, openCartModal }) => {
     const cart = useContext(CartContext);
     const sizeRef = useRef();
 
-    const addToCart = () => {
+    const addToCart = (event) => {
+        event.preventDefault();
         openCartModal();
         let id = sizeRef.current.value;
         cart.addItem(id);
@@ -63,7 +66,7 @@ export const ProductMenu = ({ product, variant, openCartModal }) => {
                     </ProductOption>
                 </Form.Row>
                 <Form.Row className="justify-content-center">
-                    <SubmitButton onClick={addToCart}>ADD TO CART</SubmitButton>
+                    <Button type="button" primary onClick={addToCart}>ADD TO CART</Button>
                 </Form.Row>
             </Form>
         </section >
@@ -89,21 +92,3 @@ const ProductOption = styled.div`
     width:100%;
 `;
 
-const SubmitButton = styled.div`
-    color: white;
-    background-color: rgb(196, 131, 233);
-    border: 1 solid rgba(196, 131, 233,0.6);
-    border-radius:5px;
-    text-align:center;
-    padding: 12px;
-    margin-top:30px;
-    width:100%;
-    font-size:1.2rem;
-    font-weight: 300;
-    font-family: system-ui;
-
-    :hover{
-        opacity:0.8;
-        cursor:pointer;
-    }
-`;

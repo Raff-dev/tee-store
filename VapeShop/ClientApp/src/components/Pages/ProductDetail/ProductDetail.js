@@ -3,6 +3,8 @@ import { Grid, Col, Row } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import { SocialIcon } from 'react-social-icons';
 
+import { Text, PageSection, PageTitle, Button } from '../../utilities/ThemeComponents'
+
 import { Resource } from '../../utilities/Resource';
 import { Loadable } from '../../utilities/Loadable';
 import { ImagePreview } from './ImagePreview';
@@ -15,36 +17,32 @@ const ProductDetail = ({ match }) => {
     const [cartModalOpen, setCartModalOpen] = useState(false);
     const api = useContext(ApiContext);
 
-    console.log('here');
     return (
-        <Grid className="mt-4">
+        <PageSection fluid className="mt-4">
             <Resource path={api.products + productId}>
                 {({ payload, loading }) => {
                     let variant = loading || payload.variants.find(variant => variant.id == variantId);
-                    console.log(payload)
                     return (
                         <Loadable loading={loading}>
                             <CartModal isOpen={cartModalOpen} closeCartModal={() => setCartModalOpen(false)} />
-                            <Grid>
-                                <Row >
-                                    <Col lg={8} md={12} className="d-flex justify-content-center">
-                                        <ImagePreview product={payload} variant={variant} />
-                                    </Col>
-                                    <Col lg={4} md={12}>
-                                        <ProductMenu product={payload} variant={variant} openCartModal={() => setCartModalOpen(true)} />
-                                    </Col>
-                                </Row >
-                                <SocialIcons >
-                                    <SocialIcon url="http://facebook.com/" />
-                                    <SocialIcon url="http://twitter.com/" />
-                                    <SocialIcon url="https://mail.google.com/" />
-                                </SocialIcons>
-                            </Grid>
+                            <Row >
+                                <Col lg={8} md={12} className="d-flex justify-content-center">
+                                    <ImagePreview product={payload} variant={variant} />
+                                </Col>
+                                <Col lg={4} md={12}>
+                                    <ProductMenu product={payload} variant={variant} openCartModal={() => setCartModalOpen(true)} />
+                                </Col>
+                            </Row >
+                            <SocialIcons >
+                                <SocialIcon url="http://facebook.com/" />
+                                <SocialIcon url="http://twitter.com/" />
+                                <SocialIcon url="https://mail.google.com/" />
+                            </SocialIcons>
                         </Loadable>
                     );
                 }}
             </Resource>
-        </Grid>
+        </PageSection>
     );
 }
 

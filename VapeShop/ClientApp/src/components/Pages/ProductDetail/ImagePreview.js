@@ -1,5 +1,8 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
+
+import { Text, PageSection, PageTitle, Button } from '../../utilities/ThemeComponents'
+
 import { ApiContext } from '../../../contexts/ApiContext';
 
 export const ImagePreview = ({ product, variant }) => {
@@ -8,9 +11,9 @@ export const ImagePreview = ({ product, variant }) => {
 
     return (
         <section>
-            <Name>
+            <PageTitle>
                 {product.name}
-            </Name>
+            </PageTitle>
             <ImagesContainer>
                 {variant.images.map((image, index) =>
                     <MiniatureImage
@@ -26,12 +29,7 @@ export const ImagePreview = ({ product, variant }) => {
     );
 }
 
-const Name = styled.div`
-    font-size:1.5rem;
-    font-weight:600;
-    color:rgba(0,0,0,0.7);
-    padding-bottom:20px;
-`;
+
 const CurrentImage = styled.img`
 
 `;
