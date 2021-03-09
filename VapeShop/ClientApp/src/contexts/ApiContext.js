@@ -13,6 +13,7 @@ export const ApiProvider = ({ children }) => {
         cartProducts: apiUrl + 'Cart/cart_products/',
         categories: apiUrl + 'Categories/',
         collections: apiUrl + 'Collections/',
+        checkout: apiUrl + 'Cart/create_payment_session/'
     }
 
     return (
