@@ -1,39 +1,37 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext } from 'react';
+import axios from 'axios'
 import { useStripe, useElements, P24BankElement } from '@stripe/react-stripe-js';
+
+import { Grid, Col } from 'react-bootstrap';
+import Form from 'react-bootstrap/Form';
+import styled from 'styled-components';
+
+import { Button } from '../../utilities/ThemeComponents'
 
 import { ApiContext } from '../../../contexts/ApiContext'
 import { CartContext } from '../../../contexts/CartContext'
 
-import { Grid, Col, Button } from 'react-bootstrap';
-import Form from 'react-bootstrap/Form';
-import styled from 'styled-components';
 
 export const CheckoutForm = () => {
     const api = useContext(ApiContext);
     const cart = useContext(CartContext);
-    const ids = { ids: Object.keys(cart.quantityMap) };
 
     const stripe = useStripe();
     const elements = useElements();
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        if (!stripe || !elements) {
-            return;
-        }
-        const formData = new FormData(event.target);
-        const formDataObj = Object.fromEntries(formData.entries())
-        console.log(formDataObj)
+    const getPaymentSession = async () => {
+        console.log(api.checkout)
+        return await axios.post(api.checkout, cart.quantityMap)
+            .then(res => {
+                console.log(res.data)
+                return res.data['clientSecret']
+            });
 
-        const payMentSession = 'pi_1ISLLIJbP5kYqOPtXPlIkpxh_secret_6RSWPGuLmrY4vLAPNPxkwgP9g';
-
+    }
+    const confirmPayment = async (paymentSession, formDataObj) => {
         const p24Bank = elements.getElement(P24BankElement);
-        if (!p24Bank) {
-            console.log('p24Bank is null');
-            return;
-        }
-        console.log(p24Bank)
-        const { error } = await stripe.confirmP24Payment(payMentSession, {
+
+        const { error } = await stripe.confirmP24Payment(paymentSession, {
             payment_method: {
                 p24: p24Bank,
                 billing_details: {
@@ -60,6 +58,19 @@ export const CheckoutForm = () => {
         if (error) {
             console.log(error.message);
         }
+    }
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        if (!stripe || !elements) {
+            return;
+        }
+        const formData = new FormData(event.target);
+        const formDataObj = Object.fromEntries(formData.entries());
+        console.log(formDataObj)
+        getPaymentSession()
+            .then(paymentSession => confirmPayment(paymentSession, formDataObj));
+
     };
     return (
         <FormContainer>
@@ -121,7 +132,7 @@ export const CheckoutForm = () => {
                 <Form.Group id="formGridCheckbox">
                     <Form.Check type="checkbox" label="I agree to the terms & condition" name="agreement" />
                 </Form.Group>
-                <Button variant="primary" type="submit" disabled={!stripe} >
+                <Button primary type="submit" disabled={!stripe} >
                     CONTINUE TO PAYMENT
                 </Button>
             </Form>
