@@ -1,10 +1,14 @@
 import React, { useContext } from 'react';
 
 import styled from 'styled-components';
-import { ButtonGroup, Button } from '@material-ui/core';
+import { ButtonGroup, } from '@material-ui/core';
+
+import { Text, PageSection, PageTitle, ListEntry, Button } from '../../utilities/ThemeComponents'
 
 import { ApiContext } from '../../../contexts/ApiContext'
 import { CartContext } from '../../../contexts/CartContext'
+
+import { Loadable } from '../../utilities/Loadable';
 
 export const CartSummary = ({ cartProducts }) => {
     const api = useContext(ApiContext);
@@ -19,7 +23,7 @@ export const CartSummary = ({ cartProducts }) => {
                         <div>
                             <p>{product.collection}</p>
                             <p>{product.title}</p>
-                            <p>${product.properties}</p>
+                            <p>{cart.currency}{product.properties}</p>
                         </div>
                     </ProductDisplay>
 
@@ -49,16 +53,16 @@ export const CartSummary = ({ cartProducts }) => {
 }
 
 const RemoveButton = styled.div`
+    display:flex;
+    justify-content:center;
+    padding-top:5px;
     :hover{
         cursor: pointer;
         text-decoration:underline;
     }
 `;
 
-const ListEntry = styled.div`
-    display:flex;
-    justify-content:space-between;
-`;
+
 
 const ProductImage = styled.img`
     width:100px;
@@ -72,6 +76,16 @@ const Input = styled.input`
     width:50px;
     text-align:right;
     border-color:transparent;
+    outline:none;
+    -moz-appearance: textfield;
+    :-webkit-outer-spin-button{
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    :-webkit-inner-spin-button{
+        -webkit-appearance: none;
+        margin: 0;
+    }
 `;
 
 const QuantityMenu = styled.div`
