@@ -10,6 +10,7 @@ import { Button } from '../../utilities/ThemeComponents'
 
 import { ApiContext } from '../../../contexts/ApiContext'
 import { CartContext } from '../../../contexts/CartContext'
+import { theme } from '../../../contexts/ThemeContext';
 
 
 export const CheckoutForm = () => {
@@ -76,62 +77,66 @@ export const CheckoutForm = () => {
         <FormContainer>
             <Form onSubmit={handleSubmit}>
                 <Form.Row>
-                    <Form.Group as={Col} >
-                        <Form.Label>First Name</Form.Label>
+                    <Form.Group as={Col} sm={6}>
+                        <Label>First Name</Label>
                         <Form.Control type="text" name="firstName" placeholder="First Name" />
                     </Form.Group>
 
-                    <Form.Group as={Col} >
-                        <Form.Label>Last Name</Form.Label>
+                    <Form.Group as={Col} sm={6}>
+                        <Label>Last Name</Label>
                         <Form.Control type="text" name="lastName" placeholder="Last Name" />
                     </Form.Group>
                 </Form.Row>
 
                 <Form.Group >
-                    <Form.Label>Email</Form.Label>
+                    <Label>Email</Label>
                     <Form.Control type="email" name="email" placeholder="Email" />
                 </Form.Group>
 
-                <Form.Group >
-                    <Form.Label>Address</Form.Label>
-                    <Form.Control placeholder="Address" name="address1" />
-                </Form.Group>
-
-                <Form.Group >
-                    <Form.Label>Apt. / Suite</Form.Label>
-                    <Form.Control placeholder="Apt. / Suite" name="address2" />
-                </Form.Group>
+                <Form.Row>
+                    <Form.Group as={Col} sm={8}>
+                        <Label>Address</Label>
+                        <Form.Control placeholder="Address" name="address1" />
+                    </Form.Group>
+                    <Form.Group as={Col}>
+                        <Label>Apt. / Suite</Label>
+                        <Form.Control placeholder="Apt. / Suite" name="address2" />
+                    </Form.Group>
+                </Form.Row>
 
                 <Form.Row>
-                    <Form.Group as={Col} >
-                        <Form.Label>City</Form.Label>
+                    <Form.Group as={Col} sm={8}>
+                        <Label>City</Label>
                         <Form.Control name="city" placeholder="City" />
                     </Form.Group>
-
                     <Form.Group as={Col} >
-                        <Form.Label>State</Form.Label>
-                        <Form.Control type="text" placeholder="State" name="state" />
-                    </Form.Group>
-
-                </Form.Row>
-                <Form.Row>
-                    <Form.Group as={Col} >
-                        <Form.Label>Zip</Form.Label>
+                        <Label>Zip</Label>
                         <Form.Control name="postalCode" placeholder="ZIP" />
                     </Form.Group>
-                    <Form.Group as={Col} >
-                        <Form.Label>Country</Form.Label>
+                </Form.Row>
+
+                <Form.Row>
+                    <Form.Group as={Col} sm={6} >
+                        <Label>Country</Label>
                         <Form.Control name="country" placeholder="Country" />
+                    </Form.Group>
+                    <Form.Group as={Col} sm={6}>
+                        <Label>State</Label>
+                        <Form.Control type="text" placeholder="State" name="state" />
+                    </Form.Group>
+                </Form.Row>
+                <Form.Row className="d-block ml-1">
+                    <Form.Group as={Col}>
+                        <Label>Payment Method</Label>
+                        <StyledP24BankElement className="mt-2" options={P24_ELEMENT_OPTIONS} />
                     </Form.Group>
                 </Form.Row>
                 <Form.Row>
-                    <Form.Label>Payment Method</Form.Label>
-                    <P24BankSection />
+                    <Form.Group as={Col} >
+                        <Form.Check type="checkbox" label="I agree to the terms & condition" name="agreement" />
+                    </Form.Group>
                 </Form.Row>
 
-                <Form.Group id="formGridCheckbox">
-                    <Form.Check type="checkbox" label="I agree to the terms & condition" name="agreement" />
-                </Form.Group>
                 <Button primary type="submit" disabled={!stripe} >
                     CONTINUE TO PAYMENT
                 </Button>
@@ -139,6 +144,14 @@ export const CheckoutForm = () => {
         </FormContainer >
     );
 };
+
+const Label = styled.span`
+    font-weight:600;
+    color: ${props => theme.textInfo};
+    text-transform:lowercase;
+    opacity:0.9;
+    font-variant:small-caps;
+`;
 
 const P24_ELEMENT_OPTIONS = {
     // Custom styling can be passed to options when creating an Element
@@ -154,14 +167,7 @@ const P24_ELEMENT_OPTIONS = {
     },
 };
 
-function P24BankSection() {
-    return (
-        <label>
-            P24 Bank
-            <StyledP24BankElement options={P24_ELEMENT_OPTIONS} />
-        </label>
-    );
-};
+
 const StyledP24BankElement = styled(P24BankElement)`
     height: 40px;
     width:400px;
