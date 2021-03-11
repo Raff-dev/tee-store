@@ -74,7 +74,8 @@ export const CartProvider = ({ children }) => {
         updateItem: updateItem,
         removeItem: removeItem,
         clearItems: clearItems,
-        quantityMap: quantityMap
+        quantityMap: quantityMap,
+        currency: "€"
     }
 
     return (
