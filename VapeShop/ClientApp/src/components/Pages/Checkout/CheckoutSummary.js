@@ -1,9 +1,12 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { Resource } from '../../utilities/Resource'
+import { Text, PageSection, PageTitle, ListEntry, Button } from '../../utilities/ThemeComponents'
+
 import { ApiContext } from '../../../contexts/ApiContext'
 import { CartContext } from '../../../contexts/CartContext'
+
+import { Resource } from '../../utilities/Resource'
 
 export const CheckoutSummary = () => {
     const api = useContext(ApiContext);
@@ -36,18 +39,6 @@ export const CheckoutSummary = () => {
     );
 };
 
-const RemoveButton = styled.div`
-    :hover{
-        cursor: pointer;
-        text-decoration:underline;
-    }
-`;
-
-const ListEntry = styled.div`
-    display:flex;
-    justify-content:space-between;
-`;
-
 const ProductImage = styled.img`
     width:100px;
 `;
@@ -56,8 +47,3 @@ const ProductDisplay = styled.div`
 `;
 
 
-const Input = styled.input`
-`;
-
-const QuantityMenu = styled.div`
-`;
