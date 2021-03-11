@@ -82,7 +82,7 @@ class Variant(models.Model):
                 Size.objects.create(size=size_name, variant=self)
 
     def __str__(self) -> str:
-        return f'{self.product.category} - {self.product} - {self.name}'
+        return f'{self.name}'
 
     class Meta:
         ordering = ['product__collection__created_at', 'product__category__name', 'name']
@@ -144,8 +144,8 @@ class Size(models.Model):
         return self.variant.product.price
 
     @property
-    def properties(self):
-        return f'{self.price} - {self.variant.name} - {self.get_size_display()}'
+    def size_label(self):
+        return self.get_size_display().split("'")[3]
 
     @property
     def image(self):

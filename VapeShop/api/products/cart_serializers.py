@@ -6,6 +6,7 @@ class CartSerializer(serializers.ModelSerializer):
     name = serializers.StringRelatedField()
     variant = serializers.StringRelatedField()
     size = serializers.StringRelatedField()
+    size_label = serializers.StringRelatedField()
 
     price = serializers.StringRelatedField()
     title = serializers.StringRelatedField()

@@ -25,7 +25,7 @@ export const CheckoutSummary = () => {
                                     <div>
                                         <p>{product.collection}</p>
                                         <p>{product.title}</p>
-                                        <p>${product.properties}</p>
+                                        <p>{`${product.variant} - ${product.size_label}`}</p>
                                         <p>{cart.quantityMap[product.id]}</p>
                                     </div>
                                 </ProductDisplay>
@@ -45,5 +45,7 @@ const ProductImage = styled.img`
 const ProductDisplay = styled.div`
     display: flex;
 `;
+
+
 
 

@@ -21,9 +21,15 @@ export const CartSummary = ({ cartProducts }) => {
                     <ProductDisplay>
                         <ProductImage src={api.baseUrl + product.image} />
                         <div>
-                            <p>{product.collection}</p>
-                            <p>{product.title}</p>
-                            <p>{cart.currency}{product.properties}</p>
+                            <p>
+                                <Text className="font-weight-bold">{product.collection}</Text>
+                            </p>
+                            <p>
+                                <Text muted>{product.title}</Text>
+                            </p>
+                            <p>
+                                <Text>{cart.currency}{`${product.price} - ${product.variant} - ${product.size_label}`}</Text>
+                            </p>
                         </div>
                     </ProductDisplay>
 
