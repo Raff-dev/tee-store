@@ -1,55 +1,48 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom'
+import { withRouter } from "react-router-dom";
+
 import styled from 'styled-components';
+import { Text, PageSection, PageTitle, ListEntry, Button } from '../../utilities/ThemeComponents'
 
 import { CartContext } from '../../../contexts/CartContext';
 
-export const CartMenu = ({ cartProducts }) => {
+import { Loadable } from '../../utilities/Loadable';
+
+export const CartMenu = withRouter(({ history, cartProducts, loading }) => {
     const cart = useContext(CartContext);
     const subtotal = cart.subtotal(cartProducts);
+    const total = Math.round((cart.shipping + subtotal) * 100) / 100;
 
     return (
-        <Container>
-            <div>
-                <span>Subtotal</span>
-                <span>{subtotal}</span>
-            </div>
-            <div>
-                <span>Shipping</span>
-                <span>{cart.shipping}</span>
-            </div>
-            <div>
-                <span>Total</span>
-                <span>{cart.shipping + subtotal}</span>
-            </div>
-            <Checkout to="/Checkout">
+        <Container className="px-4 py-3">
+            <h4>
+                <ListEntry>
+                    <Text >Subtotal</Text>
+                    <Loadable loading={loading}>
+                        <Text info>{cart.currency}{subtotal}</Text>
+                    </Loadable>
+                </ListEntry>
+                <ListEntry>
+                    <Text >Shipping</Text>
+                    <Loadable loading={loading}>
+                        <Text info>{cart.currency}{cart.shipping}</Text>
+                    </Loadable>
+                </ListEntry>
+                <ListEntry>
+                    <Text className="font-weight-bold">Total</Text>
+                    <Loadable loading={loading}>
+                        <Text className="font-weight-bold">{cart.currency}{total}</Text>
+                    </Loadable>
+                </ListEntry>
+            </h4>
+            <Button primary className="mt-4" onClick={() => history.push('/Checkout')}>
                 CHECKOUT
-            </Checkout>
+            </Button>
         </Container>
     );
-}
-const Checkout = styled(Link)`
-    color: white;
-    background-color: rgb(196, 131, 233);
-    border: 1 solid rgba(196, 131, 233,0.6);
-    border-radius:5px;
-    text-align:center;
-    padding: 12px;
-    margin-top:30px;
-    width:100%;
-    font-size:1.2rem;
-    font-weight: 300;
-    font-family: system-ui;
-
-    :hover{
-        text-decoration:none;
-        color:white;
-        opacity:0.8;
-        cursor:pointer;
-    }
-`;
+})
 
 
 const Container = styled.div`
-    background-color:#3333;
+    background-color:#f8fafc;
 `;
