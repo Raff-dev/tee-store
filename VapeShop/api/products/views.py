@@ -50,10 +50,10 @@ class CartViewSet(viewsets.GenericViewSet):
         try:
             ids = [int(id) for id in request.data.keys()]
             sizes = Size.objects.filter(id__in=ids)
-            amount = int(reduce(lambda _, size: size.price*request.data[str(size.id)]*100, sizes, 0))
+            amount = int(reduce(lambda total, size: total+size.price*request.data[str(size.id)]*100, sizes, 0))
             intent = stripe.PaymentIntent.create(
                 amount=amount,
-                currency='pln',
+                currency='eur',
                 payment_method_types=['p24'],
             )
             result = {'clientSecret': intent['client_secret']}
