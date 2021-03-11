@@ -27,20 +27,21 @@ export const CartSummary = ({ cartProducts }) => {
                         </div>
                     </ProductDisplay>
 
-                    <QuantityMenu>
+                    <QuantityMenu >
                         <ButtonGroup variant="contained" color="primary" >
-                            <Button onClick={() => {
+                            <QuantityButton onClick={() => {
                                 cart.updateItem(product.id, cart.quantityMap[product.id] - 1)
                             }}>
                                 -
-                            </Button>
+                            </QuantityButton>
                             <Input
                                 type="number"
+
                                 value={cart.quantityMap[product.id]}
                             />
-                            <Button onClick={() => cart.addItem(product.id)}>
+                            <QuantityButton onClick={() => cart.addItem(product.id)}>
                                 +
-                            </Button>
+                            </QuantityButton>
                         </ButtonGroup>
                         <RemoveButton onClick={() => cart.removeItem(product.id)}>
                             Remove
@@ -51,6 +52,10 @@ export const CartSummary = ({ cartProducts }) => {
         </section>
     );
 }
+const QuantityButton = styled(Button)`
+    outline: none;
+    border:none !important;
+`;
 
 const RemoveButton = styled.div`
     display:flex;
@@ -62,8 +67,6 @@ const RemoveButton = styled.div`
     }
 `;
 
-
-
 const ProductImage = styled.img`
     width:100px;
 `;
@@ -72,7 +75,7 @@ const ProductDisplay = styled.div`
 `;
 
 const Input = styled.input`
-    border:none;
+    border:none !important;
     width:50px;
     text-align:right;
     border-color:transparent;
@@ -89,4 +92,5 @@ const Input = styled.input`
 `;
 
 const QuantityMenu = styled.div`
+border:none;
 `;
