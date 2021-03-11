@@ -84,5 +84,6 @@ export const ListEntry = styled.div`
     display:flex;
     justify-content:space-between;
     border-bottom: 1px solid rgb(241, 245, 248);
-    margin-bottom:20px;
+    padding-bottom:15px;
+    margin-top:20px;
 `;
