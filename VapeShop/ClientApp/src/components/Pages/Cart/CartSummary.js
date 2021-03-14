@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef } from 'react';
 
 import styled from 'styled-components';
 import { ButtonGroup, } from '@material-ui/core';
@@ -13,6 +13,22 @@ import { Loadable } from '../../utilities/Loadable';
 export const CartSummary = ({ cartProducts }) => {
     const api = useContext(ApiContext);
     const cart = useContext(CartContext);
+    const inputRefs = [];
+
+    for (let i = 0; i < cartProducts.length; i++) {
+        let ref = useRef();
+        inputRefs.push(ref);
+    }
+
+    const changeProductAmount = (id, event, index) => {
+        let amount = parseInt(event.target.value, 10);
+        console.log('amount' + amount)
+        if (amount >= 0) {
+            cart.updateItem(id, amount);
+        } else {
+            inputRefs[index].current.value = cart.quantityMap[id];
+        }
+    }
 
     return (
         <section>
@@ -36,16 +52,23 @@ export const CartSummary = ({ cartProducts }) => {
                     <QuantityMenu >
                         <ButtonGroup variant="contained" color="primary" >
                             <QuantityButton onClick={() => {
-                                cart.updateItem(product.id, cart.quantityMap[product.id] - 1)
+                                cart.updateItem(product.id, cart.quantityMap[product.id] - 1);
+                                inputRefs[index].current.value = cart.quantityMap[product.id] - 1;
                             }}>
                                 -
                             </QuantityButton>
                             <Input
+                                ref={inputRefs[index]}
                                 type="number"
-
-                                value={cart.quantityMap[product.id]}
+                                defaultValue={cart.quantityMap[product.id]}
+                                onBlur={(e) => {
+                                    changeProductAmount(product.id, e, index)
+                                }}
                             />
-                            <QuantityButton onClick={() => cart.addItem(product.id)}>
+                            <QuantityButton onClick={() => {
+                                cart.addItem(product.id)
+                                inputRefs[index].current.value = cart.quantityMap[product.id] + 1;
+                            }}>
                                 +
                             </QuantityButton>
                         </ButtonGroup>
@@ -83,7 +106,7 @@ const ProductDisplay = styled.div`
 const Input = styled.input`
     border:none !important;
     width:50px;
-    text-align:right;
+    text-align:center;
     border-color:transparent;
     outline:none;
     -moz-appearance: textfield;
@@ -98,5 +121,10 @@ const Input = styled.input`
 `;
 
 const QuantityMenu = styled.div`
-border:none;
+    border:none;
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+    }
 `;
