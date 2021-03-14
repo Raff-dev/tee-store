@@ -12,16 +12,16 @@ import { theme } from '../../contexts/ThemeContext';
 
 const NavMenu = () => {
     const cart = useContext(CartContext);
+    const logoUrl = 'images/logo.png'
 
     return (
-        <MyNav fixed="top">
+        <MyNav fluid fixed="top">
             <Navbar.Brand>
-                <Nav.Link as={Link} to={'/'}>Logo</Nav.Link>
+                <Nav.Link as={Link} to={'/'} style={{ position: "relative" }}>
+                    <Logo src={logoUrl} />
+                </Nav.Link>
             </Navbar.Brand>
 
-            <Brand>
-                VapeShop
-            </Brand>
 
             <Nav.Item>
                 <Nav.Link as={Link} style={{ color: theme.textInfo }} to="/Cart" >
@@ -34,13 +34,19 @@ const NavMenu = () => {
     );
 }
 
-const Brand = styled(Navbar.Brand)`
-    user-select:none;
+const Logo = styled.img`
+    position: absolute;
+    height: inherit;
+    top:0;
+    left:-50%;
 `;
+
 
 const MyNav = styled(Navbar)`
     position:sticky;
     margin:0;
+    justify-content:space-between;
+    display:flex;
 
     border: 0 solid #e5e7eb;
     background-color:transparent;
