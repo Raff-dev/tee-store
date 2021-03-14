@@ -59,7 +59,7 @@ export const ProductMenu = ({ product, variant, openCartModal }) => {
                                 custom
                             >
                                 {variant.sizes.map((size, index) =>
-                                    <option value={size.id} >{size.size}</option>
+                                    <option value={size.id} key={size.id}>{size.size_label}</option>
                                 )}
                             </Form.Control>
                         </div>
