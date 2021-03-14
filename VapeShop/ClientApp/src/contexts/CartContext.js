@@ -67,7 +67,7 @@ export const CartProvider = ({ children }) => {
 
     const state = {
         items: items,
-        ids: items.map((item, index) => parseInt(item.id)),
+        ids: items.map((item, index) => parseInt(item.id, 10)),
         shipping: 14.99,
         addItem: addItem,
         subtotal: subtotal,
