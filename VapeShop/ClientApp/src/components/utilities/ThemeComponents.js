@@ -49,7 +49,7 @@ export const Button = styled.button`
         background-color: ${getButtonColor};
         color: ${getButtonTextColor};
         box-shadow: inset 0px 0px 400px 110px rgba(0, 0, 0, .1);
-        border-color: #efefef;
+        border-color: ${theme.borderPrimary};
         cursor: pointer;
     }
     :active{
