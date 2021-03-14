@@ -5,7 +5,7 @@ from .models import Image, Product, Category, Collection, Size, Variant
 class SizeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Size
-        exclude = ['variant']
+        fields = ['id', 'size_label', 'quantity']
 
 
 class ImageSerializer(serializers.ModelSerializer):
