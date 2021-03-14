@@ -24,8 +24,6 @@ import { ApiProvider } from './contexts/ApiContext'
 import { publishableKey } from './secret'
 
 import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/css/bootstrap-theme.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.scss';
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
@@ -52,3 +50,4 @@ ReactDOM.render(
   </BrowserRouter>,
   rootElement);
 registerServiceWorker();
+
