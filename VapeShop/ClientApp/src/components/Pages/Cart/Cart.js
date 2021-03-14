@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Grid, Col, Row } from 'react-bootstrap';
+import { withRouter } from "react-router-dom";
 
 import { Text, PageSection, PageTitle, Button } from '../../utilities/ThemeComponents'
 
@@ -11,7 +12,7 @@ import { CartSummary } from './CartSummary'
 import { CartMenu } from './CartMenu'
 import { Resource } from '../../utilities/Resource';
 
-const Cart = () => {
+const Cart = withRouter(({ history }) => {
     const api = useContext(ApiContext);
     const cart = useContext(CartContext);
 
@@ -19,6 +20,17 @@ const Cart = () => {
         <PageSection>
             <Resource path={api.cartProducts} data={{ ids: cart.ids }} >
                 {({ payload, loading }) => {
+                    if (payload.length === 0) {
+                        return (
+                            <Row className="justify-content-center">
+                                <Col sm={12} md={4} lg={3} className="py-3 text-center">
+                                    <Text info className="font-weight-bold py-3"><h4>Your cart is empty</h4></Text>
+                                    <Button primary onClick={() => history.push('/')}>Go Shopping</Button>
+                                </Col>
+                            </Row>
+                        );
+                    }
+
                     return (
                         <div>
                             <Row>
@@ -41,11 +53,6 @@ const Cart = () => {
             </Resource>
         </PageSection>
     );
-};
-
-const Title = styled.span`
-    font-size: 1.2rem;
-    font-weight:500;
-`;
+});
 
 export default Cart;
