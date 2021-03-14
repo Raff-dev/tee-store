@@ -6,8 +6,9 @@ export const theme = {
     borderColor: "",
     primary: "",
     secondary: "",
-    bgPrimary: "#fff",
-    bgSecondary: "",
+    bgPrimary: "rgb(255,255,255)",
+    bgSecondary: "rgb(252,252,252)",
+    bgTrietary: "rgb(246,246,246)",
 
     btnPrimary: "#c60021",
     btnTextPrimary: "#fefefe",
@@ -20,6 +21,9 @@ export const theme = {
     textHighlight: "#c60021",
     textMuted: "rgb(135, 149, 161)",
     textInfo: "rgb(96, 111, 123)",
+
+    borderPrimary: "rgb(238,238,238)",
+    borderSecondary: "",
 
 }
 
