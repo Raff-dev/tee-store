@@ -4,7 +4,8 @@ from .models import Size
 
 class CartSerializer(serializers.ModelSerializer):
     name = serializers.StringRelatedField()
-    variant = serializers.StringRelatedField()
+    variant_name = serializers.StringRelatedField()
+    product_id = serializers.StringRelatedField()
     size = serializers.StringRelatedField()
     size_label = serializers.StringRelatedField()
 

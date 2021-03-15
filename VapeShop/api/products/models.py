@@ -132,8 +132,16 @@ class Size(models.Model):
         return self.variant.product.category
 
     @property
+    def product_id(self):
+        return self.variant.product.id
+
+    @property
     def collection(self) -> str:
         return self.variant.product.collection
+
+    @property
+    def variant_name(self) -> str:
+        return self.variant.name
 
     @property
     def title(self) -> str:
