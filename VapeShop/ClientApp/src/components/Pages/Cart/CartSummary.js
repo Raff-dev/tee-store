@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 
 import styled from 'styled-components';
 import { ButtonGroup, } from '@material-ui/core';
@@ -9,16 +9,18 @@ import { ApiContext } from '../../../contexts/ApiContext'
 import { CartContext } from '../../../contexts/CartContext'
 
 import { Loadable } from '../../utilities/Loadable';
+import { Col } from 'react-bootstrap';
 
 export const CartSummary = ({ cartProducts }) => {
     const api = useContext(ApiContext);
     const cart = useContext(CartContext);
-    const inputRefs = [];
+    const inputRefs = useRef([]);
 
-    for (let i = 0; i < cartProducts.length; i++) {
-        let ref = useRef();
-        inputRefs.push(ref);
-    }
+    useEffect(() => {
+        cartProducts.map((product, index) => {
+            inputRefs.current[index].value = cart.quantityMap[product.id];
+        })
+    }, [cartProducts]);
 
     const changeProductAmount = (id, event, index) => {
         let amount = parseInt(event.target.value, 10);
@@ -26,7 +28,7 @@ export const CartSummary = ({ cartProducts }) => {
         if (amount >= 0) {
             cart.updateItem(id, amount);
         } else {
-            inputRefs[index].current.value = cart.quantityMap[id];
+            inputRefs.current[index].value = cart.quantityMap[id];
         }
     }
 
@@ -34,48 +36,54 @@ export const CartSummary = ({ cartProducts }) => {
         <section>
             {cartProducts.map((product, index) =>
                 <ListEntry>
-                    <ProductDisplay>
+                    <ProductDisplay >
                         <ProductImage src={api.baseUrl + product.image} />
-                        <div>
-                            <p>
-                                <Text className="font-weight-bold">{product.collection}</Text>
-                            </p>
-                            <p>
-                                <Text muted>{product.title}</Text>
-                            </p>
-                            <p>
-                                <Text>{cart.currency}{`${product.price} - ${product.variant} - ${product.size_label}`}</Text>
-                            </p>
+                        <div className="d-md-flex d-block justify-content-between w-100">
+                            <div>
+                                <p>
+                                    <a href={`/Product/${product.product_id}/${product.variant}`}>
+                                        <Text className="font-weight-bold">{product.collection}</Text>
+                                    </a>
+                                </p>
+                                <p>
+                                    <Text muted>
+                                        {product.title}
+                                    </Text>
+                                </p>
+                                <p>
+                                    <Text>{cart.currency}{`${product.price} - ${product.variant_name} - ${product.size_label}`}</Text>
+                                </p>
+                            </div>
+
+                            <QuantityMenu >
+                                <ButtonGroup variant="contained" color="primary" >
+                                    <QuantityButton onClick={() => {
+                                        cart.updateItem(product.id, cart.quantityMap[product.id] - 1);
+                                        inputRefs.current[index].value = cart.quantityMap[product.id] - 1;
+                                    }}>
+                                        -
+                                    </QuantityButton>
+                                    <Input
+                                        ref={el => inputRefs.current[index] = el}
+                                        type="number"
+                                        defaultValue={cart.quantityMap[product.id]}
+                                        onBlur={(e) => {
+                                            changeProductAmount(product.id, e, index)
+                                        }}
+                                    />
+                                    <QuantityButton onClick={() => {
+                                        cart.addItem(product.id)
+                                        inputRefs.current[index].value = cart.quantityMap[product.id] + 1;
+                                    }}>
+                                        +
+                                    </QuantityButton>
+                                </ButtonGroup>
+                                <RemoveButton onClick={() => cart.removeItem(product.id)}>
+                                    Remove
+                                </RemoveButton>
+                            </QuantityMenu>
                         </div>
                     </ProductDisplay>
-
-                    <QuantityMenu >
-                        <ButtonGroup variant="contained" color="primary" >
-                            <QuantityButton onClick={() => {
-                                cart.updateItem(product.id, cart.quantityMap[product.id] - 1);
-                                inputRefs[index].current.value = cart.quantityMap[product.id] - 1;
-                            }}>
-                                -
-                            </QuantityButton>
-                            <Input
-                                ref={inputRefs[index]}
-                                type="number"
-                                defaultValue={cart.quantityMap[product.id]}
-                                onBlur={(e) => {
-                                    changeProductAmount(product.id, e, index)
-                                }}
-                            />
-                            <QuantityButton onClick={() => {
-                                cart.addItem(product.id)
-                                inputRefs[index].current.value = cart.quantityMap[product.id] + 1;
-                            }}>
-                                +
-                            </QuantityButton>
-                        </ButtonGroup>
-                        <RemoveButton onClick={() => cart.removeItem(product.id)}>
-                            Remove
-                        </RemoveButton>
-                    </QuantityMenu>
                 </ListEntry>
             )}
         </section>
@@ -97,10 +105,14 @@ const RemoveButton = styled.div`
 `;
 
 const ProductImage = styled.img`
-    width:100px;
+    width:80px;
+    height:max-content;
 `;
+
 const ProductDisplay = styled.div`
     display: flex;
+    justify-content: flex-start;
+    width:100%;
 `;
 
 const Input = styled.input`
@@ -127,4 +139,5 @@ const QuantityMenu = styled.div`
         -webkit-appearance: none; 
         margin: 0; 
     }
+    width:min-content;
 `;
