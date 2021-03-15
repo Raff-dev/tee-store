@@ -9,6 +9,7 @@ import { Resource } from '../../utilities/Resource';
 import { Loadable } from '../../utilities/Loadable';
 
 import { ApiContext } from '../../../contexts/ApiContext';
+import { PageSection } from '../../utilities/ThemeComponents';
 
 const Home = (props) => {
   const allCategory = 'All products';
@@ -16,7 +17,6 @@ const Home = (props) => {
 
   const [category, setCategory] = useState(allCategory);
 
-  console.log(api)
   return (
     <Resource path={api.products}>
       {({ payload, loading }) => {
@@ -24,21 +24,16 @@ const Home = (props) => {
         return (
           <section>
             <PromotionCarousel />
-            <br />
-            <Grid fluid>
-              <Col sm={12} md={2}>
-                <Loadable>
-                  <CategoryButtonGroup setCategory={setCategory} categories={categories && [allCategory, ...categories] || []} />
-                </Loadable>
-              </Col>
-              <Col sm={12} md={10}>
-                <Loadable loading={loading}>
-                  <ProductsMesh products={products} category={category} />
-                </Loadable>
-              </Col>
-            </Grid>
+            <PageSection fluid className="d-flex justify-content-center">
+              <Loadable >
+                <CategoryButtonGroup setCategory={setCategory} categories={categories && [allCategory, ...categories] || []} />
+              </Loadable>
+              <Loadable loading={loading}>
+                <ProductsMesh products={products} category={category} />
+              </Loadable>
+            </PageSection>
           </section>
-        )
+        );
       }}
     </Resource >
   );
