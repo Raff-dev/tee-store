@@ -11,7 +11,7 @@ import { Button } from '../../utilities/ThemeComponents'
 import { ApiContext } from '../../../contexts/ApiContext'
 import { CartContext } from '../../../contexts/CartContext'
 import { theme } from '../../../contexts/ThemeContext';
-
+import { countryOptions } from './CountryOptions'
 
 export const CheckoutForm = () => {
     const api = useContext(ApiContext);
@@ -20,21 +20,32 @@ export const CheckoutForm = () => {
     const stripe = useStripe();
     const elements = useElements();
 
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        if (stripe && elements) {
+            const formData = new FormData(event.target);
+            const formDataObj = Object.fromEntries(formData.entries());
+            getPaymentSession().then(paymentSession => confirmPayment(paymentSession, formDataObj));
+        }
+    };
+
     const getPaymentSession = async () => {
-        console.log(api.checkout)
         return await axios.post(api.checkout, cart.quantityMap)
-            .then(res => {
-                console.log(res.data)
-                return res.data['clientSecret']
-            });
+            .then(res => res.data['clientSecret']);
 
     }
+
     const confirmPayment = async (paymentSession, formDataObj) => {
-        const p24Bank = elements.getElement(P24BankElement);
+        const p24 = elements.getElement(P24BankElement);
+        console.log(p24);
+        if (!p24) {
+            alert('You need to select a payment method');
+            return;
+        }
 
         const { error } = await stripe.confirmP24Payment(paymentSession, {
             payment_method: {
-                p24: p24Bank,
+                p24: p24,
                 billing_details: {
                     address: {
                         city: formDataObj['city'],
@@ -51,93 +62,87 @@ export const CheckoutForm = () => {
             payment_method_options: {
                 p24: {
                     // https://stripe.com/docs/payments/p24/accept-a-payment#requirements
-                    tos_shown_and_accepted: true,
+                    tos_shown_and_accepted: formDataObj['agreement'] == 'on',
                 }
             },
             return_url: 'https://your-website.com/checkout/complete',
         });
+
         if (error) {
             console.log(error.message);
         }
     }
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        if (!stripe || !elements) {
-            return;
-        }
-        const formData = new FormData(event.target);
-        const formDataObj = Object.fromEntries(formData.entries());
-        console.log(formDataObj)
-        getPaymentSession()
-            .then(paymentSession => confirmPayment(paymentSession, formDataObj));
-
-    };
     return (
         <FormContainer>
             <Form onSubmit={handleSubmit}>
                 <Form.Row>
-                    <Form.Group as={Col} sm={6}>
+                    <Form.Group as={Col} xs={6}>
                         <Label>First Name</Label>
-                        <Form.Control type="text" name="firstName" placeholder="First Name" />
+                        <Form.Control type="text" name="firstName" placeholder="First Name" required />
                     </Form.Group>
 
-                    <Form.Group as={Col} sm={6}>
+                    <Form.Group as={Col} xs={6}>
                         <Label>Last Name</Label>
-                        <Form.Control type="text" name="lastName" placeholder="Last Name" />
+                        <Form.Control type="text" name="lastName" placeholder="Last Name" required />
                     </Form.Group>
                 </Form.Row>
 
                 <Form.Group >
                     <Label>Email</Label>
-                    <Form.Control type="email" name="email" placeholder="Email" />
+                    <Form.Control type="email" name="email" placeholder="Email" required />
                 </Form.Group>
 
                 <Form.Row>
-                    <Form.Group as={Col} sm={8}>
+                    <Form.Group as={Col} xs={8}>
                         <Label>Address</Label>
-                        <Form.Control placeholder="Address" name="address1" />
+                        <Form.Control placeholder="Address" name="address1" required />
                     </Form.Group>
-                    <Form.Group as={Col}>
+                    <Form.Group as={Col} xs={4}>
                         <Label>Apt. / Suite</Label>
-                        <Form.Control placeholder="Apt. / Suite" name="address2" />
+                        <Form.Control placeholder="Apt. / Suite" name="address2" required />
                     </Form.Group>
                 </Form.Row>
 
                 <Form.Row>
-                    <Form.Group as={Col} sm={8}>
-                        <Label>City</Label>
-                        <Form.Control name="city" placeholder="City" />
-                    </Form.Group>
-                    <Form.Group as={Col} >
-                        <Label>Zip</Label>
-                        <Form.Control name="postalCode" placeholder="ZIP" />
-                    </Form.Group>
-                </Form.Row>
-
-                <Form.Row>
-                    <Form.Group as={Col} sm={6} >
+                    <Form.Group as={Col} xs={3}>
                         <Label>Country</Label>
-                        <Form.Control name="country" placeholder="Country" />
+                        <Form.Control name="country" as="select" placeholder="Country" required>
+                            {countryOptions.map((country, index) =>
+                                <option key={index} value={country}>{country}</option>)
+                            }
+                        </Form.Control>
                     </Form.Group>
-                    <Form.Group as={Col} sm={6}>
-                        <Label>State</Label>
-                        <Form.Control type="text" placeholder="State" name="state" />
+                    <Form.Group as={Col} xs={6}>
+                        <Label>City</Label>
+                        <Form.Control name="city" placeholder="City" required />
+                    </Form.Group>
+                    <Form.Group as={Col} xs={3}>
+                        <Label>Zip</Label>
+                        <Form.Control name="postalCode" placeholder="ZIP" required />
                     </Form.Group>
                 </Form.Row>
+
+
                 <Form.Row className="d-block ml-1">
                     <Form.Group as={Col}>
                         <Label>Payment Method</Label>
-                        <StyledP24BankElement className="mt-2" options={P24_ELEMENT_OPTIONS} />
+                        <StyledP24BankElement className="mt-2" options={P24_ELEMENT_OPTIONS} required />
+                        <Form.Control.Feedback type="invalid">
+                            Please choose a payment method.
+                        </Form.Control.Feedback>
                     </Form.Group>
                 </Form.Row>
                 <Form.Row>
                     <Form.Group as={Col} >
-                        <Form.Check type="checkbox" label="I agree to the terms & condition" name="agreement" />
+                        <Checkbox className="d-flex">
+                            <Form.Check classname="p-0 mr-2" type="checkbox" name="agreement" required />
+                            <label>I agree to the <a href="/PrivacyPolicy">Privacy Policy</a> and <a href="/Terms">Purchaser Terms & Conditions</a></label>
+                        </Checkbox>
                     </Form.Group>
                 </Form.Row>
 
-                <Button primary type="submit" disabled={!stripe} >
+                <Button primary type="submit" className="mb-2" disabled={!stripe} >
                     CONTINUE TO PAYMENT
                 </Button>
             </Form>
@@ -154,7 +159,7 @@ const Label = styled.span`
 `;
 
 const P24_ELEMENT_OPTIONS = {
-    // Custom styling can be passed to options when creating an Element
+    value: 'blik',
     style: {
         base: {
             padding: '10px 12px',
@@ -167,10 +172,9 @@ const P24_ELEMENT_OPTIONS = {
     },
 };
 
-
 const StyledP24BankElement = styled(P24BankElement)`
     height: 40px;
-    width:400px;
+    width:100%;
 
     color: #32325d;
     background-color: white;
@@ -182,10 +186,16 @@ const StyledP24BankElement = styled(P24BankElement)`
     transition: box-shadow 150ms ease;
 
     input {
-    padding: 10px 12px;
+        padding: 10px 12px;
     }
-
 `;
+
+const Checkbox = styled.div`
+    label{
+        margin-left:10px;
+    }
+`;
+
 const FormContainer = styled(Grid)`
 
 `;
