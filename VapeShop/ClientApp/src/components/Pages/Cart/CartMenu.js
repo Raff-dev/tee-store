@@ -7,6 +7,7 @@ import { Text, PageSection, PageTitle, ListEntry, Button } from '../../utilities
 import { CartContext } from '../../../contexts/CartContext';
 
 import { Loadable } from '../../utilities/Loadable';
+import { theme } from '../../../contexts/ThemeContext';
 
 export const CartMenu = withRouter(({ history, cartProducts, loading }) => {
     const cart = useContext(CartContext);
@@ -40,9 +41,8 @@ export const CartMenu = withRouter(({ history, cartProducts, loading }) => {
             </Button>
         </Container>
     );
-})
-
+});
 
 const Container = styled.div`
-    background-color:#f8fafc;
+    background-color: ${theme.bgPanel};
 `;

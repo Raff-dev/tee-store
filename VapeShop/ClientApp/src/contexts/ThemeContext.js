@@ -9,12 +9,13 @@ export const theme = {
     bgPrimary: "rgb(255,255,255)",
     bgSecondary: "rgb(252,252,252)",
     bgTrietary: "rgb(246,246,246)",
+    bgPanel: "rgb(248, 250, 252)",
 
     btnPrimary: "#c60021",
     btnTextPrimary: "#fefefe",
     btnSecondary: "#f1f5f8",
     btnTextSecondary: "#3d4852",
-    btnDisabled: "rgb(50,230,50)",
+    btnDisabled: "rgb(220, 232, 234)",
     btnTextDisabled: "",
 
     textDefault: "rgb(61, 72, 82)",
@@ -23,7 +24,7 @@ export const theme = {
     textInfo: "rgb(96, 111, 123)",
 
     borderPrimary: "rgb(238,238,238)",
-    borderSecondary: "",
+    borderSecondary: "rgb(218, 225, 231)",
 
 }
 

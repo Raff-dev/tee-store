@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Grid, Col, Row } from 'react-bootstrap';
-import { withRouter } from "react-router-dom";
 
-import { Text, PageSection, PageTitle, Button } from '../../utilities/ThemeComponents'
+import { PageSection, PageTitle } from '../../utilities/ThemeComponents'
 
 import { CartContext } from '../../../contexts/CartContext'
 import { ApiContext } from '../../../contexts/ApiContext'
@@ -11,8 +10,9 @@ import { ApiContext } from '../../../contexts/ApiContext'
 import { CartSummary } from './CartSummary'
 import { CartMenu } from './CartMenu'
 import { Resource } from '../../utilities/Resource';
+import { CartEmpty } from './EmptyCart';
 
-const Cart = withRouter(({ history }) => {
+const Cart = () => {
     const api = useContext(ApiContext);
     const cart = useContext(CartContext);
 
@@ -20,15 +20,8 @@ const Cart = withRouter(({ history }) => {
         <PageSection>
             <Resource path={api.cartProducts} data={{ ids: cart.ids }} >
                 {({ payload, loading }) => {
-                    if (payload.length === 0) {
-                        return (
-                            <Row className="justify-content-center">
-                                <Col sm={12} md={4} lg={3} className="py-3 text-center">
-                                    <Text info className="font-weight-bold py-3"><h4>Your cart is empty</h4></Text>
-                                    <Button primary onClick={() => history.push('/')}>Go Shopping</Button>
-                                </Col>
-                            </Row>
-                        );
+                    if (!loading && payload.length === 0) {
+                        return <CartEmpty />
                     }
 
                     return (
@@ -53,6 +46,6 @@ const Cart = withRouter(({ history }) => {
             </Resource>
         </PageSection>
     );
-});
+}
 
 export default Cart;

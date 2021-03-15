@@ -2,7 +2,7 @@ import React, { useRef, useContext } from 'react';
 import Form from 'react-bootstrap/Form'
 import styled from 'styled-components';
 
-import { Button } from '../../utilities/ThemeComponents'
+import { Button, Text } from '../../utilities/ThemeComponents'
 
 import { CartContext } from '../../../contexts/CartContext'
 
@@ -19,15 +19,14 @@ export const ProductMenu = ({ product, variant, openCartModal }) => {
 
     return (
         <section>
-            <p>PRICE</p>
-            <p>${product.price}</p>
-            <p>{product.title}</p>
+            <h3><Text className="font-weight-bold">{cart.currency}{product.price}</Text></h3>
+            <p><Text muted>{product.title}</Text></p>
             <p>{product.description}</p>
             <ProductOption>
                 <div>
-                    <div>
+                    <Text info>
                         COLOR
-                    </div>
+                    </Text >
                     <div>
                         {variant.name}
                     </div>
@@ -44,9 +43,9 @@ export const ProductMenu = ({ product, variant, openCartModal }) => {
                 <Form.Row >
                     <ProductOption>
                         <div >
-                            <div>
+                            <Text info>
                                 SIZE
-                            </div>
+                            </Text>
                             <SizeModalButton>
                                 Sizing and fabric
                             </SizeModalButton>
@@ -59,22 +58,24 @@ export const ProductMenu = ({ product, variant, openCartModal }) => {
                                 custom
                             >
                                 {variant.sizes.map((size, index) =>
-                                    <option value={size.id} key={size.id}>{size.size_label}</option>
+                                    <option value={size.id} key={index}>{size.size_label}</option>
                                 )}
                             </Form.Control>
                         </div>
                     </ProductOption>
                 </Form.Row>
-                <Form.Row className="justify-content-center">
+                <Form.Row className="justify-content-center pt-3">
                     <Button type="button" primary onClick={addToCart}>ADD TO CART</Button>
                 </Form.Row>
             </Form>
         </section >
     );
 }
+
 const ColorIcon = styled.div`
 
 `;
+
 const SizeModalButton = styled.div`
     color : rgba(50,50,255,0.8);
 

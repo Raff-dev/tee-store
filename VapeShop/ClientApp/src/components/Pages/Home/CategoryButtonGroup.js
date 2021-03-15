@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 export const CategoryButtonGroup = ({ setCategory, categories }) => {
     return (
-        <Container>
+        <Container className="d-none d-md-flex">
             <p>Filter by product</p>
             {categories.map((category, index) =>
                 <Category key={index} onClick={() => setCategory(category)}>
@@ -22,7 +22,6 @@ const Category = styled.span`
         opacity:0.7;
         cursor:pointer;
         color: #c483e9;
-
     }
 `;
 

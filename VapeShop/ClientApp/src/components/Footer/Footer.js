@@ -88,7 +88,6 @@ const SocialIcons = styled(Row)`
 const Info = styled.div`
     background-color:${theme.bgSecondary};
     height:auto;
-    border-top: 1px solid ${theme.borderPrimary};
     padding:10px;
 `;
 
@@ -96,7 +95,9 @@ const StyledFooter = styled.footer`
     height:auto;
     position:relative;
     background-color:${theme.bgSecondary};
-    border: 0 solid #e5e7eb;
+    border-top: 1px solid ${theme.borderPrimary};
+    margin-top:20px;
+
     text-align:center;
     a{
         color: ${theme.textDefault};

@@ -18,7 +18,7 @@ const ProductDetail = ({ match }) => {
     const api = useContext(ApiContext);
 
     return (
-        <PageSection fluid className="mt-4">
+        <PageSection className="mt-4">
             <Resource path={api.products + productId}>
                 {({ payload, loading }) => {
                     let variant = loading || payload.variants.find(variant => variant.id == variantId);
@@ -26,10 +26,10 @@ const ProductDetail = ({ match }) => {
                         <Loadable loading={loading}>
                             <CartModal isOpen={cartModalOpen} closeCartModal={() => setCartModalOpen(false)} />
                             <Row >
-                                <Col lg={8} md={12} className="d-flex justify-content-center">
+                                <Col md={8} sm={12} className="d-flex">
                                     <ImagePreview product={payload} variant={variant} />
                                 </Col>
-                                <Col lg={4} md={12}>
+                                <Col md={4} sm={12}>
                                     <ProductMenu product={payload} variant={variant} openCartModal={() => setCartModalOpen(true)} />
                                 </Col>
                             </Row >

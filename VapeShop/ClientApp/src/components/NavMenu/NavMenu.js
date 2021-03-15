@@ -47,8 +47,8 @@ const MyNav = styled(Navbar)`
     margin:0;
     justify-content:space-between;
     display:flex;
-
-    border: 0 solid #e5e7eb;
+    box-shadow: 0 0 4px rgb(0 0 0 / 5%);
+    border-bottom: 1px solid ${theme.borderPrimary};
     background-color:transparent;
     background-image:none;
 `;
