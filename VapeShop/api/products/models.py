@@ -1,3 +1,4 @@
+import os
 from django.db import models
 from django.db.models.base import Model
 from django.db.models.fields.files import ImageField
@@ -110,6 +111,13 @@ class Image(models.Model):
         unique_together = [('ordering', 'variant')]
         ordering = ['ordering']
 
+    @property
+    def product(self):
+        return self.variant.product
+
+    def filename(self):
+        return os.path.basename(self.image.name)
+
 
 class Size(models.Model):
     NA = ('NA', 'Not Applicable')
@@ -125,7 +133,11 @@ class Size(models.Model):
     quantity = models.PositiveIntegerField(default=0)
 
     def __str__(self) -> str:
-        return f'{self.variant} - {self.size}: {self.quantity}'
+        label = self.get_size_display().split("'")
+        return f'{label[1]} - {label[3]}'
+
+    class Meta:
+        unique_together = [('size', 'variant')]
 
     @property
     def category(self) -> str:
@@ -134,6 +146,10 @@ class Size(models.Model):
     @property
     def product_id(self):
         return self.variant.product.id
+
+    @property
+    def product(self):
+        return self.variant.product
 
     @property
     def collection(self) -> str:
