@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     # third party
     'rest_framework',
     'corsheaders',
+    'django.contrib.sites',
+    'nested_admin',
     # local apps
     'products.apps.ProductsConfig',
 
@@ -131,3 +133,5 @@ MEDIA_URL = '/media/'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
+
+SITE_ID = 1
