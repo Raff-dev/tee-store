@@ -1,16 +1,17 @@
-import { Grid } from '@material-ui/core';
+import { withRouter } from "react-router-dom";
 import React, { useContext, useEffect } from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import { CartContext } from '../../../contexts/CartContext';
+import { Button, PageSection } from '../../utilities/ThemeComponents'
 
-const CheckoutComplete = (props) => {
+const CheckoutComplete = withRouter((props) => {
     console.log(props)
     const cart = useContext(CartContext);
     useEffect(cart.clearItems, []);
 
     return (
-        <Grid className="d-flex justify-content-center pt-4">
+        <PageSection className="d-flex justify-content-center pt-4">
             <Col md={4}>
                 <div className="text-center">
                     <p>
@@ -20,19 +21,22 @@ const CheckoutComplete = (props) => {
                     </p>
                 </div>
                 <Form >
-                    <Form.Group >
+                    <Form.Group className="pt-4">
                         <Form.Label>Email</Form.Label>
                         <Form.Control type="email" name="email" placeholder="Email" />
                     </Form.Group>
                     <Form.Group className="d-flex justify-content-center">
-                        <Button type="submit">
+                        <Button primary type="submit">
                             SIGN UP FOR NEWSLETTER
                         </Button>
                     </Form.Group>
+                    <Button type="submit" onClick={() => history.push('/')}>
+                        GO SHOPPING
+                    </Button>
                 </Form>
             </Col>
-        </Grid>
+        </PageSection>
     );
-};
+});
 
 export default CheckoutComplete;
