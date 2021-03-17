@@ -65,7 +65,7 @@ export const CheckoutForm = () => {
                     tos_shown_and_accepted: formDataObj['agreement'] == 'on',
                 }
             },
-            return_url: 'https://your-website.com/checkout/complete',
+            return_url: window.location.origin + '/Checkout/Complete',
         });
 
         if (error) {
