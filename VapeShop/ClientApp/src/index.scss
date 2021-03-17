@@ -1,12 +1,12 @@
 :root{
     font-size: 16px;
-    font-family: 'Open-sans', Courier, monospace;
     --primary-color-1: rgb(196, 131, 233);
     --primary-color-2: #DD19A3;
     --secondary-color-1: #bb91ad91;
     --secondary-color-2: #252324;
     --white-color: #fff;
     overflow-x: hidden;
+    box-sizing: border-box;
 }
 
 @media (max-width: 767px) {
@@ -16,6 +16,7 @@ body {
     margin:0;
     padding: 0;
     background: var(--white-color);
+    font-family: 'Open-sans', Courier, monospace;
 }
 
 ::-webkit-scrollbar{
