@@ -3,9 +3,9 @@ import React, { useContext, useEffect } from 'react';
 import { Col } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import { CartContext } from '../../../contexts/CartContext';
-import { Button, PageSection } from '../../utilities/ThemeComponents'
+import { Button, PageSection, Label } from '../../utilities/ThemeComponents'
 
-const CheckoutComplete = withRouter((props) => {
+const CheckoutComplete = withRouter(({ history, ...props }) => {
     console.log(props)
     const cart = useContext(CartContext);
     useEffect(cart.clearItems, []);
@@ -22,7 +22,7 @@ const CheckoutComplete = withRouter((props) => {
                 </div>
                 <Form >
                     <Form.Group className="pt-4">
-                        <Form.Label>Email</Form.Label>
+                        <Label>Email</Label>
                         <Form.Control type="email" name="email" placeholder="Email" />
                     </Form.Group>
                     <Form.Group className="d-flex justify-content-center">
