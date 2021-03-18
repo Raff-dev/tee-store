@@ -10,6 +10,8 @@ import { Button } from '../../utilities/ThemeComponents'
 
 import { ApiContext } from '../../../contexts/ApiContext'
 import { CartContext } from '../../../contexts/CartContext'
+
+import { Label } from '../../utilities/ThemeComponents'
 import { theme } from '../../../contexts/ThemeContext';
 import { countryOptions } from './CountryOptions'
 
@@ -149,14 +151,6 @@ export const CheckoutForm = () => {
         </FormContainer >
     );
 };
-
-const Label = styled.span`
-    font-weight:600;
-    color: ${props => theme.textInfo};
-    text-transform:lowercase;
-    opacity:0.9;
-    font-variant:small-caps;
-`;
 
 const P24_ELEMENT_OPTIONS = {
     value: 'blik',
