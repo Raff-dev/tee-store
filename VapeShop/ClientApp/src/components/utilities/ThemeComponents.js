@@ -62,6 +62,14 @@ export const Button = styled.button`
 
 `;
 
+export const Label = styled.span`
+    font-weight:600;
+    color: ${props => theme.textInfo};
+    text-transform:lowercase;
+    opacity:0.9;
+    font-variant:small-caps;
+`;
+
 export const PageSection = styled(Grid)`
     margin-top: 20px;
     min-height: 100vh;
