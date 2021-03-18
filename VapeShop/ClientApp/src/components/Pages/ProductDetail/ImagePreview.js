@@ -17,15 +17,6 @@ export const ImagePreview = ({ product, variant }) => {
             </PageTitle>
             <ImagesContainer className="d-flex ">
                 <div className="d-flex flex-column">
-
-                    {variant.images.map((image, index) =>
-                        <MiniatureImages
-                            key={index}
-                            src={api.baseUrl + image.image}
-                            onClick={() => setImageIndex(index)}
-                            selected={imageIndex == index}
-                        />
-                    )}
                     {variant.images.map((image, index) =>
                         <MiniatureImages
                             key={index}
