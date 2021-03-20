@@ -78,9 +78,9 @@ class Variant(models.Model):
         super(Variant, self).save(*args, **kwargs)
 
         if created:
-            sizes = Size.SIZES if self.product.sized else [Size.NA]
+            sizes = Instance.SIZES if self.product.sized else [Instance.NA]
             for size_name in sizes:
-                Size.objects.create(size=size_name, variant=self)
+                Instance.objects.create(size=size_name, variant=self)
 
     def __str__(self) -> str:
         return f'{self.name}'
@@ -90,8 +90,8 @@ class Variant(models.Model):
         unique_together = ['name', 'product']
 
 
-def get_upload_path(instance, filename):
-    return settings.MEDIA_ROOT/Image.IMAGES_PATH/instance.variant.product.category.name/filename
+def get_upload_path(image, filename):
+    return settings.MEDIA_ROOT/Image.IMAGES_PATH/image.product.category.name/filename
 
 
 class Image(models.Model):
@@ -119,7 +119,7 @@ class Image(models.Model):
         return os.path.basename(self.image.name)
 
 
-class Size(models.Model):
+class Instance(models.Model):
     NA = ('NA', 'Not Applicable')
     SIZES = [
         ('XS', 'Extra Small'),
@@ -128,6 +128,7 @@ class Size(models.Model):
         ('L', 'Large'),
         ('XL', 'Extra Large'),
     ]
+
     size = models.CharField(choices=SIZES+[NA], max_length=50, default=NA)
     variant = models.ForeignKey(Variant, related_name='sizes', on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0)
