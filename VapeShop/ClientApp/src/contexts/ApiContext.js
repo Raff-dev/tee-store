@@ -9,11 +9,9 @@ export const ApiProvider = ({ children }) => {
         baseUrl: baseUrl,
         apiUrl: apiUrl,
         products: apiUrl + 'Products/',
-        cart: apiUrl + 'Cart/',
-        cartProducts: apiUrl + 'Cart/cart_products/',
-        categories: apiUrl + 'Categories/',
-        collections: apiUrl + 'Collections/',
-        checkout: apiUrl + 'Cart/create_payment_session/'
+        cartProducts: apiUrl + 'Products/cart/',
+        checkoutPayment: apiUrl + 'Orders/create_payment_session/',
+        completePayment: apiUrl + 'Orders/confirm_payment'
     }
 
     return (
