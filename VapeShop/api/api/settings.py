@@ -41,8 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'nested_admin',
     # local apps
-    'products.apps.ProductsConfig',
-
+    'products',
+    'orders',
 ]
 
 MIDDLEWARE = [
