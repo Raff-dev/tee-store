@@ -1,0 +1,23 @@
+<html lang="en">
+  <head>
+    <title>Invoice {{order}}</title>
+  </head>
+
+  <body>
+    <script src="js/scripts.js"></script>
+    <div>
+      {{order}}
+    </div>
+    <div class="">
+      {{% for line in order.lines %}}
+        <div>
+            {{ line.title }}<br/>
+            {{ line.cost }}<br/>
+            {{ line.quantyity }}<br/>
+            {{ line.amount }}<br/>
+        </div>
+      {{% endfor %}}
+    </div>
+
+  </body>
+</html>
