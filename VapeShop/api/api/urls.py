@@ -11,8 +11,6 @@ router = DefaultRouter()
 router.register('Products', ProductViewSet)
 router.register('Orders', OrderViewSet)
 
-# The API URLs are now determined automatically by the router.
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include((router.urls, 'Products'), namespace='Products')),

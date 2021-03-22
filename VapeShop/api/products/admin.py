@@ -6,7 +6,7 @@ from django.contrib.sites.models import Site
 
 import nested_admin
 
-from .models import Category, Collection, Product, Size, Variant, Image
+from .models import Category, Collection, Product, Instance, Variant, Image
 from .forms import ProductForm
 
 domain = Site.objects.get_current().domain
@@ -83,13 +83,13 @@ class VariantAdmin(admin.ModelAdmin):
     related_images.short_description = 'Images'
 
 
-@admin.register(Size)
-class SizeAdmin(admin.ModelAdmin):
+@admin.register(Instance)
+class InstanceAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'product', 'variant',  'quantity']
 
 
 @admin.register(Image)
-class SizeAdmin(admin.ModelAdmin):
+class InstanceAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'display', 'product', 'variant', 'ordering']
 
     def display(self, obj):

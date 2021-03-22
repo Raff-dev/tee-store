@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import action
-from .models import Category, Product, Collection, Size
+from .models import Category, Product, Collection, Instance
 from .serializers import ProductListSerializer, ProductDetailSerializer
 from .cart_serializers import CartSerializer
 
@@ -28,8 +28,8 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     def cart(self, request, *args, **kwargs):
         try:
             ids = list(map(lambda id: int(id), request.data['ids']))
-            sizes = Size.objects.filter(id__in=ids)
-            serializer = CartSerializer(sizes, many=True)
+            instances = Instance.objects.filter(id__in=ids)
+            serializer = CartSerializer(instances, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except KeyError:
             return Response(status=status.HTTP_400_BAD_REQUEST)

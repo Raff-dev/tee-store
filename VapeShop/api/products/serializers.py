@@ -1,11 +1,11 @@
 from rest_framework import serializers
-from .models import Image, Product, Category, Collection, Size, Variant
+from .models import Image, Product, Category, Collection, Instance, Variant
 
 
-class SizeSerializer(serializers.ModelSerializer):
+class InstanceSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Size
-        fields = ['id', 'size_label', 'quantity']
+        model = Instance
+        fields = ['id', 'Instance_label', 'quantity']
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -23,7 +23,7 @@ class VariantListSerializer(serializers.ModelSerializer):
 
 
 class VariantDetailSerializer(VariantListSerializer):
-    sizes = SizeSerializer(many=True, read_only=True)
+    instances = InstanceSerializer(many=True, read_only=True)
 
 
 class ProductDetailSerializer(serializers.ModelSerializer):

@@ -130,7 +130,7 @@ class Instance(models.Model):
     ]
 
     size = models.CharField(choices=SIZES+[NA], max_length=50, default=NA)
-    variant = models.ForeignKey(Variant, related_name='sizes', on_delete=models.CASCADE)
+    variant = models.ForeignKey(Variant, related_name='instances', on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0)
 
     def __str__(self) -> str:
