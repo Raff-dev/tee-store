@@ -24,12 +24,11 @@ class Order(models.Model):
 
 
 class OrderLine(models.Model):
-    order = models.ForeignKey(Instance, related_name='lines', on_delete=models.CASCADE)
-    cost = models.DecimalField()
+    order = models.ForeignKey(Order, related_name='lines', on_delete=models.CASCADE)
+    cost = models.DecimalField(max_digits=5, decimal_places=2)
     quantity = models.IntegerField()
     title = models.CharField(max_length=50)
-    amount = models.DecimalField()
-    product = models.ForeignKey(Instance, null=True, blank=True)
+    product = models.ForeignKey(Instance, null=True, blank=True, on_delete=models.PROTECT)
 
     @property
     def amount(self) -> float:
