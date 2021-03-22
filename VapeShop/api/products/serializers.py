@@ -5,7 +5,7 @@ from .models import Image, Product, Category, Collection, Instance, Variant
 class InstanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Instance
-        fields = ['id', 'Instance_label', 'quantity']
+        fields = ['id', 'size_label', 'quantity']
 
 
 class ImageSerializer(serializers.ModelSerializer):
