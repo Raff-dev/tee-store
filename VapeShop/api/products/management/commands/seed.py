@@ -5,12 +5,12 @@ from typing import Collection
 from django.core.management.base import BaseCommand
 from django.core.files import File
 from django.conf import settings
-from ...models import Category, Collection, Product, Size, Variant, Image
+from ...models import Category, Collection, Product, Instance, Variant, Image
 
 
 class Command(BaseCommand):
     help = "seed database for testing and development."
-    MODELS = [Category, Collection, Product, Size, Variant, Image]
+    MODELS = [Category, Collection, Product, Instance, Variant, Image]
     SEED_DATA_PATH = settings.BASE_DIR / 'products/management/seed_data'
 
     lorem_short = 'Lorem ipsum dolor sit amet'
