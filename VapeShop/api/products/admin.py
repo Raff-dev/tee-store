@@ -89,7 +89,7 @@ class InstanceAdmin(admin.ModelAdmin):
 
 
 @admin.register(Image)
-class InstanceAdmin(admin.ModelAdmin):
+class ImageAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'display', 'product', 'variant', 'ordering']
 
     def display(self, obj):
