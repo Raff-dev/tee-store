@@ -27,12 +27,15 @@ export const CheckoutForm = () => {
         if (stripe && elements) {
             const formData = new FormData(event.target);
             const formDataObj = Object.fromEntries(formData.entries());
-            getPaymentSession().then(paymentSession => confirmPayment(paymentSession, formDataObj));
+            console.log(formDataObj)
+            getPaymentSession()
+                .then(paymentSession => confirmPayment(paymentSession, formDataObj))
+                .catch(console.log);
         }
     };
 
     const getPaymentSession = async () => {
-        return await axios.post(api.checkout, cart.quantityMap)
+        return await axios.post(api.checkoutPayment, cart.quantityMap)
             .then(res => res.data['clientSecret']);
 
     }
