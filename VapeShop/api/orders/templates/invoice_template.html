@@ -1,5 +1,6 @@
 <html lang="en">
   <head>
+    <meta charset="utf-8" />
     <title>Invoice {{order}}</title>
   </head>
 
@@ -9,14 +10,17 @@
       {{order}}
     </div>
     <div class="">
-      {{% for line in order.lines %}}
+      {% for line in order.lines.all %}
         <div>
-            {{ line.title }}<br/>
-            {{ line.cost }}<br/>
-            {{ line.quantyity }}<br/>
-            {{ line.amount }}<br/>
+        <p>Title: {{ line.title }}</p>
+        <p>Cost: {{ line.cost }}</p>
+        <p>Quantity: {{ line.quantity }}</p>
+        <p>Amount: {{ line.amount }}</p>
         </div>
-      {{% endfor %}}
+      {% endfor %}
+    </div>
+    <div>
+    <p>Total: {{order.amount}}</p>
     </div>
 
   </body>
