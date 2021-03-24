@@ -141,6 +141,10 @@ class Instance(models.Model):
         unique_together = [('size', 'variant')]
 
     @property
+    def name(self) -> str:
+        return f'{self.product.name} - {self.variant_name} - {self.size_label}'
+
+    @property
     def category(self) -> str:
         return self.variant.product.category
 
