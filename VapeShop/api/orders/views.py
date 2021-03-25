@@ -2,6 +2,7 @@ from functools import reduce
 import json
 from django.core.files import File
 from django.conf import settings
+from django.core.files.base import ContentFile
 from rest_framework import viewsets
 from rest_framework.response import Response
 from django.http import HttpResponse
@@ -60,7 +61,6 @@ class OrderViewSet(viewsets.GenericViewSet):
         payload = request.body
         data = json.loads(payload)['data']
         payment_id = data['object']['id']
-        # print(json.dumps(json.loads(payload), indent=4, sort_keys=True))
 
         try:
             event = stripe.Webhook.construct_event(
@@ -68,32 +68,41 @@ class OrderViewSet(viewsets.GenericViewSet):
                 request.META['HTTP_STRIPE_SIGNATURE'],
                 settings.STRIPE_ENDPOINT_SECRET
             )
-            print(f"EVENT TYPE: {event['type']}")
+
             if event['type'] == 'payment_intent.succeeded':
                 print("Payment was successful.")
                 self.complete_order(payment_id, data)
+
             return HttpResponse(status=status.HTTP_200_OK)
+
         except (ValueError, KeyError) as e:
             print(f'payload error: {e}')
             return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
         except stripe.error.SignatureVerificationError as e:
             print(f'signature error: {e}')
             return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
-    def complete_order(self, payment_id, data):
+    def complete_order(self, payment_id, data) -> Order:
         billing_details = data['object']['charges']['data'][0]['billing_details']
         billing_details = self.decode_url(billing_details)
         address_info = billing_details.pop('address')
         address = ' '.join([address_info.pop('line1'), address_info.pop('line2')])
         order = Order.objects.filter(payment_id=payment_id).first()
-
-        invoice, filename = self.generate_invoice_pdf(order, self.INVOICE_TEMPLATE)
-        order.invoice.save(name=filename, content=File(invoice))
         order.__dict__.update(
             address=address,
             **billing_details,
             **address_info
-        ).save()
+        )
+        order.save()
+        filename = self.get_invoice_name(order)
+        invoice = self.generate_invoice_pdf(order, self.INVOICE_TEMPLATE)
+        order.invoice.save(
+            name=filename,
+            content=ContentFile(invoice),
+            save=True
+        )
+        return order
 
     def decode_url(self, obj):
         """decodes url encoded dictionary object"""
@@ -104,14 +113,12 @@ class OrderViewSet(viewsets.GenericViewSet):
                 obj[key] = value and urllib.parse.unquote(value)
         return obj
 
-    def generate_invoice_pdf(self, order, invoice_template):
+    def generate_invoice_pdf(self, order, invoice_template) -> str:
         template = loader.get_template(invoice_template)
         options = {'enable-local-file-access': None}
-        context = {'order': order, 'lines': order.lines.all()}
-        filename = self.get_invoice_name(order)
-        invoice_html = template.render(context)
-        invoice_pdf = pdfkit.from_string(invoice_html, filename, options=options)
-        return invoice_pdf, filename
+        invoice_html = template.render({'order': order})
+        invoice_pdf = pdfkit.from_string(invoice_html, False, options=options)
+        return invoice_pdf
 
-    def get_invoice_name(self, order):
+    def get_invoice_name(self, order) -> str:
         return f"{str(order).replace(' ', '_')}.pdf"
