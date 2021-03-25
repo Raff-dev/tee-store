@@ -4,19 +4,20 @@ from products.models import Instance
 
 
 class Order(models.Model):
+    INVOICES_PATH = 'invoices'
     STATUSES = [
-        ('created', 'created'),
-        ('pending', 'pending'),
-        ('failed', 'failed'),
-        ('succesful', 'succesful'),
-        ('reclamation', 'reclamation'),
+        ('Created', 'Created'),
+        ('Pending', 'Pending'),
+        ('Failed', 'Failed'),
+        ('Succesful', 'Succesful'),
+        ('Reclamation', 'Reclamation'),
     ]
 
     payment_id = models.CharField(unique=True, max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.TextField(default='pending', choices=STATUSES)
 
-    invoice = models.FileField(blank=True, null=True)
+    invoice = models.FileField(upload_to=INVOICES_PATH, blank=True, null=True)
     name = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
     phone = models.CharField(max_length=11, blank=True, null=True)
@@ -53,6 +54,14 @@ class Order(models.Model):
     @property
     def amount(self):
         return reduce(lambda total, line: total+line.amount, self.lines.all(), 0)
+
+    @property
+    def tax(self):
+        return f'{(float(self.amount)*0.18):.2f}'
+
+    @property
+    def subtotal(self):
+        return f'{(float(self.amount)-float(self.tax)):.2f}'
 
 
 class OrderLine(models.Model):
