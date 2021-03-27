@@ -1,8 +1,8 @@
 import React from 'react';
-import useElement from './components/utilities/useElement';
-import { PageSection } from './components/utilities/ThemeComponents'
+import useElement from '../../utilities/useElement';
+import { PageSection } from '../../utilities/ThemeComponents'
 
-const Shipping = () => {
+const GeoWidget = () => {
 	const geowidgetUrl = 'https://sandbox-geowidget.easypack24.net/js/sdk-for-javascript.js';
 	const geowidgetCssUrl = "https://geowidget.easypack24.net/css/easypack.css";
 	const easypackMapId = 'easypack-map';
@@ -38,4 +38,4 @@ const Shipping = () => {
 	);
 };
 
-export default Shipping;
+export default GeoWidget;
