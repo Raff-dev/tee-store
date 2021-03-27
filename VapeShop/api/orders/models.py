@@ -1,9 +1,21 @@
 from functools import reduce
 from django.db import models
+from django.conf import settings
+from django.core.files.base import ContentFile
+from django.template import loader
+from django.core.mail import send_mail
+from django.core.mail import EmailMessage
+import pdfkit
+
+from .helpers import decode_url
 from products.models import Instance
 
 
 class Order(models.Model):
+    INVOICE_TEMPLATE = 'invoice.html'
+    ORDER_EMAIL_TEMPLATE = 'order_email.html'
+    INVOICE_ATTACHMENT_NAME = 'invoice.pdf'
+
     INVOICES_PATH = 'invoices'
     STATUSES = [
         ('Created', 'Created'),
@@ -62,6 +74,47 @@ class Order(models.Model):
     @property
     def subtotal(self):
         return f'{(float(self.amount)-float(self.tax)):.2f}'
+
+    def complete(self, data) -> None:
+        billing_details = data['object']['charges']['data'][0]['billing_details']
+        billing_details = decode_url(billing_details)
+        address_info = billing_details.pop('address')
+        address = ' '.join([address_info.pop('line1'), address_info.pop('line2')])
+        self.__dict__.update(
+            address=address,
+            **billing_details,
+            **address_info
+        )
+        self.save()
+        filename = self.get_invoice_name()
+        invoice = self.generate_invoice_pdf()
+        self.invoice.save(
+            name=filename,
+            content=ContentFile(invoice),
+            save=True
+        )
+
+    def generate_invoice_pdf(self) -> str:
+        template = loader.get_template(self.INVOICE_TEMPLATE)
+        options = {'enable-local-file-access': None}
+        invoice_html = template.render({'order': self})
+        invoice_pdf = pdfkit.from_string(invoice_html, False, options=options)
+        return invoice_pdf
+
+    def get_invoice_name(self) -> str:
+        return f"{str(self).replace(' ', '_')}.pdf"
+
+    def send_invoice_email(self) -> None:
+        template = loader.get_template(self.ORDER_EMAIL_TEMPLATE)
+        body = template.render({'order': self})
+        email = EmailMessage(
+            subject='Subject here',
+            body=body,
+            from_email=settings.EMAIL_HOST_USER,
+            to=[self.email],
+        )
+        email.attach(self.INVOICE_ATTACHMENT_NAME, self.invoice.read(), self.invoice.name)
+        email.send(fail_silently=False)
 
 
 class OrderLine(models.Model):
