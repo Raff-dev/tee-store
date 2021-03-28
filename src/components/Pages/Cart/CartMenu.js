@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { withRouter } from "react-router-dom";
 
 import styled from 'styled-components';
-import { Text, PageSection, PageTitle, ListEntry, Button } from '../../utilities/ThemeComponents'
+import { Text, ListEntry, Button } from '../../utilities/ThemeComponents'
 
 import { CartContext } from '../../../contexts/CartContext';
 

@@ -72,10 +72,6 @@ export const ProductMenu = ({ product, variant, openCartModal }) => {
     );
 }
 
-const ColorIcon = styled.div`
-
-`;
-
 const SizeModalButton = styled.div`
     color : rgba(50,50,255,0.8);
 

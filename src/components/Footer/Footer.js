@@ -9,7 +9,7 @@ const Footer = () => {
         <StyledFooter>
             <Info>
                 <Logo className="d-none d-sm-block">
-                    <img src="images/logo.png" />
+                    <img src="images/logo.png" alt="logo" />
                 </Logo>
                 <SocialIcons className="p-2">
                     <SocialIcon bgColor={theme.btnPrimary} fgColor={theme.bgSecondary} url="http://facebook.com/" />
@@ -47,10 +47,6 @@ const Logo = styled.div`
         width:150px;
         height:auto;
     }
-`;
-
-const Contact = styled.div`
-
 `;
 
 const Links = styled.div`

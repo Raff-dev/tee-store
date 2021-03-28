@@ -26,7 +26,7 @@ export const CheckoutSummary = ({ cartProducts, loading }) => {
                             <div>
                                 <StyledBadge badgeContent={cart.quantityMap[product.id]} color="primary">
                                     <ProductImage >
-                                        <img src={api.baseUrl + product.image} />
+                                        <img src={api.baseUrl + product.image} alt="product" />
                                     </ProductImage>
                                 </StyledBadge>
                             </div>

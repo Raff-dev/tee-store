@@ -25,7 +25,7 @@ const Home = (props) => {
             <PromotionCarousel />
             <PageSection fluid className="d-flex justify-content-center">
               <Loadable >
-                <CategoryButtonGroup setCategory={setCategory} categories={categories && [allCategory, ...categories] || []} />
+                <CategoryButtonGroup setCategory={setCategory} categories={categories ? [allCategory, ...categories] : []} />
               </Loadable>
               <Loadable loading={loading}>
                 <ProductsMesh products={products} category={category} />

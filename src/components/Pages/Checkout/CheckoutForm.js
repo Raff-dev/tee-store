@@ -12,7 +12,6 @@ import { ApiContext } from '../../../contexts/ApiContext'
 import { CartContext } from '../../../contexts/CartContext'
 
 import { Label } from '../../utilities/ThemeComponents'
-import { theme } from '../../../contexts/ThemeContext';
 import { countryOptions } from './CountryOptions'
 
 export const CheckoutForm = () => {
@@ -67,7 +66,7 @@ export const CheckoutForm = () => {
             payment_method_options: {
                 p24: {
                     // https://stripe.com/docs/payments/p24/accept-a-payment#requirements
-                    tos_shown_and_accepted: formDataObj['agreement'] == 'on',
+                    tos_shown_and_accepted: formDataObj['agreement'] === 'on',
                 }
             },
             return_url: window.location.origin + '/Checkout/Complete',

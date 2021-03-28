@@ -3,13 +3,11 @@ import React, { useContext, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { ButtonGroup, } from '@material-ui/core';
 
-import { Text, PageSection, PageTitle, ListEntry, Button } from '../../utilities/ThemeComponents'
+import { Text, ListEntry, Button } from '../../utilities/ThemeComponents'
 
 import { ApiContext } from '../../../contexts/ApiContext'
 import { CartContext } from '../../../contexts/CartContext'
 
-import { Loadable } from '../../utilities/Loadable';
-import { Col } from 'react-bootstrap';
 
 export const CartSummary = ({ cartProducts }) => {
     const api = useContext(ApiContext);
@@ -17,9 +15,8 @@ export const CartSummary = ({ cartProducts }) => {
     const inputRefs = useRef([]);
 
     useEffect(() => {
-        cartProducts.map((product, index) => {
-            inputRefs.current[index].value = cart.quantityMap[product.id];
-        })
+        cartProducts.map((product, index) =>
+            inputRefs.current[index].value = cart.quantityMap[product.id])
     }, [cartProducts]);
 
     const changeProductAmount = (id, event, index) => {

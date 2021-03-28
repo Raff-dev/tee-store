@@ -1,7 +1,7 @@
 ﻿import React, { useContext } from 'react';
 import styled from 'styled-components'
 import { Link } from 'react-router-dom';
-import { Navbar, Glyphicon } from 'react-bootstrap';
+import { Navbar } from 'react-bootstrap';
 import Nav from 'react-bootstrap/Nav'
 
 import Badge from '@material-ui/core/Badge';

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 
-import { Text, PageSection, PageTitle, Button } from '../../utilities/ThemeComponents'
+import { PageTitle } from '../../utilities/ThemeComponents'
 
 import { ApiContext } from '../../../contexts/ApiContext';
 import { theme } from '../../../contexts/ThemeContext';
@@ -22,7 +22,7 @@ export const ImagePreview = ({ product, variant }) => {
                             key={index}
                             src={api.baseUrl + image.image}
                             onClick={() => setImageIndex(index)}
-                            selected={imageIndex == index}
+                            selected={imageIndex === index}
                         />
                     )}
                 </div>

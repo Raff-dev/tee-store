@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
-import { Container, Col, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { SocialIcon } from 'react-social-icons';
 
-import { Text, PageSection, PageTitle, Button } from '../../utilities/ThemeComponents'
+import { PageSection } from '../../utilities/ThemeComponents'
 
 import { Resource } from '../../utilities/Resource';
 import { Loadable } from '../../utilities/Loadable';
@@ -11,6 +11,7 @@ import { ProductMenu } from './ProductMenu';
 import styled from 'styled-components';
 import { ApiContext } from '../../../contexts/ApiContext'
 import { CartModal } from './CartModal';
+
 const ProductDetail = ({ match }) => {
     const { productId, variantId } = match.params;
     const [cartModalOpen, setCartModalOpen] = useState(false);
@@ -20,7 +21,8 @@ const ProductDetail = ({ match }) => {
         <PageSection className="mt-4">
             <Resource path={api.products + productId}>
                 {({ payload, loading }) => {
-                    let variant = loading || payload.variants.find(variant => variant.id == variantId);
+                    let variant = loading || payload.variants.find(variant =>
+                        parseInt(variant.id, 10) === parseInt(variantId, 10));
                     return (
                         <Loadable loading={loading}>
                             <CartModal isOpen={cartModalOpen} closeCartModal={() => setCartModalOpen(false)} />
@@ -53,6 +55,5 @@ const SocialIcons = styled(Row)`
        margin:10px; 
     }
 `;
-
 
 export default ProductDetail;
