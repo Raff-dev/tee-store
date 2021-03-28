@@ -10,6 +10,7 @@ from .models import Category, Collection, Product, Instance, Variant, Image
 from .forms import ProductForm
 
 domain = Site.objects.get_current().domain
+# domain = 'http://localhost:8000'
 
 
 def create_related_link(id, count, this_name, model_name, label, page='changelist'):
