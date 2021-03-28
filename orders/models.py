@@ -29,15 +29,15 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.TextField(default='pending', choices=STATUSES)
 
-    invoice = models.FileField(upload_to=INVOICES_PATH, blank=True, null=True)
-    name = models.CharField(max_length=100, blank=True, null=True)
-    email = models.EmailField(blank=True, null=True)
-    phone = models.CharField(max_length=11, blank=True, null=True)
-    country = models.CharField(max_length=50, blank=True, null=True)
-    city = models.CharField(max_length=50, blank=True, null=True)
-    state = models.CharField(max_length=50, blank=True, null=True)
-    postal_code = models.CharField(max_length=10, blank=True, null=True)
-    address = models.CharField(max_length=100, blank=True, null=True)
+    invoice = models.FileField(upload_to=INVOICES_PATH, null=True)
+    name = models.CharField(max_length=100, blank=True)
+    email = models.EmailField(blank=True)
+    phone = models.CharField(max_length=11, blank=True)
+    country = models.CharField(max_length=50, blank=True)
+    city = models.CharField(max_length=50, blank=True)
+    state = models.CharField(max_length=50, blank=True)
+    postal_code = models.CharField(max_length=10, blank=True)
+    address = models.CharField(max_length=100, blank=True)
 
     def __init__(self, *args, **kwargs):
         self.instances = kwargs.pop('instances') if 'instances' in kwargs else {}

@@ -35,9 +35,9 @@ class Product(models.Model):
     discount_price = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
 
     sized = models.BooleanField(default=False)
-    title = models.CharField(max_length=50, null=True, blank=True)
-    material = models.TextField(null=True, blank=True)
-    description = models.TextField(null=True, blank=True)
+    title = models.CharField(max_length=50, blank=True)
+    material = models.TextField(blank=True)
+    description = models.TextField(blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
