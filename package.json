@@ -1,5 +1,5 @@
 {
-  "name": "VapeShop",
+  "name": "tee-store",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -43,7 +43,7 @@
     "promise": "8.0.1",
     "raf": "3.4.0",
     "react": "^16.13.1",
-    "react-bootstrap": "^0.31.5",
+    "react-bootstrap": "^1.5.2",
     "react-dev-utils": "^4.2.1",
     "react-dom": "^16.13.1",
     "react-router": "^4.2.0",

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 
 import styled from 'styled-components';
-import { Col } from 'react-bootstrap';
+import { Grid } from '@material-ui/core'
 import { withRouter } from "react-router-dom";
 
 import { Button, PageTitle } from '../../utilities/ThemeComponents';
@@ -12,7 +12,6 @@ import { ApiContext } from '../../../contexts/ApiContext'
 import { Resource } from '../../utilities/Resource';
 import { Loadable } from '../../utilities/Loadable';
 import { CartSummary } from '../Cart/CartSummary';
-import { Grid } from '@material-ui/core';
 import { theme } from '../../../contexts/ThemeContext';
 
 export const CartModal = withRouter(({ history, isOpen, closeCartModal }) => {
@@ -75,7 +74,7 @@ const CloseButton = styled.div`
 
 `;
 
-const ModalMenu = styled(Col)`
+const ModalMenu = styled(Grid)`
     background-color:white;
     background-image:white;
 `;

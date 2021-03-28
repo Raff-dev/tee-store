@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { useState } from 'react';
-import { Grid, Row, Col } from 'react-bootstrap'
 
 import { PromotionCarousel } from './PromotionCarousel';
 import { CategoryButtonGroup } from './CategoryButtonGroup';

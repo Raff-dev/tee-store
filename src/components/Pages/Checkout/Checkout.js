@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Grid, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom'
 import { Breadcrumbs, Typography } from '@material-ui/core';
 
@@ -25,7 +25,7 @@ const Checkout = () => {
                         return <CartEmpty />
                     }
                     return (
-                        <Grid fluid className="p-0 mx-md-4">
+                        <Container fluid className="p-0 mx-md-4">
                             <Col md={12} lg={6} className="px-4" >
                                 <Row className="ml-md-4">
                                     <PageTitle>Checkout</PageTitle>
@@ -43,7 +43,7 @@ const Checkout = () => {
                             <Col md={12} lg={6} >
                                 <CheckoutSummary cartProducts={payload} loading={loading} />
                             </Col>
-                        </Grid>
+                        </Container>
                     );
                 }}
             </Resource>

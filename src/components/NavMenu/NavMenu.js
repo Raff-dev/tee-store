@@ -16,8 +16,8 @@ const NavMenu = () => {
 
     return (
         <MyNav fluid fixed="top">
-            <Navbar.Brand>
-                <Nav.Link as={Link} to={'/'} style={{ position: "relative" }}>
+            <Navbar.Brand style={{ position: "relative" }}>
+                <Nav.Link as={Link} to={'/'} style={{ height: "inherit" }}>
                     <Logo src={logoUrl} />
                 </Nav.Link>
             </Navbar.Brand>
@@ -49,7 +49,7 @@ const MyNav = styled(Navbar)`
     display:flex;
     box-shadow: 0 0 4px rgb(0 0 0 / 5%);
     border-bottom: 1px solid ${theme.borderPrimary};
-    background-color:transparent;
+    background-color:${theme.bgSecondary};
     background-image:none;
 `;
 

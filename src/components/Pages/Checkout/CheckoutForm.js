@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import axios from 'axios'
 import { useStripe, useElements, P24BankElement } from '@stripe/react-stripe-js';
 
-import { Grid, Col } from 'react-bootstrap';
+import { Container, Col } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import styled from 'styled-components';
 
@@ -193,6 +193,6 @@ const Checkbox = styled.div`
     }
 `;
 
-const FormContainer = styled(Grid)`
+const FormContainer = styled(Container)`
 
 `;

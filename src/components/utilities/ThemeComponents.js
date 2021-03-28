@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { theme } from '../../contexts/ThemeContext'
-import { Grid } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 
 const getButtonColor = (props) => {
     if (props.disabled) {
@@ -15,7 +15,6 @@ const getButtonTextColor = (props) => {
         return theme.btnTextPrimary;
     }
     return theme.btnTextSecondary;
-
 }
 
 const getTextColor = (props) => {
@@ -59,7 +58,6 @@ export const Button = styled.button`
     :focus{
         outline:none;
     }
-
 `;
 
 export const Label = styled.span`
@@ -70,7 +68,7 @@ export const Label = styled.span`
     font-variant:small-caps;
 `;
 
-export const PageSection = styled(Grid)`
+export const PageSection = styled(Container)`
     margin-top: 20px;
     min-height: 100vh;
 `;

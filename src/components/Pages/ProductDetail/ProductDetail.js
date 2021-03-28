@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Grid, Col, Row } from 'react-bootstrap';
-import Container from 'react-bootstrap/Container';
+import { Container, Col, Row } from 'react-bootstrap';
 import { SocialIcon } from 'react-social-icons';
 
 import { Text, PageSection, PageTitle, Button } from '../../utilities/ThemeComponents'

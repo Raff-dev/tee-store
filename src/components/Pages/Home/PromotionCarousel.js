@@ -46,6 +46,7 @@ export const PromotionCarousel = (props) => {
 
 const StyledCarousel = styled(Carousel)`
     overflow: hidden;
+    height:400px;
     .item{
         overflow: hidden;
         justify-content: center;
