@@ -25,7 +25,7 @@ class Order(models.Model):
         ('Reclamation', 'Reclamation'),
     ]
 
-    payment_id = models.CharField(unique=True, max_length=100)
+    payment = models.CharField(unique=True, max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.TextField(default='pending', choices=STATUSES)
 

@@ -64,8 +64,8 @@ class OrderViewSet(viewsets.GenericViewSet):
 
             if event['type'] == 'payment_intent.succeeded':
                 print("Payment was successful.")
-                order = Order.objects.filter(payment_id=payment_id).first()
-                order.complete_order(data)
+                order = Order.objects.filter(payment=payment_id).first()
+                order.complete(data)
                 order.send_invoice_email()
 
             return HttpResponse(status=status.HTTP_202_ACCEPTED)
