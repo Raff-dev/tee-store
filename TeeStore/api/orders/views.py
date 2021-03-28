@@ -68,7 +68,7 @@ class OrderViewSet(viewsets.GenericViewSet):
                 order.complete_order(data)
                 order.send_invoice_email()
 
-            return HttpResponse(status=status.HTTP_200_OK)
+            return HttpResponse(status=status.HTTP_202_ACCEPTED)
 
         except (ValueError, KeyError) as e:
             print(f'payload error: {e}')

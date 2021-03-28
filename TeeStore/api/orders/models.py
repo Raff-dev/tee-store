@@ -108,7 +108,7 @@ class Order(models.Model):
         template = loader.get_template(self.ORDER_EMAIL_TEMPLATE)
         body = template.render({'order': self})
         email = EmailMessage(
-            subject='Subject here',
+            subject='Order confirmation ',
             body=body,
             from_email=settings.EMAIL_HOST_USER,
             to=[self.email],
