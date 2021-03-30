@@ -4,7 +4,7 @@ from django.conf import settings
 from django.core.files.base import ContentFile
 from django.template import loader
 from django.core.mail import send_mail
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMultiAlternatives
 import pdfkit
 
 from .helpers import decode_url
@@ -29,10 +29,10 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.TextField(default='pending', choices=STATUSES)
 
-    invoice = models.FileField(upload_to=INVOICES_PATH, null=True)
+    invoice = models.FileField(upload_to=INVOICES_PATH, blank=True)
     name = models.CharField(max_length=100, blank=True)
     email = models.EmailField(blank=True)
-    phone = models.CharField(max_length=11, blank=True)
+    phone = models.CharField(max_length=15, blank=True)
     country = models.CharField(max_length=50, blank=True)
     city = models.CharField(max_length=50, blank=True)
     state = models.CharField(max_length=50, blank=True)
@@ -107,12 +107,12 @@ class Order(models.Model):
     def send_invoice_email(self) -> None:
         template = loader.get_template(self.ORDER_EMAIL_TEMPLATE)
         body = template.render({'order': self})
-        email = EmailMessage(
+        email = EmailMultiAlternatives(
             subject='Order confirmation ',
-            body=body,
             from_email=settings.EMAIL_HOST_USER,
             to=[self.email],
         )
+        email.attach_alternative(body, 'text/html')
         email.attach(self.INVOICE_ATTACHMENT_NAME, self.invoice.read(), self.invoice.name)
         email.send(fail_silently=False)
 
