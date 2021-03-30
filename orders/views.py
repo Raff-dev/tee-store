@@ -40,7 +40,7 @@ class OrderViewSet(viewsets.GenericViewSet):
 
             Order.objects.create(
                 instances=instances_quantity,
-                payment_id=intent['id'],
+                payment=intent['id'],
             )
 
             data = {'clientSecret': intent['client_secret']}

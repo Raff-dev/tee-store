@@ -7,5 +7,5 @@ def decode_url(obj):
         if isinstance(value, dict):
             obj[key] = decode_url(value)
         else:
-            obj[key] = value and urllib.parse.unquote(value)
+            obj[key] = value and urllib.parse.unquote(value) or ''
     return obj
