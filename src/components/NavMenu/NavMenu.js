@@ -22,7 +22,6 @@ const NavMenu = () => {
                 </Nav.Link>
             </Navbar.Brand>
 
-
             <Nav.Item>
                 <Nav.Link as={Link} style={{ color: theme.textInfo }} to="/Cart" >
                     <Badge badgeContent={cart.items.length} color="secondary">
@@ -40,7 +39,6 @@ const Logo = styled.img`
     top:0;
     left:-50%;
 `;
-
 
 const MyNav = styled(Navbar)`
     position:sticky;
