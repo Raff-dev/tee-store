@@ -8,7 +8,9 @@ from rest_framework import status
 from rest_framework.decorators import action
 import stripe
 
+
 from .models import Order, OrderLine
+from api.settings import env
 from products.models import Instance
 
 
@@ -17,7 +19,7 @@ class OrderViewSet(viewsets.GenericViewSet):
 
     @action(methods=['POST'], detail=False)
     def create_payment_session(self, request, *args, **kwargs):
-        stripe.api_key = settings.env('STRIPE_SECRET_KEY')
+        stripe.api_key = env('STRIPE_SECRET_KEY')
         try:
             ids = [int(id) for id in request.data.keys()]
             instances = Instance.objects.filter(id__in=ids)
@@ -50,7 +52,7 @@ class OrderViewSet(viewsets.GenericViewSet):
 
     @action(methods=['POST'], detail=False)
     def confirm_payment(self, request, *args, **kwargs):
-        stripe.api_key = settings.env('STRIPE_SECRET_KEY')
+        stripe.api_key = env('STRIPE_SECRET_KEY')
         payload = request.body
         data = json.loads(payload)['data']
         payment_id = data['object']['id']
@@ -59,7 +61,7 @@ class OrderViewSet(viewsets.GenericViewSet):
             event = stripe.Webhook.construct_event(
                 payload,
                 request.META['HTTP_STRIPE_SIGNATURE'],
-                settings.env('STRIPE_ENDPOINT_SECRET')
+                env('STRIPE_ENDPOINT_SECRET')
             )
 
             if event['type'] == 'payment_intent.succeeded':
