@@ -5,12 +5,10 @@ import { ButtonGroup, } from '@material-ui/core';
 
 import { Text, ListEntry, Button } from '../../utilities/ThemeComponents'
 
-import { ApiContext } from '../../../contexts/ApiContext'
 import { CartContext } from '../../../contexts/CartContext'
 
 
 export const CartSummary = ({ cartProducts }) => {
-    const api = useContext(ApiContext);
     const cart = useContext(CartContext);
     const inputRefs = useRef([]);
 
@@ -34,7 +32,7 @@ export const CartSummary = ({ cartProducts }) => {
             {cartProducts.map((product, index) =>
                 <ListEntry>
                     <ProductDisplay >
-                        <ProductImage src={api.baseUrl + product.image} />
+                        <ProductImage src={product.image} />
                         <div className="d-md-flex d-block justify-content-between w-100">
                             <div>
                                 <p>

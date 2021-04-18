@@ -3,12 +3,10 @@ import styled from 'styled-components'
 import { Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-import { ApiContext } from '../../../contexts/ApiContext';
 import { CartContext } from '../../../contexts/CartContext';
 import { Text } from '../../utilities/ThemeComponents';
 
 export const ProductsMesh = ({ products, category }) => {
-    const api = useContext(ApiContext);
     const cart = useContext(CartContext);
 
     return (
@@ -19,7 +17,7 @@ export const ProductsMesh = ({ products, category }) => {
                     product.variants.map((variant, _) =>
                         <Col sm={6} lg={4} key={variant.id}>
                             <Card to={`/Product/${product.id}/${variant.id}`}>
-                                <Image src={api.baseUrl + variant.images[0].image} alt="variant image" />
+                                <Image src={variant.images[0].image} alt="variant image" />
                                 <Text muted>{product.name}</Text>
                                 <Text primary >
                                     <h4 className="font-weight-bold">{cart.currency}{product.price}</h4>

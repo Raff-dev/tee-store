@@ -91,7 +91,7 @@ class Variant(models.Model):
 
 
 def get_upload_path(image, filename):
-    return settings.MEDIA_ROOT/Image.IMAGES_PATH/image.product.category.name/filename
+    return f'{Image.IMAGES_PATH}/{image.product.category.name}/{filename}'
 
 
 class Image(models.Model):

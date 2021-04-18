@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import { Text, ListEntry } from '../../utilities/ThemeComponents'
 
-import { ApiContext } from '../../../contexts/ApiContext'
 import { CartContext } from '../../../contexts/CartContext'
 
 import Badge from '@material-ui/core/Badge';
@@ -11,7 +10,6 @@ import { Loadable } from '../../utilities/Loadable';
 import { theme } from '../../../contexts/ThemeContext';
 
 export const CheckoutSummary = ({ cartProducts, loading }) => {
-    const api = useContext(ApiContext);
     const cart = useContext(CartContext);
 
     const subtotal = cart.subtotal(cartProducts);
@@ -26,7 +24,7 @@ export const CheckoutSummary = ({ cartProducts, loading }) => {
                             <div>
                                 <StyledBadge badgeContent={cart.quantityMap[product.id]} color="primary">
                                     <ProductImage >
-                                        <img src={api.baseUrl + product.image} alt="product" />
+                                        <img src={product.image} alt="product" />
                                     </ProductImage>
                                 </StyledBadge>
                             </div>

@@ -1,13 +1,11 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { PageTitle } from '../../utilities/ThemeComponents'
 
-import { ApiContext } from '../../../contexts/ApiContext';
 import { theme } from '../../../contexts/ThemeContext';
 
 export const ImagePreview = ({ product, variant }) => {
-    const api = useContext(ApiContext);
     const [imageIndex, setImageIndex] = useState(0);
 
     return (
@@ -20,14 +18,14 @@ export const ImagePreview = ({ product, variant }) => {
                     {variant.images.map((image, index) =>
                         <MiniatureImages
                             key={index}
-                            src={api.baseUrl + image.image}
+                            src={image.image}
                             onClick={() => setImageIndex(index)}
                             selected={imageIndex === index}
                         />
                     )}
                 </div>
                 <div>
-                    <CurrentImage src={api.baseUrl + variant.images[imageIndex].image} />
+                    <CurrentImage src={variant.images[imageIndex].image} />
                 </div>
             </ImagesContainer>
         </section>
