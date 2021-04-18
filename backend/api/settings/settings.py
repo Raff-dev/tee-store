@@ -1,21 +1,17 @@
 from pathlib import Path
-import os
 from environ import Env
 
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
 env = Env()
-
-env.read_env(env_file='api/.env')
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-
+env.read_env()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 SECRET_KEY = env('SECRET_KEY')
-
 DEBUG = env('DEBUG', default=False)
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env('ALLOWED_HOSTS').split(',')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -29,6 +25,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'django.contrib.sites',
     'nested_admin',
+    'storages',
     # local apps
     'products',
     'orders',
@@ -111,13 +108,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
-MEDIA_ROOT = BASE_DIR / 'media'
-MEDIA_URL = '/media/'
-
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
+CORS_ALLOW_ALL_ORIGINS = True
 
 SITE_ID = 1
 
@@ -125,6 +119,6 @@ SITE_ID = 1
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+EMAIL_HOST_USER = env('EMAIL_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_PASSWORD')
 EMAIL_USE_TLS = True
