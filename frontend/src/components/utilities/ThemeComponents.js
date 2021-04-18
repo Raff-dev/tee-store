@@ -10,6 +10,7 @@ const getButtonColor = (props) => {
     }
     return theme.btnSecondary
 }
+
 const getButtonTextColor = (props) => {
     if (props.primary) {
         return theme.btnTextPrimary;

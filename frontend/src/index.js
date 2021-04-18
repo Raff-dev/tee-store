@@ -24,7 +24,7 @@ import { ApiProvider } from './contexts/ApiContext'
 import { publishableKey } from './secret'
 
 import 'bootstrap/dist/css/bootstrap.css';
-import './index.scss';
+import './index.css';
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');

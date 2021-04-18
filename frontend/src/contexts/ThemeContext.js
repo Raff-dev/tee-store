@@ -3,9 +3,6 @@ import React, { createContext } from 'react'
 export const ThemeContext = createContext();
 
 export const theme = {
-    borderColor: "",
-    primary: "",
-    secondary: "",
     bgPrimary: "rgb(255,255,255)",
     bgSecondary: "rgb(252,252,252)",
     bgTrietary: "rgb(246,246,246)",
@@ -25,7 +22,6 @@ export const theme = {
 
     borderPrimary: "rgb(238,238,238)",
     borderSecondary: "rgb(218, 225, 231)",
-
 }
 
 export const ThemeProvider = ({ children }) => {

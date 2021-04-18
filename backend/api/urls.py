@@ -15,8 +15,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include((router.urls, 'Products'), namespace='Products')),
     path('api/', include((router.urls, 'Orders'), namespace='Orders')),
-    *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 for url in router.urls:
     print(url)
