@@ -7,15 +7,27 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  run_tests:
+    name: Run Django Tests
     runs-on: ubuntu-latest
+    services:
+      db:
+        image: postgres:12.3-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: github_actions
+        ports:
+          - 5432:5432
+        options: --mount type=tmpfs,destination=/var/lib/postgresql/data --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     strategy:
       max-parallel: 4
       matrix:
         python-version: [3.9]
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
@@ -25,6 +37,14 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install pipenv
         pipenv install
+        pipenv shell
+    - name: Lint with flake8
+      run: |
+        pipenv install flake8
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=200 --statistics
     - name: Run Tests
       run: |
-        python backend/manage.py test
+        python backend/manage.py test backend/
+      env:
+        SYSTEM_ENV: WORKFLOW
