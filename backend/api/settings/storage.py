@@ -1,13 +1,6 @@
-from pathlib import Path
-from environ import Env
-
 from storages.backends.s3boto3 import S3Boto3Storage
 
-
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-
-env = Env()
-env.read_env()
+from .settings import env, BASE_DIR
 
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 DEFAULT_FILE_STORAGE = 'api.settings.storage.MediaStorage'

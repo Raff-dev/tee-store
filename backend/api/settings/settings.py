@@ -1,16 +1,15 @@
 from pathlib import Path
 from environ import Env
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 env = Env()
 env.read_env()
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
-SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG', default=False)
+
+SECRET_KEY = env('SECRET_KEY')
+
 ALLOWED_HOSTS = env('ALLOWED_HOSTS').split(',')
 
 INSTALLED_APPS = [
@@ -63,13 +62,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'api.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
-DATABASES = {
-    'default': env.db()
-}
+DATABASES = {'default': env.db()}
 
 
 # Password validation
@@ -105,20 +98,10 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
-
+# Cross origin resource sharing
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
 CORS_ALLOW_ALL_ORIGINS = True
 
 SITE_ID = 1
-
-# Email Settings
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = env('EMAIL_USER')
-EMAIL_HOST_PASSWORD = env('EMAIL_PASSWORD')
-EMAIL_USE_TLS = True
