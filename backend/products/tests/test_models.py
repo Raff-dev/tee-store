@@ -1,5 +1,5 @@
 from django.test import TestCase
-from ..models import Category, Collection, Product, Variant, Size, Image
+from ..models import Category, Collection, Product, Variant, Instance, Image
 
 
 class ProductTestCase(TestCase):
@@ -49,20 +49,20 @@ class ProductTestCase(TestCase):
         self.assertNotEqual(image.image, None)
         self.assertEqual(image.ordering, 1)
 
-    def test_product_has_one_size(self):
+    def test_product_has_one_instance(self):
         product = Product.objects.first()
         variant = Variant.objects.get(product=product)
-        sizes_count = Size.objects.count()
-        self.assertEqual(sizes_count, 1)
-        size = Size.objects.get(variant=variant)
-        self.assertEqual(size.size, str(Size.NA))
+        instances_count = Instance.objects.count()
+        self.assertEqual(instances_count, 1)
+        instance = Instance.objects.get(variant=variant)
+        self.assertEqual(instance.size, str(Instance.NA))
 
-    def test_product_has_many_sizes(self):
+    def test_product_has_many_instances(self):
         product = Product.objects.create(**self.default_params, sized=True)
         variant = Variant.objects.get(product=product)
-        sizes = Size.objects.filter(variant=variant)
-        self.assertEqual(sizes.count(), len(Size.SIZES))
+        instances = Instance.objects.filter(variant=variant)
+        self.assertEqual(instances.count(), len(Instance.SIZES))
 
-        size_types = set(size.size for size in sizes)
-        all_size_types = set(str(size) for size in Size.SIZES)
-        self.assertEqual(size_types, all_size_types)
+        instance_types = set(instance.size for instance in instances)
+        all_instance_types = set(str(instance) for instance in Instance.SIZES)
+        self.assertEqual(instance_types, all_instance_types)

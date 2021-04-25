@@ -1,6 +1,5 @@
 import os
 import shutil
-from typing import Collection
 
 from django.core.management.base import BaseCommand
 from django.core.files import File
