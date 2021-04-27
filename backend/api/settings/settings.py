@@ -108,4 +108,6 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 SITE_ID = 1
 
-django_heroku.settings(locals())
+
+if env('SYSTEM_ENV', default='PRODUCTION') == 'PRODUCTION':
+    django_heroku.settings(locals())
