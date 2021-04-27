@@ -64,9 +64,10 @@
     "yup": "^0.29.3"
   },
   "scripts": {
-    "start": "rimraf ./build && node scripts/start.js",
+    "start": "cd frontend && rimraf ./build && node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom"
+    "test": "node scripts/test.js --env=jsdom",
+    "heroku-postbuild": "cd frontend && node scripts/build.js" 
   },
   "devDependencies": {
     "node-sass": "^4.14.1",
