@@ -4,7 +4,7 @@ import os
 def main():
     with open('backend/api/settings/.env') as file:
         for line in file.readlines():
-            if len(line.split('=')) == 2:
+            if len(line.split('=')) >= 2:
                 os.system(f'heroku config:set {line}')
 
 
