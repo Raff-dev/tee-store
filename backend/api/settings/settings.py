@@ -1,5 +1,7 @@
 from pathlib import Path
+
 from environ import Env
+import django_heroku
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -105,3 +107,5 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOW_ALL_ORIGINS = True
 
 SITE_ID = 1
+
+django_heroku.settings(locals())
