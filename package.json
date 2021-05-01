@@ -12,8 +12,8 @@
     },
     "scripts": {
         "postinstall": "cd frontend && npm install --only=dev && NODE_ENV=development npm install --no-shrinkwrap && npm run build",
-        "start": "react-scripts start",
-        "build": "react-scripts build",
+        "start": "cd frontend && react-scripts start",
+        "build": "cd frontend && react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
     }
