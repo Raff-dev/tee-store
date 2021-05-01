@@ -6,7 +6,7 @@
 
     },
     "scripts": {
-        "postinstall": "cd client && npm install",
+        "postinstall": "cd frontend && npm install",
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
