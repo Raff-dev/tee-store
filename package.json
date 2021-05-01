@@ -10,11 +10,15 @@
     "dependencies": {
 
     },
+    "cacheDirectories": [
+        "node_modules",
+        "frontend/node_modules"
+      ],
     "scripts": {
-        "postinstall": "cd frontend && npm install --only=dev && NODE_ENV=development npm install --no-shrinkwrap",
-        "start": "cd frontend && npm run start",
-        "build": "cd frontend && npm run build",
-        "test": "cd frontend && npm run test",
-        "eject": "cd frontend && npm run eject"
+        "postinstall": "npm install --only=dev --prefix frontend && NODE_ENV=development npm install --no-shrinkwrap --prefix frontend",
+        "start": "npm run start --prefix frontend",
+        "build": "npm run build --prefix frontend",
+        "test": "npm run test --prefix frontend",
+        "eject": "npm run eject --prefix frontend"
     }
 }
