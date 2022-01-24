@@ -1,101 +1,122 @@
 <html lang="en">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>Invoice</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" type="text/css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  {% comment %} <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="vendor/font-awesome/css/all.min.css">
-  <link rel="stylesheet" type="text/css" href="css/stylesheet.css">  {% endcomment %}
-</head>
-<body>
-<!-- Container -->
-<div class="container-fluid invoice-container">
-  <!-- Header -->
-  <header>
-  <div class="row align-items-center">
-    <div class="col-sm-7 text-center text-sm-left mb-3 mb-sm-0">
-      <img id="logo" style="height:50px;width:auto;"src="https://raw.githubusercontent.com/Raff-dev/Tee-Store/master/VapeShop/ClientApp/public/images/logo.png" title="TeeStore" alt="TeeStore">
-    </div>
-    <div class="col-sm-5 text-center text-sm-right">
-      <h4 class="text-7 mb-0">Invoice</h4>
-    </div>
-  </div>
-  <hr>
-  </header>
-  
-  <!-- Main Content -->
-  <main>
-  <div class="row">
-    <div class="col-sm-6"><strong>Date:</strong> 05/12/2020</div>
-    <div class="col-sm-6 text-sm-right"> <strong>Invoice No:</strong> {{order.id}}</div>
-  </div>
-  <hr>
-  <div class="row d-flex">
-    <div class="col-sm-6 text-sm-right order-sm-1"> <strong>Pay To:</strong>
-      <address>
-      Tee Store<br>
-      420 Stoned St<br>
-      Paradise, Arizona 92865<br>
-	    contact@teestore.com
-      </address>
-    </div>
-    <div class="col-sm-6 order-sm-0"> <strong>Invoiced To:</strong>
-      <address>
-      {{order.name}}<br>
-      {{order.address}}, {{order.city}}<br>
-      {{order.city}} {{order.postal_code}}<br>
-      {{order.country}}
-      </address>
-    </div>
-  </div>
-	
-  <div class="card">
-    <div class="card-body p-0">
-      <div class="table-responsive">
-        <table class="table mb-0">
-		      <thead class="card-header">
-            <tr>
-              <td class="col-3 border-0"><strong>Product</strong></td>
-              <td class="col-4 border-0"><strong>Description</strong></td>
-              <td class="col-2 text-center border-0"><strong>Rate</strong></td>
-              <td class="col-1 text-center border-0"><strong>QTY</strong></td>
-              <td class="col-2 text-right border-0"><strong>Amount</strong></td>
-            </tr>
-          </thead>
-          <tbody>
-            {% for line in order.lines.all %}
-            <tr>
-              <td class="col-3 border-0">{{line.title}}</td>
-              <td class="col-4 text-1 border-0">Lorem ipsum dolor sit amet</td>
-              <td class="col-2 text-center border-0">{{line.cost}} €</td>
-              <td class="col-1 text-center border-0">{{line.quantity}}</td>
-              <td class="col-2 text-right border-0">{{line.amount}} €</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-          <tfoot class="card-footer">
-			      <tr>
-              <td colspan="4" class="text-right"><strong>Sub Total:</strong></td>
-              <td class="text-right">{{order.subtotal}} €</td>
-            </tr>
-            <tr>
-              <td colspan="4" class="text-right"><strong>Tax:</strong></td>
-              <td class="text-right">{{order.tax}} €</td>
-            </tr>
-            <tr>
-              <td colspan="4" class="text-right"><strong>Total:</strong></td>
-              <td class="text-right">{{order.amount}} €</td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-    </div>
-  </div>
-  </main>
-  <footer class="text-center mt-4">
-  <p class="text-1"><strong>NOTE :</strong> This is computer generated receipt and does not require physical signature.</p>
-  </footer>
-</div>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Invoice</title>
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900"
+            type="text/css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+            crossorigin="anonymous"
+        />
+        {% comment %}
+        <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="vendor/font-awesome/css/all.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/stylesheet.css" />
+        {% endcomment %}
+    </head>
+    <body>
+        <!-- Container -->
+        <div class="container-fluid invoice-container">
+            <!-- Header -->
+            <header>
+                <div class="row align-items-center">
+                    <div class="col-sm-7 text-center text-sm-left mb-3 mb-sm-0">
+                        <img
+                            id="logo"
+                            style="height: 50px; width: auto"
+                            src="https://raw.githubusercontent.com/Raff-dev/Tee-Store/master/frontend/public/images/logo.png"
+                            title="TeeStore"
+                            alt="TeeStore"
+                        />
+                    </div>
+                    <div class="col-sm-5 text-center text-sm-right">
+                        <h4 class="text-7 mb-0">Invoice</h4>
+                    </div>
+                </div>
+                <hr />
+            </header>
 
-</body></html>
+            <!-- Main Content -->
+            <main>
+                <div class="row">
+                    <div class="col-sm-6"><strong>Date:</strong> 05/12/2020</div>
+                    <div class="col-sm-6 text-sm-right"><strong>Invoice No:</strong> {{order.id}}</div>
+                </div>
+                <hr />
+                <div class="row d-flex">
+                    <div class="col-sm-6 text-sm-right order-sm-1">
+                        <strong>Pay To:</strong>
+                        <address>
+                            Tee Store<br />
+                            420 Stoned St<br />
+                            Paradise, Arizona 92865<br />
+                            contact@teestore.com
+                        </address>
+                    </div>
+                    <div class="col-sm-6 order-sm-0">
+                        <strong>Invoiced To:</strong>
+                        <address>
+                            {{order.name}}<br />
+                            {{order.address}}, {{order.city}}<br />
+                            {{order.city}} {{order.postal_code}}<br />
+                            {{order.country}}
+                        </address>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead class="card-header">
+                                    <tr>
+                                        <td class="col-3 border-0"><strong>Product</strong></td>
+                                        <td class="col-4 border-0"><strong>Description</strong></td>
+                                        <td class="col-2 text-center border-0"><strong>Rate</strong></td>
+                                        <td class="col-1 text-center border-0"><strong>QTY</strong></td>
+                                        <td class="col-2 text-right border-0"><strong>Amount</strong></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for line in order.lines.all %}
+                                    <tr>
+                                        <td class="col-3 border-0">{{line.title}}</td>
+                                        <td class="col-4 text-1 border-0">Lorem ipsum dolor sit amet</td>
+                                        <td class="col-2 text-center border-0">{{line.cost}} €</td>
+                                        <td class="col-1 text-center border-0">{{line.quantity}}</td>
+                                        <td class="col-2 text-right border-0">{{line.amount}} €</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                <tfoot class="card-footer">
+                                    <tr>
+                                        <td colspan="4" class="text-right"><strong>Sub Total:</strong></td>
+                                        <td class="text-right">{{order.subtotal}} €</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" class="text-right"><strong>Tax:</strong></td>
+                                        <td class="text-right">{{order.tax}} €</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" class="text-right"><strong>Total:</strong></td>
+                                        <td class="text-right">{{order.amount}} €</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <footer class="text-center mt-4">
+                <p class="text-1">
+                    <strong>NOTE :</strong> This is computer generated receipt and does not require physical signature.
+                </p>
+            </footer>
+        </div>
+    </body>
+</html>

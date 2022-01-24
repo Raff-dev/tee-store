@@ -1,4 +1,4 @@
-FROM python:3.9
+FROM python:3.8
 
 ENV PYTHONUNBUFFERED=1
 
@@ -9,6 +9,8 @@ COPY . .
 RUN set -ex \
     && pip install --upgrade pip \
     && pip install pipenv \
-    && pipenv install --skip-lock --system --dev
+    && pip install -r requirements.txt \
+    && apt-get -y update \
+    && apt-get install -y wkhtmltopdf
 
 EXPOSE 8000

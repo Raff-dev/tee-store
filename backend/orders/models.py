@@ -1,4 +1,5 @@
 from functools import reduce
+
 from django.db import models
 from django.conf import settings
 from django.core.files.base import ContentFile
@@ -17,17 +18,17 @@ class Order(models.Model):
     INVOICE_ATTACHMENT_NAME = 'invoice.pdf'
 
     INVOICES_PATH = 'invoices'
-    STATUSES = [
-        ('Created', 'Created'),
-        ('Pending', 'Pending'),
-        ('Failed', 'Failed'),
-        ('Succesful', 'Succesful'),
-        ('Reclamation', 'Reclamation'),
-    ]
+
+    class Status(models.TextChoices):
+        CREATED = ('created', 'Created')
+        PENDING = ('pending', 'Pending')
+        FAILED = ('failed', 'Failed')
+        SUCCESSFUL = ('successful', 'Successful')
+        RECLAMATION = ('reclamation', 'Reclamation')
 
     payment = models.CharField(unique=True, max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
-    status = models.TextField(default='pending', choices=STATUSES)
+    status = models.TextField(default=Status.CREATED, choices=Status.choices)
 
     invoice = models.FileField(upload_to=INVOICES_PATH, blank=True)
     name = models.CharField(max_length=100, blank=True)
@@ -45,7 +46,7 @@ class Order(models.Model):
 
     def save(self, *args, **kwargs):
         created = self.pk is None
-        super(Order, self).save(*args, **kwargs)
+        res = super(Order, self).save(*args, **kwargs)
 
         if created:
             for instance, quantity in self.instances.items():
@@ -59,9 +60,10 @@ class Order(models.Model):
             shipping_line = OrderLine.create_shipping_line(self)
             shipping_line.order = self
             shipping_line.save()
+        return res
 
     def __str__(self) -> str:
-        return f'Invoice_{self.pk} {self.created_at.date()}'
+        return f'Order {self.pk} - {self.created_at.date()}'
 
     @property
     def amount(self):
@@ -82,6 +84,7 @@ class Order(models.Model):
         address = ' '.join([address_info.pop('line1'), address_info.pop('line2')])
         self.__dict__.update(
             address=address,
+            status=Order.Status.SUCCESSFUL,
             **billing_details,
             **address_info
         )

@@ -1,5 +1,5 @@
-import React from 'react';
-import Spinner from 'react-bootstrap/Spinner'
+import React from "react";
+import Spinner from "react-bootstrap/Spinner";
 
 export const Loadable = ({ loading, children }) => {
     if (loading) {
@@ -9,10 +9,8 @@ export const Loadable = ({ loading, children }) => {
             </div>
         );
     } else if (!loading && !children) {
-        return (
-            <span>There is no content to display</span>
-        );
+        return <span>There is no content to display</span>;
     } else {
-        return (children);
+        return children;
     }
-}
+};

@@ -69,11 +69,13 @@ class ProductAdmin(nested_admin.NestedModelAdmin):
 
 @admin.register(Variant)
 class VariantAdmin(admin.ModelAdmin):
-    list_display = ['name', 'product', 'display', 'is_default', 'related_images']
+    list_display = ['name', 'product',
+                    # 'display',
+                    'is_default', 'related_images']
     list_filter = ['product__collection', 'product__category']
 
-    def display(self, obj):
-        return format_html(f'<img src="{domain}/media/{obj.images.first().image}" style="height:50px;"/>')
+    # def display(self, obj):
+    #     return format_html(f'<img src="{domain}/media/{obj.images.first().image}" style="height:50px;"/>')
 
     def related_images(self, obj):
         count = obj.images.count()

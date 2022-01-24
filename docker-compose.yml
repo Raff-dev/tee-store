@@ -9,12 +9,16 @@ services:
       - .:/app
       - postgres-data:/var/lib/postgresql/data
 
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: /data/postgres
   backend:
     container_name: backend
     build: ./backend
     command: ./entrypoint.sh
     volumes:
-      - .:/app
       - ./backend:/app/backend
       - static:/app/backend/static
     ports:
@@ -30,14 +34,14 @@ services:
     volumes:
       - .:/app
       - ./frontend:/app/frontend
-      - /app/frontend/node_modules
+      - ./frontend/node_modules:/app/frontend/node_modules
     ports:
       - "3000:3000"
     depends_on:
       - backend
     environment:
+    # responsible for watching file changes
       - "CHOKIDAR_USEPOLLING=true"
-
 volumes:
   postgres-data:
   static:

@@ -2,10 +2,10 @@
     "name": "testapp",
     "version": "0.1.0",
     "private": true,
-    "optionalDependencies": { "fsevents": "2.x.x" },
+    "optionalDependencies": { "fsevents": ".x.x" },
     "engines": {
-        "node":"14.x",
-        "npm":"7.10.0"
+        "node":"16.x",
+        "npm":"8.1.2"
     },
     "dependencies": {
 

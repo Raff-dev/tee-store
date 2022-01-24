@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import reportWebVitals from "./reportWebVitals";
 
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
@@ -36,20 +35,10 @@ ReactDOM.render(
                         <NavMenu />
                         <Switch>
                             <Route exact path="/" component={Home} />
-                            <Route
-                                path="/Product/:productId/:variantId"
-                                component={ProductDetail}
-                            />
+                            <Route path="/Product/:productId/:variantId" component={ProductDetail} />
                             <Route path="/Cart" component={Cart} />
-                            <Route
-                                exact
-                                path="/Checkout"
-                                component={Checkout}
-                            />
-                            <Route
-                                path="/Checkout/Complete"
-                                component={CheckoutComplete}
-                            />
+                            <Route exact path="/Checkout" component={Checkout} />
+                            <Route path="/Checkout/Complete" component={CheckoutComplete} />
                         </Switch>
                         <Footer />
                     </CartProvider>

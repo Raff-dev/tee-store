@@ -1,12 +1,12 @@
 import { withRouter } from "react-router-dom";
-import React, { useContext, useEffect } from 'react';
-import { Col } from 'react-bootstrap';
-import Form from 'react-bootstrap/Form';
-import { CartContext } from '../../../contexts/CartContext';
-import { Button, PageSection, Label } from '../../utilities/ThemeComponents'
+import React, { useContext, useEffect } from "react";
+import { Col } from "react-bootstrap";
+import Form from "react-bootstrap/Form";
+import { CartContext } from "../../../contexts/CartContext";
+import { Button, PageSection, Label } from "../../utilities/ThemeComponents";
 
 const CheckoutComplete = withRouter(({ history, ...props }) => {
-    console.log(props)
+    console.log(props);
     const cart = useContext(CartContext);
     useEffect(cart.clearItems, []);
 
@@ -15,12 +15,10 @@ const CheckoutComplete = withRouter(({ history, ...props }) => {
             <Col md={4}>
                 <div className="text-center">
                     <p>
-                        <b>
-                            Thank you for your purcharse!
-                        </b>
+                        <b>Thank you for your purchase!</b>
                     </p>
                 </div>
-                <Form >
+                <Form>
                     <Form.Group className="pt-4">
                         <Label>Email</Label>
                         <Form.Control type="email" name="email" placeholder="Email" />
@@ -30,7 +28,7 @@ const CheckoutComplete = withRouter(({ history, ...props }) => {
                             SIGN UP FOR NEWSLETTER
                         </Button>
                     </Form.Group>
-                    <Button type="submit" onClick={() => history.push('/')}>
+                    <Button type="submit" onClick={() => history.push("/")}>
                         GO SHOPPING
                     </Button>
                 </Form>

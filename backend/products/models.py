@@ -50,16 +50,16 @@ class Product(models.Model):
     def save(self, *args, **kwargs):
         created = self.pk is None
         self.name = self.name or self.collection.name
-        super(Product, self).save(*args, **kwargs)
+        result = super(Product, self).save(*args, **kwargs)
 
         if created:
             variant = Variant.objects.create(product=self, is_default=True)
             variant.name = self.variant_name or variant.name
-            variant.save()
+            # variant.save()
 
             image = Image.objects.create(variant=variant, ordering=1)
             image.image = self.image or image.image
-            image.save()
+            # image.save()
 
     def __str__(self) -> str:
         return f'{self.name}'
@@ -75,12 +75,13 @@ class Variant(models.Model):
 
     def save(self, *args, **kwargs):
         created = self.pk is None
-        super(Variant, self).save(*args, **kwargs)
+        res = super(Variant, self).save(*args, **kwargs)
 
         if created:
             sizes = Instance.SIZES if self.product.sized else [Instance.NA]
             for size_name in sizes:
                 Instance.objects.create(size=size_name, variant=self)
+        return res
 
     def __str__(self) -> str:
         return f'{self.name}'

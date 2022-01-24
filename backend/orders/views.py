@@ -53,24 +53,26 @@ class OrderViewSet(viewsets.GenericViewSet):
     @action(methods=['POST'], detail=False)
     def confirm_payment(self, request, *args, **kwargs):
         stripe.api_key = env('STRIPE_SECRET_KEY')
-        payload = request.body
-        data = json.loads(payload)['data']
+        payload = json.loads(request.body)
+        data = payload['data']
         payment_id = data['object']['id']
 
         try:
             event = stripe.Webhook.construct_event(
-                payload,
+                request.body,
                 request.META['HTTP_STRIPE_SIGNATURE'],
                 env('STRIPE_ENDPOINT_SECRET')
             )
 
+            order = Order.objects.filter(payment=payment_id).first()
             if event['type'] == 'payment_intent.succeeded':
-                print("Payment was successful.")
-                order = Order.objects.filter(payment=payment_id).first()
                 order.complete(data)
                 order.send_invoice_email()
+            elif event['type'] == 'payment_intent.payment_failed':
+                order.status = Order.Status.FAILED
+                order.save()
 
-            return HttpResponse(status=status.HTTP_202_ACCEPTED)
+            return HttpResponse(status=status.HTTP_200_OK)
 
         except (ValueError, KeyError) as e:
             print(f'payload error: {e}')
